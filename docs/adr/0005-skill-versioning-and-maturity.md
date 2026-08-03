@@ -28,7 +28,10 @@ metadata:
 
 Lifecycle rules:
 
-- New/generated skills start in `.cursor/skills/experimental/` with `maturity: experimental`.
+- New skills start with `maturity: experimental`. Research-generated candidates are created in
+  `.cursor/skills/experimental/` and promoted into a bank via PR; skills authored directly in a
+  creator-reviewed infrastructure PR (e.g. the phase-one exemplars, workflow skills) may be
+  placed in their bank immediately — the reviewed PR is the same gate.
 - Promotion (experimental → provisional → validated → stable) and demotion happen only via PR, and
   promotion past `provisional` requires passing fixtures plus, for `validated`+, evidence refs that
   include first-party analytics or a creator experiment.
