@@ -6,6 +6,27 @@ than semver releases while the project is pre-production.
 
 ## [Unreleased]
 
+### Added
+
+- Research batch 2026-08-03 (5 creator-supplied sources): Klug et al. 2021 (WebSci),
+  Lynch 2025 (UConn thesis), UW News 2024 (data-donation studies), Herman 2023 (IASDR),
+  Zhou 2024 (IJCSIT, assessed low-credibility) — 17 claims, 17 assessments, 2 niche
+  hypotheses, 3 technique records under `research/sources/` and `evidence/`.
+- First real contradiction records: skip-speed signal, trending-hashtag effect, optimal
+  length (`evidence/contradictions/`).
+- New canonical knowledge doc `knowledge/production-techniques/metadata-and-discovery.md`;
+  working model advanced to v0.1; completion doc gains an external baseline; unknowns
+  narrowed and extended.
+- First candidate skill via the skill-refinement path:
+  `experimental/searchable-onscreen-text` (`scp-20260803-searchable-onscreen-text`).
+- `research/batches/` directory for multi-source batch artifacts (documented in
+  `research/README.md`).
+
+### Fixed
+
+- Invalid `content_kinds` value in one extraction report caught by schema validation during
+  the batch (corrected to `quoted_third_party`).
+
 ## [phase-1] - 2026-08-03
 
 ### Added

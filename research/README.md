@@ -17,7 +17,14 @@ research/
     pr-summary.yaml           # pull_request_summary
   conflicts/                  # contradiction_record spanning sources (working)
   rejected/                   # rejected sources/claims WITH recorded reasons
+  batches/<batch-id>/         # artifacts spanning one multi-source ingestion batch
+    proposals/*.yaml          # batch-level knowledge/skill change proposals
+    pr-summary.yaml           # one pull_request_summary for the whole batch PR
 ```
+
+Per-source artifacts (manifest, extraction, assessments, techniques) always stay in
+`sources/<source-id>/` even when the source was ingested as part of a batch; only artifacts
+that genuinely span sources (a combined proposal, the batch PR summary) live under `batches/`.
 
 ## Rules
 
