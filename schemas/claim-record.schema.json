@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/claim-record.schema.json",
+  "title": "ClaimRecord",
+  "description": "One epistemically classified claim (ADR 0003). Supersession over mutation; contradictions preserved.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "claim_record" },
+    "statement": { "type": "string", "minLength": 10 },
+    "claim_type": {
+      "type": "string",
+      "enum": ["fact", "finding", "hypothesis", "heuristic", "pattern", "anecdote", "constraint", "preference", "experiment_result"]
+    },
+    "source_ids": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/artifactId" },
+      "minItems": 1
+    },
+    "domain": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/domain" },
+      "minItems": 1
+    },
+    "metric_targets": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/metricTarget" }
+    },
+    "evidence_basis": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/evidenceBasis" },
+      "minItems": 1
+    },
+    "transferability": {
+      "type": "string",
+      "enum": ["direct", "adapted", "uncertain", "not_applicable"],
+      "description": "Transfer to short-form Spotify house-mix content."
+    },
+    "confidence": { "$ref": "common.schema.json#/$defs/confidence" },
+    "status": {
+      "type": "string",
+      "enum": ["active", "disputed", "superseded", "rejected", "testing"]
+    },
+    "publication_date": { "type": ["string", "null"], "description": "Date of the underlying source material." },
+    "platform_dependent": {
+      "type": "boolean",
+      "description": "true = tied to TikTok mechanics that may change (revalidation candidate); false = enduring human-attention principle."
+    },
+    "limitations": { "type": "array", "items": { "type": "string" } },
+    "contradictions": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/artifactId" },
+      "description": "ContradictionRecord IDs involving this claim."
+    },
+    "supersedes": { "type": ["string", "null"] },
+    "superseded_by": { "type": ["string", "null"] },
+    "proposed_actions": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": [
+    "artifact_type", "statement", "claim_type", "source_ids", "domain",
+    "evidence_basis", "transferability", "confidence", "status", "platform_dependent"
+  ]
+}

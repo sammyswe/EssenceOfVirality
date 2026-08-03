@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/skill-change-proposal.schema.json",
+  "title": "SkillChangeProposal",
+  "description": "A candidate skill creation/change from the skill architect, gated by the skill critic and evaluation before any PR.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "skill_change_proposal" },
+    "skill_name": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "bank": {
+      "type": "string",
+      "enum": ["general-virality", "spotify-mix-content", "research-workflows", "meta", "experimental"]
+    },
+    "change_type": { "type": "string", "enum": ["create", "modify", "deprecate", "promote", "demote"] },
+    "summary": { "type": "string" },
+    "justification": {
+      "type": "string",
+      "description": "Why this belongs in a skill rather than knowledge, a resource, a rubric, a manifest or an experiment."
+    },
+    "claim_ids": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
+    "technique_ids": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
+    "critic_review": {
+      "type": "object",
+      "properties": {
+        "status": { "type": "string", "enum": ["pending", "revisions_required", "passed"] },
+        "rounds": { "type": "integer", "minimum": 0 },
+        "notes": { "type": "string" }
+      },
+      "required": ["status"]
+    },
+    "regression_risk": { "type": "string", "enum": ["low", "medium", "high"] },
+    "fixtures_to_run": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": ["artifact_type", "skill_name", "bank", "change_type", "summary", "justification", "critic_review", "regression_risk"]
+}

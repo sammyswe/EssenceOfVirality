@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/video-production-manifest.schema.json",
+  "title": "VideoProductionManifest",
+  "description": "SCAFFOLD (ADR 0007, schema_maturity: scaffold). Written when a video is produced (phase 3+); the lineage anchor that lets analytics trace outcomes back to decisions.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "$defs": {
+    "skillUse": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" }
+      },
+      "required": ["name", "version"]
+    }
+  },
+  "properties": {
+    "artifact_type": { "const": "video_production_manifest" },
+    "schema_maturity": { "const": "scaffold" },
+    "video_id": { "type": "string" },
+    "source_assets": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "pipeline_version": { "type": "string" },
+    "openmontage_version": { "type": ["string", "null"], "description": "Pinned OpenMontage commit used for execution, if any." },
+    "duration_seconds": { "type": "number", "minimum": 0 },
+    "format": { "type": "string", "description": "e.g. 9:16" },
+    "audience": { "type": "string" },
+    "content_series": { "type": ["string", "null"] },
+    "general_virality_skills": { "type": "array", "items": { "$ref": "#/$defs/skillUse" } },
+    "spotify_mix_skills": { "type": "array", "items": { "$ref": "#/$defs/skillUse" } },
+    "editing_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision": { "type": "string" },
+          "rationale": { "type": "string" },
+          "technique_ids": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } }
+        },
+        "required": ["decision"]
+      }
+    },
+    "hook": {
+      "type": "object",
+      "properties": { "type": { "type": "string" }, "text": { "type": "string" } }
+    },
+    "cta": {
+      "type": "object",
+      "properties": { "type": { "type": "string" }, "text": { "type": "string" } }
+    },
+    "audio": {
+      "type": "object",
+      "properties": {
+        "source": { "type": "string" },
+        "processing": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "visual": {
+      "type": "object",
+      "properties": {
+        "crop": { "type": "string" },
+        "overlays": { "type": "array", "items": { "type": "string" } },
+        "motion": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "export": {
+      "type": "object",
+      "properties": {
+        "codec": { "type": "string" },
+        "resolution": { "type": "string" },
+        "frame_rate": { "type": ["string", "number"] }
+      }
+    },
+    "quality_reviews": { "type": "array", "items": { "type": "string" } },
+    "creator_feedback": { "type": "array", "items": { "type": "string" } },
+    "published_post": {
+      "type": "object",
+      "properties": {
+        "url": { "type": ["string", "null"] },
+        "date": { "type": ["string", "null"] }
+      }
+    },
+    "analytics_records": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/artifactId" },
+      "description": "AnalyticsObservation IDs (snapshots over time)."
+    }
+  },
+  "required": ["artifact_type", "schema_maturity", "video_id", "source_assets", "pipeline_version", "duration_seconds", "format"]
+}

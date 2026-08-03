@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/contradiction-record.schema.json",
+  "title": "ContradictionRecord",
+  "description": "A preserved disagreement between claims. Earlier knowledge is never silently overwritten (ADR 0006).",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "contradiction_record" },
+    "claim_ids": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/artifactId" },
+      "minItems": 2
+    },
+    "description": { "type": "string" },
+    "disagreement_causes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "different_niches", "different_dates", "different_audience_sizes",
+          "different_metrics", "different_definitions", "different_methods",
+          "genuine_conflict", "unknown"
+        ]
+      },
+      "minItems": 1
+    },
+    "resolution": {
+      "type": "string",
+      "enum": ["unresolved", "coexist", "experiment_proposed", "superseded", "creator_review_required"]
+    },
+    "resolution_notes": { "type": "string" },
+    "experiment_id": { "type": ["string", "null"], "description": "ExperimentProposal ID if resolution is experiment_proposed." }
+  },
+  "required": ["artifact_type", "claim_ids", "description", "disagreement_causes", "resolution"]
+}

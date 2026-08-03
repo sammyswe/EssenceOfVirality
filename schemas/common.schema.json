@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/common.schema.json",
+  "title": "Common artifact definitions",
+  "description": "Shared envelope and field definitions for all inter-agent artifacts (ADR 0004). Artifacts are YAML instances validated against these schemas.",
+  "$defs": {
+    "artifactId": {
+      "type": "string",
+      "pattern": "^(src|ext|claim|assess|tech|contra|kcp|scp|eval|obs|exp|prs|vpm|fix)-[a-z0-9][a-z0-9-]*$",
+      "description": "Stable ID: type prefix + date/slug, lowercase kebab-case."
+    },
+    "timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}([T ]\\d{2}:\\d{2}(:\\d{2})?(Z|[+-]\\d{2}:\\d{2})?)?$",
+      "description": "ISO date or datetime."
+    },
+    "agentName": {
+      "type": "string",
+      "description": "Producing agent (kebab-case agent name) or 'creator' or 'workflow:<skill-name>'."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "description": "Never percentages (creator policy)."
+    },
+    "humanReview": {
+      "type": "string",
+      "enum": ["not_required", "pending", "approved", "rejected"]
+    },
+    "evidenceBasis": {
+      "type": "string",
+      "enum": ["official", "academic", "observational", "creator_experiment", "first_party_analytics", "expert_opinion"]
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["tiktok_distribution", "viewer_behaviour", "creative_production", "spotify_mix_content", "platform_constraints"]
+    },
+    "metricTarget": {
+      "type": "string",
+      "enum": [
+        "early_skip_rate", "average_watch_time", "completion_rate", "rewatch_rate",
+        "share_rate", "comment_rate", "like_rate", "save_rate", "follow_conversion",
+        "profile_visit_rate", "search_discovery", "distribution_volume"
+      ]
+    },
+    "envelope": {
+      "type": "object",
+      "properties": {
+        "artifact_type": {
+          "type": "string",
+          "description": "Maps the file to its schema; see schemas/README.md for the registry."
+        },
+        "id": { "$ref": "#/$defs/artifactId" },
+        "created_at": { "$ref": "#/$defs/timestamp" },
+        "produced_by": { "$ref": "#/$defs/agentName" },
+        "inputs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/artifactId" },
+          "description": "IDs of artifacts this one was derived from."
+        },
+        "version": { "type": "integer", "minimum": 1, "default": 1 },
+        "human_review": { "$ref": "#/$defs/humanReview" },
+        "derived_artifacts": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/artifactId" }
+        },
+        "notes": { "type": "string" }
+      },
+      "required": ["artifact_type", "id", "created_at", "produced_by"]
+    }
+  }
+}
