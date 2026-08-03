@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20260803-hyp-searchable-text
+created_at: 2026-08-03
+produced_by: distribution-model-analyst
+version: 1
+inputs: [claim-20231009-onscreen-text-categorisation]
+human_review: pending
+
+statement: >-
+  For Spotify-mix videos, one short, honest, searchable on-screen text cue naming
+  genre/mood/context (e.g. "melodic house mix", "sunset drive mix") may improve
+  interest matching and search discovery without harming Spotify-interface
+  legibility, compared with no text or non-topical text.
+claim_type: hypothesis
+source_ids: [src-20231009-herman-for-who-page]
+domain: [spotify_mix_content, creative_production, tiktok_distribution]
+metric_targets: [search_discovery, distribution_volume, early_skip_rate]
+evidence_basis: [academic, observational]
+transferability: adapted
+confidence: low
+status: active
+publication_date: null
+platform_dependent: true
+limitations:
+  - "Derived from lore-plus-anecdote evidence (claim-20231009-onscreen-text-categorisation); untested in this niche."
+  - "Interacts with the hook cue from analyse-first-frame: one cue must serve both promise and searchability, or the frame gains competing text (fixture fix-04 risk)."
+proposed_actions:
+  - "Test (phase 5): compare search-bar indexing and views for topical vs non-topical text on comparable posts."
+  - "Candidate skill scp-20260803-searchable-onscreen-text operationalises the choice of wording."

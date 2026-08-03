@@ -1,0 +1,24 @@
+artifact_type: contradiction_record
+id: contra-20260803-trending-hashtag-effect
+created_at: 2026-08-03
+produced_by: contradiction-synthesis
+version: 1
+human_review: pending
+
+claim_ids: [claim-20210621-hashtag-piling-ineffective, claim-20240719-zhou-engagement-features]
+description: >-
+  Klug 2021 (300,617 trending videos, transparent method) found no relationship
+  between trending/algorithm-targeted hashtag use and play counts; Zhou 2024 reports
+  trending hashtags significantly increase recommendation likelihood (beta=0.32) on
+  an unverifiable dataset.
+disagreement_causes: [different_methods, different_dates, different_metrics]
+resolution: coexist
+resolution_notes: >-
+  Klug's null result is retained as the working position (transparent method,
+  larger documented sample); Zhou's finding is marked disputed and low-confidence
+  given the source-quality flags recorded in its manifest. Differences in outcome
+  variable (play counts among trending videos vs 'recommendation likelihood') and a
+  three-year gap mean a real change over time cannot be fully excluded; revisit if a
+  credible post-2023 source addresses hashtags. Practical consequence: do not rely
+  on hashtag piling; prefer content-relevant metadata (metadata-and-discovery.md).
+experiment_id: null

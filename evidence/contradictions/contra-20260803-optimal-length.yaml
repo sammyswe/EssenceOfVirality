@@ -1,0 +1,22 @@
+artifact_type: contradiction_record
+id: contra-20260803-optimal-length
+created_at: 2026-08-03
+produced_by: contradiction-synthesis
+version: 1
+human_review: pending
+
+claim_ids: [claim-20231009-length-42s-peak, claim-20240719-zhou-engagement-features]
+description: >-
+  Romero 2023 (industry study, as cited by Herman 2023) reports views peaking at
+  ~42s video length, i.e. longer-than-minimal videos perform better; Zhou 2024
+  reports shorter video length increases recommendation likelihood (beta=-0.25).
+  Directly opposed length recommendations.
+disagreement_causes: [different_methods, different_metrics, unknown]
+resolution: unresolved
+resolution_notes: >-
+  Both sides are weak (secondary industry citation vs unverifiable regression) and
+  measure different outcomes (views vs recommendation likelihood). Both claims are
+  marked disputed; no working position is adopted. Video length within the 10-40s
+  mix-video band is the natural first phase-5 experiment, and length weighting stays
+  in unknowns.md. Skills must not assert an optimal length.
+experiment_id: null

@@ -1,0 +1,28 @@
+artifact_type: claim_record
+id: claim-20231009-fyp-dominant-surface
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20231009-herman-for-who-page]
+human_review: pending
+
+statement: >-
+  Over 75% of TikTok video views come from the For You page (industry study 'Romero
+  2023' as cited by Herman 2023); reaching an audience therefore requires algorithmic
+  selection onto FYPs rather than follower distribution.
+claim_type: finding
+source_ids: [src-20231009-herman-for-who-page]
+domain: [tiktok_distribution]
+metric_targets: [distribution_volume]
+evidence_basis: [academic, observational]
+transferability: direct
+confidence: low
+status: active
+publication_date: "2023-10-09"
+platform_dependent: true
+limitations:
+  - "Secondary citation: the underlying industry study's method is not described in the paper."
+  - "Share may vary by account age/size and has likely shifted with search growth."
+contradictions: []
+proposed_actions:
+  - "Cite in current-working-model.md as the (weakly evidenced) quantitative anchor for FYP being the primary battleground."

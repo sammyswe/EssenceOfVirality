@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20231009-length-42s-peak
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20231009-herman-for-who-page]
+human_review: pending
+
+statement: >-
+  Longer TikTok videos often receive more views than very short ones, with views
+  peaking at around 42 seconds of length (industry study 'Romero 2023' as cited by
+  Herman 2023) — the opposite of the widespread shorter-is-better lore.
+claim_type: finding
+source_ids: [src-20231009-herman-for-who-page]
+domain: [tiktok_distribution, creative_production]
+metric_targets: [distribution_volume, completion_rate]
+evidence_basis: [academic, observational]
+transferability: adapted
+confidence: low
+status: disputed
+publication_date: "2023-10-09"
+platform_dependent: true
+limitations:
+  - "Secondary citation of an industry study with undescribed method; population-level correlation, not causal."
+  - "Longer videos mechanically accumulate more watch seconds; a 42s 'peak' may reflect content mix, not a length preference."
+  - "Conflicts with claim-20240719-zhou-engagement-features (shorter length said to raise recommendation likelihood)."
+contradictions: [contra-20260803-optimal-length]
+proposed_actions:
+  - "Keep video-length weighting in unknowns.md; length is the natural first phase-5 experiment for 10-40s mix videos."
