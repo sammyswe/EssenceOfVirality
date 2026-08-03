@@ -1,7 +1,7 @@
 # Future Video Pipeline
 
-Revision date: 2026-08-03. **Design intent for phases 3–5 — nothing here is implemented, and
-phase-one work must not implement it.** Kept so current decisions stay compatible with the
+Revision date: 2026-08-03. **Design intent for phases 4–6 — nothing here is implemented, and
+phases 2–3 must complete first (ADR 0008).** Kept so current decisions stay compatible with the
 destination.
 
 ## Target experience (the black box)
@@ -21,7 +21,7 @@ flowchart TD
     QA --> OUT["Post-ready video + cover +\ncaption/hashtag/posting recommendations"]
     OUT --> VPM["video_production_manifest\n(every decision recorded)"]
     VPM --> AN["Manual post -> analytics import\n(analytics_observation snapshots)"]
-    AN --> LEARN["Phase-5 learning:\ncohort comparisons -> hypotheses ->\nexperiments -> skill-change proposals"]
+    AN --> LEARN["Phase 6 learning:\ncohort comparisons -> hypotheses ->\nexperiments -> skill-change proposals"]
     LEARN -->|via research PRs| PLAN
 ```
 
@@ -35,7 +35,7 @@ flowchart TD
 - Artifact storage: raw captures and renders live outside git (local disk now; object storage if
   needed later), referenced by path from manifests.
 
-## Openly unresolved (to be decided in phase 3, not before)
+## Openly unresolved (to be decided in phase 4, not before)
 
 Materialise-script mechanics; checkpoint policy for a low-friction personal pipeline
 (`guided` vs `auto_noncreative`); whether clip-factory's batch model fits a one-clip workflow

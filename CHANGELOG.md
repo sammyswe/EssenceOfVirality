@@ -8,6 +8,21 @@ than semver releases while the project is pre-production.
 
 ### Added
 
+- **ADR 0008**: creator-directed phase gates — phase 2 (~80 general virality sources → knowledge,
+  general-virality skills, rules); phase 3 (creator grilling → spotify-mix-content skills);
+  pipeline deferred to phase 4.
+- `docs/roadmap/phase-two-virality-campaign.md` — source campaign plan, quotas, exit checklist.
+- `docs/roadmap/phase-three-creator-calibration.md` — grill session plan and niche deliverables.
+
+### Changed
+
+- `docs/roadmap/README.md` renumbered to seven phases; OpenMontage integration is phase 4.
+- `.cursor/rules/00-mission.mdc`, `README.md`, `CONTEXT.md`, `integrations/openmontage/README.md`,
+  and `docs/architecture/future-video-pipeline.md` updated for current phase and gates.
+- `knowledge/index.md`: spotify-mix-niche docs marked planned for phase 3 (not phase 2).
+
+### Added
+
 - Research batch 2026-08-03 (5 creator-supplied sources): Klug et al. 2021 (WebSci),
   Lynch 2025 (UConn thesis), UW News 2024 (data-donation studies), Herman 2023 (IASDR),
   Zhou 2024 (IJCSIT, assessed low-credibility) — 17 claims, 17 assessments, 2 niche

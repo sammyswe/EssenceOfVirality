@@ -1,7 +1,7 @@
 # EssenceOfVirality
 
 An intelligent, self-improving TikTok video-production pipeline for Spotify house-music mixes —
-currently in **Phase 1: intelligence infrastructure**.
+currently in **Phase 2: general virality corpus** (see ADR 0008).
 
 ## What this is
 
@@ -42,9 +42,9 @@ flowchart LR
 ```
 
 - **OpenMontage** ([AGPL-3.0](docs/adr/0001-openmontage-integration-strategy.md)) is the candidate
-  execution engine for the *future* production pipeline (phase 3+). It stays outside this
+  execution engine for the *future* production pipeline (**phase 4+**, per ADR 0008). It stays outside this
   repository as a pinned external clone; our extension sources will live in
-  `integrations/openmontage/`. Nothing runs in phase one.
+  `integrations/openmontage/`. No pipeline work until phases 2 and 3 complete.
 - **Skills**: project-authored skills live in `.cursor/skills/<bank>/` (general-virality,
   spotify-mix-content, research-workflows, meta, experimental); third-party operational skills are
   installed to `.agents/skills/` and pinned via `skills-lock.json`.
@@ -86,7 +86,8 @@ evaluations, and prepares a PR-ready report. It stops before merge — always.
 
 ## Current limitations
 
-- Knowledge base contains only the vertical-slice seed content; knowledge acquisition is phase 2.
+- Knowledge base contains seed content plus the first research batch; the **~80-source general
+  virality campaign** is phase 2 (`docs/roadmap/phase-two-virality-campaign.md`).
 - Source connectors: web pages, plain text/Markdown, pasted transcripts, PDFs and CSVs; other
   types are registered but routed to manual extraction.
 - Behavioural fixture evaluation is agent-run, not CI-run; CI is deterministic only.

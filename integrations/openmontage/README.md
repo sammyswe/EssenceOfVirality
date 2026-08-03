@@ -1,10 +1,11 @@
 # integrations/openmontage/
 
-The adapter + extension package for OpenMontage (ADR 0001). **Phase-one footprint: this README
+The adapter + extension package for OpenMontage (ADR 0001). **Current footprint: this README
 and the pinned ref only.** No OpenMontage code is vendored here — it is AGPL-3.0 and stays at a
-repository/process boundary.
+repository/process boundary. **Implementation is phase 4** (ADR 0008): forbidden until the general
+virality corpus (phase 2) and creator calibration (phase 3) complete.
 
-## What will live here (phase 3)
+## What will live here (phase 4)
 
 | Item | Purpose |
 |---|---|
@@ -22,6 +23,6 @@ repository/process boundary.
   repository (AGPL boundary).
 - Upgrading the pin is a deliberate PR driven by `/review-openmontage-integration`, which diffs
   the upstream schemas and meta-skills we depend on (ADR 0001 upgrade strategy).
-- Who writes here: the skill architect and evaluation agent (via PRs), phase 3 onward.
+- Who writes here: the skill architect and evaluation agent (via PRs), **phase 4 onward**.
 - Extension points, capability mapping and fork triggers:
   `docs/architecture/openmontage-integration.md`.

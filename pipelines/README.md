@@ -15,8 +15,8 @@ Manifest contract: ordered `stages`, each with `agent`, `reads`, `produces` (art
 whose `produces` are missing, must not let one agent perform every stage, and must stop at
 `human` gates.
 
-Deferred (documented in `docs/roadmap/`): `analytics-feedback` (phase 5),
-`video-production` (phase 3+, executes via the pinned OpenMontage clone).
+Deferred (documented in `docs/roadmap/`): `analytics-feedback` (**phase 6**),
+`video-production` (**phase 4+**, executes via the pinned OpenMontage clone).
 
 Changes here are infrastructure changes: PR-gated, and must keep
 `docs/workflows/` in sync.
