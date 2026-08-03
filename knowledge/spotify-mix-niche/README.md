@@ -3,7 +3,7 @@
 Niche-specific knowledge for Spotify house-mix content — kept separate from general virality
 knowledge so generic tactics never silently overwrite niche judgement.
 
-Planned canonical documents (created in phase 2 — not pre-created empty): `audience.md`,
+Planned canonical documents (created in **phase 3** — not pre-created empty): `audience.md`,
 `content-formats.md`, `visual-requirements.md`, `audio-requirements.md`, `conversion-goals.md`,
 `hypotheses.md`.
 

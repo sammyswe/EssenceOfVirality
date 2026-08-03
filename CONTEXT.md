@@ -29,24 +29,30 @@ the listening experience or Spotify-interface legibility.
 Anonymous. No face-led strategy unless explicitly requested later. Identity signals come from
 craft (transition quality, series consistency), not persona.
 
-## Current input format (phase 3+ consumer)
+## Current input format (phase 4+ consumer)
 
 10–40 s raw video, usually a screen recording of Spotify playing a manually refined house mix,
 possibly including Spotify UI visuals and captured audio; optional creator instructions/feedback;
 optional metadata (track names, mix theme, desired CTA).
 
-## Current output vision (phase 4+)
+## Current output vision (phase 5+)
 
 Polished portrait TikTok video (1080×1920, correct export settings), high-quality audio and
 visuals, hooks/overlays/captions/motion/pacing/CTAs selected using accumulated evidence, ready for
 manual posting, with publishing recommendations where appropriate.
 
-## Phase-one restrictions
+## Phase boundaries (ADR 0008)
 
-This phase builds intelligence infrastructure only. Not in scope: video editing, posting, account
-control, TikTok scraping, analytics warehouse, ML models, final UI, auto-merge, treating external
-virality scores as ground truth. See `docs/roadmap/` and the anti-goals section of
-`.cursor/rules/00-mission.mdc`.
+| Phase | Focus | Pipeline |
+|---|---|---|
+| 1 | Intelligence infrastructure | Forbidden ✓ complete |
+| 2 | ~80 general virality sources → knowledge, general-virality skills, rules | Forbidden |
+| 3 | Creator grilling → spotify-mix-content skills | Forbidden |
+| 4+ | OpenMontage pipeline, automation, analytics | Phase 4 onward |
+
+Phase-one restrictions on scraping, auto-merge, and virality-score worship still apply. Full detail:
+`docs/roadmap/README.md`, `docs/roadmap/phase-two-virality-campaign.md`,
+`docs/roadmap/phase-three-creator-calibration.md`.
 
 ## Key terminology (epistemic taxonomy)
 

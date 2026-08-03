@@ -32,7 +32,7 @@ one owner; other documents link rather than restate.
 | Topic | Document | Status | Related skills |
 |---|---|---|---|
 | Value proposition | `spotify-mix-niche/value-proposition.md` | seeded | `preserve-spotify-mix-audio`, `evaluate-transition-payoff` |
-| Audience, content formats, visual/audio requirements, conversion goals, niche hypotheses | planned (phase 2) | not created — see `spotify-mix-niche/README.md` | — |
+| Audience, content formats, visual/audio requirements, conversion goals, niche hypotheses | planned (phase 3) | not created — see `spotify-mix-niche/README.md` | — |
 
 ## Platform constraints
 

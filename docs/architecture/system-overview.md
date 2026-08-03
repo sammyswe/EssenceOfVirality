@@ -70,9 +70,9 @@ Key properties:
 
 ## What is deliberately absent (future phases)
 
-Production pipeline (phase 3+, via a pinned external OpenMontage clone — ADR 0001,
-`future-video-pipeline.md`), analytics learning loop (phase 5 — ADR 0007), knowledge volume
-(phase 2). Roadmap: `../roadmap/README.md`.
+Production pipeline (**phase 4+**, via a pinned external OpenMontage clone — ADR 0001/0008,
+`future-video-pipeline.md`), analytics learning loop (**phase 6** — ADR 0007), general virality
+corpus (**phase 2**, in progress). Roadmap: `../roadmap/README.md`.
 
 ## Document map
 

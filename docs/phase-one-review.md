@@ -4,6 +4,10 @@ Date: 2026-08-03. Working-sequence step 10: the honest closing assessment of the
 build, distinguishing **proven** (exercised end-to-end) from **built but not yet exercised**
 (structure exists, first real use pending).
 
+> **Phase gates revised 2026-08-03:** creator directed a stricter sequence before pipeline work —
+> phase 2 (~80 general virality sources), phase 3 (creator grilling → niche skills), phase 4
+> (OpenMontage). See **ADR 0008** and `docs/roadmap/README.md`.
+
 ## Completion criteria
 
 | Criterion | State | Evidence |

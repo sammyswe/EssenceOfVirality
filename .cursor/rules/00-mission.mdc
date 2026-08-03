@@ -5,8 +5,13 @@ alwaysApply: true
 # Mission and hard boundaries
 
 Mission: evidence-informed TikTok video production for Spotify house-music mixes. Full context:
-`CONTEXT.md`. Current phase: **1 — intelligence infrastructure**. No video editing, posting,
-account control, TikTok scraping, or production-pipeline implementation in this phase.
+`CONTEXT.md`. Roadmap gates: **ADR 0008**, `docs/roadmap/README.md`.
+
+**Current phase: 2 — general virality corpus (~80 sources).** Ingest external TikTok-virality
+research; grow `general-virality` skills, knowledge, and scoped rules. **Forbidden until phase 4:**
+video editing, OpenMontage adapter implementation, edit-plan execution, posting, account control,
+TikTok scraping. **Forbidden until phase 3:** `spotify-mix-content` skill authoring from creator
+grilling (phase-2 work stays general-only).
 
 Non-negotiable rules:
 
