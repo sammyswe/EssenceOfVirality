@@ -1,0 +1,28 @@
+artifact_type: claim_record
+id: claim-20260803-hyp-completion-lever
+created_at: 2026-08-03
+produced_by: distribution-model-analyst
+version: 1
+inputs: [claim-20200618-completion-strong-signal]
+human_review: pending
+
+statement: >-
+  For 10-40 second Spotify-mix videos, increasing the proportion of viewers who watch
+  to the end (by reducing early skips and placing the transition payoff where
+  anticipation peaks) may increase subsequent distribution. Testable: compare views
+  and retention curves across payoff placements once first-party analytics exist.
+claim_type: hypothesis
+source_ids: [src-20200618-tiktok-newsroom-foryou]
+domain: [tiktok_distribution, viewer_behaviour, spotify_mix_content]
+metric_targets: [completion_rate, average_watch_time, distribution_volume]
+evidence_basis: [official]
+transferability: direct
+confidence: medium
+status: active
+publication_date: "2026-08-03"
+platform_dependent: true
+limitations:
+  - "Derived from a 2020 disclosure about 'longer video' completion; short-video weighting is unknown."
+  - "Causal, quantitative effect on distribution volume is unmeasured for this niche."
+proposed_actions:
+  - "Phase-5 experiment: payoff-placement comparison (sequential_comparison)"

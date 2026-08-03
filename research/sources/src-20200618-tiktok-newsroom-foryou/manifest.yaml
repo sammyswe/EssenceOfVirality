@@ -1,0 +1,27 @@
+artifact_type: source_manifest
+id: src-20200618-tiktok-newsroom-foryou
+created_at: 2026-08-03
+produced_by: research-intake-coordinator
+version: 1
+human_review: pending
+
+source_type: webpage
+url: https://newsroom.tiktok.com/en-us/how-tiktok-recommends-videos-for-you
+local_path: null
+title: "How TikTok recommends videos #ForYou"
+author: null
+publisher: TikTok Newsroom
+published_date: "2020-06-18"
+retrieved_at: 2026-08-03
+duplicate_check:
+  checked: true
+  duplicate_of: null
+licensing_notes: >-
+  Public corporate communication on TikTok's official newsroom. Findings and short
+  attributed quotes stored; full text not copied into the repository.
+creator_priority_note: >-
+  Selected as the phase-one vertical-slice source: the canonical official disclosure
+  about For You ranking, ideal seed for knowledge/algorithm-model/.
+notes: >-
+  Marketing-reviewed corporate communication: authoritative about what TikTok chose
+  to disclose, silent about weights and mechanics beyond the examples given.

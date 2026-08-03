@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20200618-eligibility-gates
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20200618-tiktok-newsroom-foryou]
+human_review: pending
+
+statement: >-
+  TikTok stated (2020) that some content may be ineligible for For You
+  recommendation regardless of engagement: reviewed content depicting e.g. graphic
+  medical procedures or regulated-goods consumption, videos that have just been
+  uploaded or are under review, and spam content such as videos seeking to
+  artificially increase traffic.
+claim_type: constraint
+source_ids: [src-20200618-tiktok-newsroom-foryou]
+domain: [platform_constraints, tiktok_distribution]
+metric_targets: [distribution_volume]
+evidence_basis: [official]
+transferability: direct
+confidence: high
+status: active
+publication_date: "2020-06-18"
+platform_dependent: true
+limitations:
+  - "Examples only; the full eligibility policy is not enumerated."
+  - "'May be ineligible' hedges every case."
+proposed_actions:
+  - "Seed knowledge/platform-constraints/eligibility.md; rubric dimension E.16 as veto gate"

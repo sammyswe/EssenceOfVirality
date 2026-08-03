@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20200618-completion-strong-signal
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20200618-tiktok-newsroom-foryou]
+human_review: pending
+
+statement: >-
+  TikTok stated (2020) that finishing watching a longer video from beginning to end
+  is a strong indicator of interest that receives greater weight in ranking than weak
+  indicators such as the viewer and creator being in the same country.
+claim_type: fact
+source_ids: [src-20200618-tiktok-newsroom-foryou]
+domain: [tiktok_distribution, viewer_behaviour]
+metric_targets: [completion_rate, average_watch_time, distribution_volume]
+evidence_basis: [official]
+transferability: adapted
+confidence: high
+status: active
+publication_date: "2020-06-18"
+platform_dependent: true
+limitations:
+  - "'Longer video' is undefined; how completion of a 10-40s video is weighted is not stated."
+  - "One illustrative strong-vs-weak example, not a weight table."
+contradictions: []
+proposed_actions:
+  - "Derive testable completion hypothesis for short mix videos (claim-20260803-hyp-completion-lever)"
+  - "Ground the completion canonical doc (knowledge/viewer-behaviour/completion.md)"

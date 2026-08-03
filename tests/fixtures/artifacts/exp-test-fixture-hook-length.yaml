@@ -1,0 +1,26 @@
+# SYNTHETIC test fixture — not evidence. Proves experiment representation.
+artifact_type: experiment_proposal
+id: exp-test-fixture-hook-length
+created_at: 2026-08-03
+produced_by: creator
+version: 1
+human_review: not_required
+notes: "Synthetic experiment for schema/workflow proof."
+
+question: "(Synthetic) Does hook specificity or hook length drive early retention?"
+hypothesis_claim_ids: [claim-test-fixture-short-hooks, claim-test-fixture-specific-hooks]
+design: sequential_comparison
+variants:
+  - variant_id: short-generic
+    description: "4-word generic hook on comparable mix videos"
+  - variant_id: long-specific
+    description: "9-word specific hook naming the payoff on comparable mix videos"
+metrics: [early_skip_rate, average_watch_time]
+success_criteria: >-
+  Pre-registered: variant whose retention-at-3s is higher across the cohort wins;
+  inconclusive if within noise.
+sample_size_note: >-
+  At least ~10 posts per variant with comparable content before any reading; single
+  posts conclude nothing.
+risks: ["Content differences confound hook differences (mitigate with same-mix pairs)."]
+status: proposed

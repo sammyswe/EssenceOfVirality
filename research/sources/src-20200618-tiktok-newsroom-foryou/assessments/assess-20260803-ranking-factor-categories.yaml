@@ -1,0 +1,41 @@
+artifact_type: evidence_assessment
+id: assess-20260803-ranking-factor-categories
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20200618-ranking-factor-categories]
+
+claim_id: claim-20200618-ranking-factor-categories
+dimensions:
+  relevance:
+    rating: strong
+    note: "Defines the factor categories every distribution decision reasons about."
+  specificity:
+    rating: moderate
+    note: "Named examples per category, but explicitly non-exhaustive and unweighted."
+  transparency:
+    rating: moderate
+    note: "First-party statement; no method or data shown, but none needed for a disclosure-fact."
+  method_quality:
+    rating: not_applicable
+    note: "Corporate disclosure, not a study."
+  replicability:
+    rating: weak
+    note: "Unverifiable externally; only TikTok can confirm."
+  incentive_bias:
+    rating: moderate
+    note: "Published amid 2020 regulatory scrutiny; incentive to appear fair and safe, little incentive to fabricate factor categories outright."
+  niche_transferability:
+    rating: strong
+    note: "Platform-level; applies to music screen recordings as to anything."
+  agreement_other_sources:
+    rating: unknown
+    note: "First source in the store; future ingestions will test agreement."
+correlation_causation_note: "No causal claim made or needed; the claim is about what was disclosed."
+recommended_confidence: high
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  Official primary source describing its own system's factor categories: fact about
+  the disclosure, high confidence, permanently caveated as 2020-dated and
+  non-exhaustive.

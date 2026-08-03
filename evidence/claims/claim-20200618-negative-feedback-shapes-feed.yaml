@@ -1,0 +1,26 @@
+artifact_type: claim_record
+id: claim-20200618-negative-feedback-shapes-feed
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20200618-tiktok-newsroom-foryou]
+human_review: pending
+
+statement: >-
+  TikTok stated (2020) that explicit negative feedback — long-press "Not Interested",
+  hiding a creator's videos, hiding videos with a certain sound, and reports —
+  contributes to future For You recommendations for that viewer.
+claim_type: fact
+source_ids: [src-20200618-tiktok-newsroom-foryou]
+domain: [tiktok_distribution, viewer_behaviour]
+metric_targets: [distribution_volume]
+evidence_basis: [official]
+transferability: adapted
+confidence: high
+status: active
+publication_date: "2020-06-18"
+platform_dependent: true
+limitations:
+  - "Weight of negative signals undisclosed; whether early skips count as implicit negative feedback is NOT stated in this source."
+proposed_actions:
+  - "Guards against annoyance tactics: content that provokes hide/not-interested actions plausibly harms distribution to similar viewers"

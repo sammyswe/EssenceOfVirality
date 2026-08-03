@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/experiment-proposal.schema.json",
+  "title": "ExperimentProposal",
+  "description": "A deliberate real-world test of one or more hypotheses. Results feed back as experiment_result claims.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "experiment_proposal" },
+    "question": { "type": "string" },
+    "hypothesis_claim_ids": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/artifactId" },
+      "minItems": 1
+    },
+    "design": {
+      "type": "string",
+      "enum": ["ab_test", "multivariate", "sequential_comparison", "observational_cohort"]
+    },
+    "variants": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "variant_id": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["variant_id", "description"]
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/metricTarget" },
+      "minItems": 1
+    },
+    "success_criteria": { "type": "string" },
+    "sample_size_note": {
+      "type": "string",
+      "description": "Honest statement of how many posts/views are needed before any conclusion; guards against causal claims from small samples."
+    },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "status": { "type": "string", "enum": ["proposed", "approved", "running", "complete", "abandoned"] },
+    "result_claim_ids": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } }
+  },
+  "required": ["artifact_type", "question", "hypothesis_claim_ids", "design", "variants", "metrics", "success_criteria", "sample_size_note", "status"]
+}

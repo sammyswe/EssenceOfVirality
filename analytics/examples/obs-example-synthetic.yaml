@@ -1,0 +1,60 @@
+# SYNTHETIC example demonstrating the analytics-observation scaffold schema (ADR 0007).
+# No real video or account data. Field names are provisional until real exports exist.
+artifact_type: analytics_observation
+schema_maturity: scaffold
+id: obs-example-synthetic
+created_at: 2026-08-03
+produced_by: creator
+version: 1
+human_review: not_required
+notes: >-
+  Synthetic record. Demonstrates: counts vs rates separation, retention curve,
+  account context, and linkage to a production manifest (vpm-example-synthetic).
+
+video_id: vpm-example-synthetic
+captured_at: 2026-08-03
+capture_source: manual_reading
+
+absolute:
+  views: 12400
+  likes: 980
+  comments: 41
+  shares: 130
+  saves: 210
+  followers_gained: 55
+  profile_visits: 310
+
+rates:
+  average_watch_time_seconds: 11.2
+  completion_rate: 0.46
+  rewatch_rate: 0.18
+  like_rate: 0.079
+  comment_rate: 0.0033
+  share_rate: 0.0105
+  follow_conversion: 0.0044
+
+retention_curve:
+  - { second: 0, fraction_retained: 1.0 }
+  - { second: 1, fraction_retained: 0.83 }
+  - { second: 3, fraction_retained: 0.71 }
+  - { second: 8, fraction_retained: 0.62 }
+  - { second: 14, fraction_retained: 0.52 }
+
+traffic_sources:
+  for_you: 0.87
+  following: 0.04
+  profile: 0.05
+  search: 0.03
+  sound: 0.01
+
+posting:
+  posted_at: 2026-08-01T18:30Z
+  duration_seconds: 14
+  caption: "waiting for the drop... #housemusic"
+  hashtags: ["housemusic", "spotify", "mix"]
+  sound: original_audio
+  cover_ref: null
+
+account_context:
+  follower_count_at_post: 1240
+  account_total_videos: 18

@@ -1,0 +1,21 @@
+# SYNTHETIC test fixture — not evidence. See README.md in this directory.
+artifact_type: source_manifest
+id: src-test-fixture-synthetic
+created_at: 2026-08-03
+produced_by: creator
+version: 1
+human_review: not_required
+notes: "Synthetic source anchoring the test-fixture claims."
+
+source_type: other
+url: null
+local_path: null
+title: "(Synthetic) Test fixture source"
+author: null
+publisher: null
+published_date: null
+retrieved_at: 2026-08-03
+duplicate_check:
+  checked: true
+  duplicate_of: null
+licensing_notes: "Synthetic; no content."

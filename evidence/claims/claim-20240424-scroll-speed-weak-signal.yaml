@@ -1,0 +1,28 @@
+artifact_type: claim_record
+id: claim-20240424-scroll-speed-weak-signal
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20240424-uw-tiktok-black-box]
+human_review: pending
+
+statement: >-
+  In the 2024 UW data-donation audit, scrolling past a video faster did not appear to
+  substantially affect what the algorithm subsequently recommended ("scrolling past a
+  video faster does not seem to impact as much what the algorithm is doing").
+claim_type: finding
+source_ids: [src-20240424-uw-tiktok-black-box]
+domain: [tiktok_distribution, viewer_behaviour]
+metric_targets: [early_skip_rate]
+evidence_basis: [academic]
+transferability: direct
+confidence: medium
+status: active
+publication_date: "2024-04-24"
+platform_dependent: true
+limitations:
+  - "Interview-level precision; effect size and test not given in the press piece."
+  - "Measures personalisation of the skipping viewer's own feed; does not directly measure whether skips harm the skipped video's wider distribution."
+contradictions: [contra-20260803-skip-speed-signal]
+proposed_actions:
+  - "Nuance the early-skip rationale in completion.md and hooks.md: early-skip reduction is about watch time and completion, not about avoiding a proven skip penalty."

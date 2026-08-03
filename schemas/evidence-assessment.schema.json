@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/evidence-assessment.schema.json",
+  "title": "EvidenceAssessment",
+  "description": "The evidence analyst's structured judgement of one claim, along the source-evaluation dimensions of the specification.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "$defs": {
+    "dimension": {
+      "type": "object",
+      "properties": {
+        "rating": { "type": "string", "enum": ["weak", "moderate", "strong", "unknown", "not_applicable"] },
+        "note": { "type": "string" }
+      },
+      "required": ["rating"]
+    }
+  },
+  "properties": {
+    "artifact_type": { "const": "evidence_assessment" },
+    "claim_id": { "$ref": "common.schema.json#/$defs/artifactId" },
+    "dimensions": {
+      "type": "object",
+      "properties": {
+        "relevance": { "$ref": "#/$defs/dimension" },
+        "specificity": { "$ref": "#/$defs/dimension" },
+        "transparency": { "$ref": "#/$defs/dimension" },
+        "method_quality": { "$ref": "#/$defs/dimension" },
+        "sample_size": { "$ref": "#/$defs/dimension" },
+        "representativeness": { "$ref": "#/$defs/dimension" },
+        "metric_quality": { "$ref": "#/$defs/dimension" },
+        "replicability": { "$ref": "#/$defs/dimension" },
+        "incentive_bias": { "$ref": "#/$defs/dimension" },
+        "niche_transferability": { "$ref": "#/$defs/dimension" },
+        "agreement_first_party": { "$ref": "#/$defs/dimension" },
+        "agreement_other_sources": { "$ref": "#/$defs/dimension" }
+      },
+      "required": ["relevance", "specificity", "transparency", "incentive_bias", "niche_transferability"]
+    },
+    "correlation_causation_note": { "type": "string" },
+    "recommended_confidence": { "$ref": "common.schema.json#/$defs/confidence" },
+    "recommended_status": {
+      "type": "string",
+      "enum": ["active", "disputed", "superseded", "rejected", "testing"]
+    },
+    "unsupported_certainty_flags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Places where the source asserts more than its evidence supports."
+    },
+    "reasoning": { "type": "string" }
+  },
+  "required": ["artifact_type", "claim_id", "dimensions", "recommended_confidence", "recommended_status", "reasoning"]
+}

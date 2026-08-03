@@ -1,0 +1,107 @@
+# Workflow manifest for /ingest-source (read by the orchestrator agent).
+# Contract: pipelines/README.md. Stages run in order; a stage may be skipped only
+# when its `skip_when` condition is met and the skip is recorded in the PR summary.
+
+name: research-ingestion
+version: 1
+entry_skill: ingest-source
+
+stages:
+  - id: register
+    agent: research-intake-coordinator
+    reads: [creator input]
+    produces: [source_manifest]
+    gate: orchestrator_check
+    notes: >-
+      Stable source ID, source-type detection, duplicate check, metadata capture,
+      licensing notes. Duplicate found => stop and report; do not re-ingest.
+
+  - id: extract
+    agent: source-extraction
+    reads: [source_manifest]
+    produces: [extraction_report]
+    gate: orchestrator_check
+    notes: >-
+      Sectioned structured notes; content kinds distinguished (author statement,
+      quoted third party, data, method, result, recommendation, advertising
+      claim, speculation); limitations recorded, never hidden.
+
+  - id: claim-identification
+    agent: evidence-analyst
+    reads: [extraction_report, knowledge/index.md]
+    produces: [claim_record]
+    gate: none
+    notes: TikTok-relevant and Spotify-mix-relevant claims, epistemically typed.
+
+  - id: evidence-assessment
+    agent: evidence-analyst
+    reads: [claim_record]
+    produces: [evidence_assessment]
+    gate: none
+
+  - id: distribution-mapping
+    agent: distribution-model-analyst
+    reads: [claim_record, evidence_assessment, knowledge/algorithm-model/]
+    produces: [claim_record]
+    gate: none
+    skip_when: no claims touch tiktok_distribution or viewer_behaviour
+    notes: >-
+      Maps findings onto the working model; rewrites unobservable-mechanism
+      claims as testable behavioural hypotheses.
+
+  - id: technique-extraction
+    agent: virality-technique-analyst
+    reads: [claim_record, evidence_assessment]
+    produces: [technique_record]
+    gate: none
+    skip_when: no claims touch creative_production
+
+  - id: niche-adaptation
+    agent: spotify-mix-domain-analyst
+    reads: [technique_record, knowledge/spotify-mix-niche/]
+    produces: [technique_record]
+    gate: none
+    skip_when: no technique records were produced
+    notes: Judges transfer, protects the music experience, proposes adaptations.
+
+  - id: contradiction-check
+    agent: contradiction-synthesis
+    reads: [claim_record, evidence/claims/, evidence/hypotheses/, evidence/contradictions/]
+    produces: [contradiction_record]
+    gate: orchestrator_check
+    notes: >-
+      Produces records only where disagreement exists; an explicit "none found"
+      statement goes into the PR summary. Never overwrites earlier knowledge.
+
+  - id: proposals
+    agent: skill-architect
+    reads: [claim_record, evidence_assessment, technique_record, contradiction_record, knowledge/, .cursor/skills/]
+    produces: [knowledge_change_proposal, skill_change_proposal]
+    gate: none
+    notes: >-
+      Skill changes only when operationally justified; knowledge/resource/rubric/
+      manifest/experiment dispositions preferred where they fit better.
+
+  - id: critic
+    agent: skill-critic
+    reads: [skill_change_proposal]
+    produces: [skill_change_proposal]
+    gate: orchestrator_check
+    skip_when: no skill_change_proposals exist
+    notes: Max two revision rounds, then escalate to the creator via the PR.
+
+  - id: evaluation
+    agent: evaluation-agent
+    reads: [knowledge_change_proposal, skill_change_proposal]
+    produces: [evaluation_report]
+    gate: orchestrator_check
+    notes: Deterministic checks + relevant fixtures; regression where a skill changed.
+
+  - id: pr-preparation
+    agent: pr-curator
+    reads: [all stage outputs]
+    produces: [pull_request_summary]
+    gate: human
+    notes: >-
+      Branch, commits, PR body from the template, disagreements preserved.
+      STOPS before merge — always (ADR 0006).

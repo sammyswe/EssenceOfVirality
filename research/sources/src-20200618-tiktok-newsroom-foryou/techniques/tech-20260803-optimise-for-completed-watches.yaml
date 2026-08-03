@@ -1,0 +1,45 @@
+artifact_type: technique_record
+id: tech-20260803-optimise-for-completed-watches
+created_at: 2026-08-03
+produced_by: virality-technique-analyst
+version: 1
+inputs: [claim-20200618-completion-strong-signal, claim-20260803-hyp-completion-lever]
+human_review: pending
+
+name: "Optimise for completed watches"
+production_rule: optimise_for_completed_watches
+description: >-
+  Structure short mix videos so a first-time viewer plausibly watches to the end:
+  open with an honest content promise, eliminate skippable dead time before the
+  transition, let the payoff land where anticipation peaks, and end within the
+  post-payoff groove settle.
+mechanism: >-
+  Clear early promise reduces early skipping -> sustained anticipation carries the
+  viewer to the transition -> payoff rewards the wait -> higher average watch time and
+  completion rate -> completion is officially a strongly weighted interest signal
+  (2020), so distribution MAY increase (hypothesis, unmeasured for this niche).
+intended_effects: [completion_rate, average_watch_time, early_skip_rate]
+required_video_characteristics:
+  - "10-40s duration with a single clear payoff moment (the transition)"
+  - "An honest promise expressible within the first second"
+contraindications:
+  - "Padding after the payoff to inflate watch seconds — increases abandonment and is dishonest structure"
+  - "Multi-payoff longer edits (different structure; revisit when evidence exists)"
+niche_adaptation:
+  transfers: adapted
+  adaptation_notes: >-
+    Adaptation by the spotify-mix-domain analyst: anticipation devices must be native
+    to the mix experience (progress-bar proximity, musical build, one honest cue) —
+    never inserted foreign audio or attention stingers; the blend window stays
+    visually and audibly clear.
+  music_experience_risk: >-
+    Aggressive dead-time trimming can strip the build-up that makes the blend musical;
+    trims must preserve enough context for the transition to read as skilled
+    (fixture fix-02 must_not).
+disposition: heuristic
+claim_ids: [claim-20200618-completion-strong-signal, claim-20260803-hyp-completion-lever]
+confidence: medium
+notes: >-
+  Disposition heuristic (not production_skill): the general rule informs the two
+  evaluation exemplar skills but is not itself an operational skill; revisit after
+  first-party analytics exist.

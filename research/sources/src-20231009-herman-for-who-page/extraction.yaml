@@ -1,0 +1,67 @@
+artifact_type: extraction_report
+id: ext-20231009-herman-for-who-page
+created_at: 2026-08-03
+produced_by: source-extraction
+version: 1
+inputs: [src-20231009-herman-for-who-page]
+
+source_id: src-20231009-herman-for-who-page
+method: "Fetched the full paper text from the DRS digital library (2026-08-03) and sectioned it."
+limitations:
+  - "Qualitative design research: 8 interviews plus one researcher's autoethnography; not a distribution measurement study."
+  - "Key statistics (>75% of views from FYP; views peaking at 42s length; posting frequency/timing effects) are secondary citations of 'Romero 2023', an industry study whose methodology is not described in this paper."
+  - "Creator statements are perceptions ('the algorithm prefers X') — the paper itself stresses such lore is often unfounded."
+  - "Fieldwork period ~2022-2023; interface features (Trends page, carousels, CapCut integration) may have changed."
+
+sections:
+  - section_id: s1-fyp-gatekeeping
+    heading: "FYP as the dominant distribution surface"
+    summary: >-
+      TikTok inverts follower-based distribution: visibility requires algorithmic
+      selection onto For You pages. Cites a recent study (Romero 2023) that over 75%
+      of TikTok video views come from the FYP, and that the algorithm uses view time,
+      likes, comments, follows and audience retention to decide wider distribution.
+    content_kinds: [author_statement, quoted_third_party]
+    key_points:
+      - ">75% of video views from the FYP (secondary citation)."
+      - "Follows determine creator-side visibility of one's output far less than algorithmic selection."
+  - section_id: s2-lore
+    heading: "Algorithmic lore and its unreliability"
+    summary: >-
+      Creators build theories from partner-manager advice, personal experiments and
+      circulating videos; lore is often unfounded. Documented example: the author
+      assumed shorter videos get more views (her two shortest got the most views) and
+      began cutting videos to <=10s; the cited study found the opposite - views peak
+      at ~42 seconds. Posting-frequency/timing lore (3x/week; 8pm weekdays, Fridays
+      best) is partially supported by the same industry study.
+    content_kinds: [data, author_statement, quoted_third_party]
+    key_points:
+      - "First-person documented case of plausible lore being falsified by data."
+      - "Views reported to peak at ~42s video length (secondary citation, contradicts shorter-is-better lore)."
+  - section_id: s3-text-and-search
+    heading: "On-screen text, search and categorisation"
+    summary: >-
+      On-screen text/subtitles are ubiquitous partly because creators believe the
+      algorithm parses text to categorise and route videos ('replaced the hashtags of
+      yore'); TikTok increasingly functions as a search engine, and the per-video
+      search bar reveals whether a video was topically indexed. Author anecdote:
+      changing on-screen text from a museum name to the city name made the video
+      appear in search and receive 'exponentially more views'.
+    content_kinds: [author_statement, data]
+    key_points:
+      - "Creator-perceived mechanism: on-screen text > hashtags for categorisation."
+      - "Search indexing is observable per video (search-bar contents) — a rare feedback loop."
+  - section_id: s4-sounds-trends
+    heading: "Sounds, trends, duets and formats"
+    summary: >-
+      The editor recommends Sounds based on video content, the creator's history and
+      platform-wide trending status, producing a flywheel (trending Sound -> more
+      videos -> more trending). Lore holds that trending Sounds boost FYP reach.
+      Duets/Stitches are perceived as prioritised; short text-wall videos exploit
+      auto-loop so multiple loops register as views; 'heating' (manual employee
+      boosting) exists per Forbes reporting.
+    content_kinds: [author_statement, quoted_third_party]
+    key_points:
+      - "Trending-sound distribution boost is widespread lore, mechanically plausible, unproven."
+      - "Auto-loop rewatches register as additional plays (observed exploit pattern) — directly relevant to sub-20s mix loops."
+      - "Manual 'heating' means some virality is not algorithmic at all (Baker-White 2023, Forbes)."

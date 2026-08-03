@@ -1,0 +1,37 @@
+artifact_type: evidence_assessment
+id: assess-20260803-length-42s-peak
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20231009-length-42s-peak]
+
+claim_id: claim-20231009-length-42s-peak
+dimensions:
+  relevance:
+    rating: moderate
+    note: "Informs length decisions within the 10-40s mix band, but both sides of the length debate are weakly evidenced."
+  specificity:
+    rating: moderate
+    note: "~42-second peak named; population-level correlation from an industry study, not a controlled length experiment."
+  transparency:
+    rating: weak
+    note: "Secondary citation of industry study 'Romero 2023' with undescribed method; extraction and manifest flag distribution statistics at lower confidence."
+  incentive_bias:
+    rating: moderate
+    note: "Industry study cited to contradict shorter-is-better creator lore; longer videos mechanically accumulate more watch seconds, which may inflate the apparent peak."
+  niche_transferability:
+    rating: moderate
+    note: "Population-level views-vs-length correlation may not hold for sub-40s Spotify screen recordings where the honest format band is already constrained."
+  agreement_other_sources:
+    rating: weak
+    note: "Conflicts with claim-20240719-zhou-engagement-features (shorter length raises recommendation likelihood); contra-20260803-optimal-length leaves both disputed with no working position."
+correlation_causation_note: >-
+  Population-level correlation, not causal; a 42s 'peak' may reflect content mix
+  and mechanical watch-second accumulation rather than a platform length preference.
+recommended_confidence: low
+recommended_status: disputed
+unsupported_certainty_flags: []
+reasoning: >-
+  Useful as a counterweight to shorter-is-better lore and as motivation for a
+  phase-5 length experiment, but too weakly sourced and directly contradicted to
+  adopt any optimal length — skills must not assert one.

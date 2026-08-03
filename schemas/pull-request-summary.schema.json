@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/pull-request-summary.schema.json",
+  "title": "PullRequestSummary",
+  "description": "Machine-readable counterpart of the PR template, assembled by the PR curator. The human checklist is completed by the creator, never by an agent.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "pull_request_summary" },
+    "source_ids": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
+    "findings_summary": { "type": "string" },
+    "knowledge_changes": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
+    "skill_changes": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
+    "contradictions": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
+    "evaluations": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
+    "risks_and_uncertainty": { "type": "string" },
+    "recommendation": {
+      "type": "string",
+      "enum": ["merge", "revise", "hypothesis_only", "run_experiment", "reject"]
+    },
+    "follow_up_experiments": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
+    "requires_creator_review": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Disagreements and open judgements preserved for the creator; consensus is never fabricated."
+    },
+    "pr_url": { "type": ["string", "null"] }
+  },
+  "required": ["artifact_type", "source_ids", "findings_summary", "risks_and_uncertainty", "recommendation"]
+}

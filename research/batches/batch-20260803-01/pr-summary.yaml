@@ -1,0 +1,59 @@
+artifact_type: pull_request_summary
+id: prs-20260803-research-batch-01
+created_at: 2026-08-03
+produced_by: pr-curator
+version: 1
+inputs: [kcp-20260803-research-batch-01, scp-20260803-searchable-onscreen-text, eval-20260803-research-batch-01]
+human_review: pending
+
+source_ids:
+  - src-20210621-klug-trick-and-please
+  - src-20250423-lynch-decoding-the-algorithm
+  - src-20240424-uw-tiktok-black-box
+  - src-20231009-herman-for-who-page
+  - src-20240719-zhou-recommendation-engagement
+findings_summary: >-
+  Five creator-supplied sources ingested. Strongest additions: Klug 2021
+  (peer-reviewed; engagement correlates with plays, posting time matters, hashtag
+  piling does not) and the UW 2024 data-donation studies (30-50% of early feed is
+  interest-matched; most viewers complete only 30-50% of videos, stable over time;
+  scroll-past speed is a weak personalisation signal; followed accounts get shown
+  more but completed less and liked more). Herman 2023 grounds the packaging layer
+  (on-screen text/search categorisation, trending-sound flywheel, loop-registered
+  plays) and, with Klug, a high-confidence meta-finding that creator lore is often
+  wrong. Lynch 2025 contributes secondhand leaked-document metrics (retention +
+  watch time as core platform objectives). Zhou 2024 was assessed low-credibility
+  and survives only as disputed low-confidence claims. Net: 17 claims, 17
+  assessments, 2 niche hypotheses, 3 contradictions, 3 techniques, 1 new canonical
+  knowledge doc, working model advanced to v0.1, and the first candidate skill in
+  experimental/ (searchable-onscreen-text).
+
+knowledge_changes: [kcp-20260803-research-batch-01]
+skill_changes: [scp-20260803-searchable-onscreen-text]
+contradictions:
+  - contra-20260803-skip-speed-signal
+  - contra-20260803-trending-hashtag-effect
+  - contra-20260803-optimal-length
+evaluations: [eval-20260803-research-batch-01]
+
+risks_and_uncertainty: >-
+  Quantitative anchors (75% FYP share, 42s length peak) are secondary citations of
+  an undescribed industry study — recorded at low confidence and easily over-read.
+  The UW numbers come via a press interview cross-checked against one of its two
+  primary papers; the WWW '24 personalisation paper was not separately ingested.
+  All platform findings are 2021-2024 and platform-dependent; a 2025 reproduction
+  study warns TikTok audit findings age quickly. The new skill rests on
+  hypothesis-tier evidence and is deliberately quarantined in experimental/.
+
+recommendation: merge
+follow_up_experiments: []
+requires_creator_review:
+  - "Confirm the Zhou 2024 handling (retained as disputed low-confidence claims despite source-quality flags) — alternative is rejecting the source outright to research/rejected/."
+  - "Confirm the working positions adopted in the three contradiction records (no skip penalty; hashtag piling not a lever; no position on length)."
+  - "Confirm the new research/batches/ directory for multi-source batch artifacts (documented in research/README.md)."
+  - "Review the candidate skill searchable-onscreen-text (experimental bank) before any use."
+pr_url: https://github.com/sammyswe/EssenceOfVirality/pull/3
+notes: >-
+  Batch ingestion of five links supplied by the creator on 2026-08-03 (no per-link
+  priority notes given). The WWW '24 paper and the 2025 SIGIR reproduction study
+  are natural follow-up ingestion candidates.

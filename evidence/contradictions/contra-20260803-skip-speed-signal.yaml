@@ -1,0 +1,24 @@
+artifact_type: contradiction_record
+id: contra-20260803-skip-speed-signal
+created_at: 2026-08-03
+produced_by: contradiction-synthesis
+version: 1
+human_review: pending
+
+claim_ids: [claim-20250423-fast-skip-negative-signal, claim-20240424-scroll-speed-weak-signal]
+description: >-
+  Lynch 2025 asserts (uncited) that swiping past a video quickly is read as a
+  negative interest signal that suppresses similar content; the 2024 UW
+  data-donation audit found scroll-past speed has little observable effect on
+  subsequent recommendations. Both cannot be generally true of the same mechanism.
+disagreement_causes: [different_methods, different_dates, genuine_conflict]
+resolution: coexist
+resolution_notes: >-
+  Evidence is strongly asymmetric: an uncited secondary assertion vs a 9.2M-video
+  empirical audit. The UW claim stays active; the Lynch claim is marked disputed.
+  Scope caveat preserved: the audit measured personalisation of the skipper's own
+  feed, not whether aggregate skips harm the skipped video's distribution — the
+  latter remains unknown (unknowns.md). Practical consequence for skills: motivate
+  early-skip reduction through watch time and completion, never through a claimed
+  skip penalty.
+experiment_id: null

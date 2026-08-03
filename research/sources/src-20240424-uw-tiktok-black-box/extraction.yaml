@@ -1,0 +1,61 @@
+artifact_type: extraction_report
+id: ext-20240424-uw-tiktok-black-box
+created_at: 2026-08-03
+produced_by: source-extraction
+version: 1
+inputs: [src-20240424-uw-tiktok-black-box]
+
+source_id: src-20240424-uw-tiktok-black-box
+method: >-
+  Fetched the UW News Q&A page (2026-08-03). Because it is a popular-press summary,
+  all quantitative statements were cross-checked against the open-access CHI 2024
+  primary paper it describes ("Analyzing User Engagement with TikTok's Short Format
+  Video Recommendations using Data Donations", doi 10.1145/3613904.3642433), whose
+  full text was also retrieved.
+limitations:
+  - "Press interview, not the papers themselves; where the interview and the CHI paper disagree, the paper's figures are used."
+  - "Discrepancy found: the interview says people 'watch only about 55% of videos to the end'; the CHI paper states the majority of videos (55%) are NOT watched to the end, with most participants finishing 30-50% of videos. Claims record the paper's figures."
+  - "Data-donation sample (347 US-recruited users) is self-selected; the authors note donated data was incomplete for some questions."
+  - "Personalisation findings ('exploitation' share, scroll-speed effect) summarise the WWW '24 paper, which was not separately retrieved; they are recorded at interview precision."
+  - "Observational study of existing recommendations; no creator-side intervention was tested."
+
+sections:
+  - section_id: s1-personalisation
+    heading: "Personalisation audit (WWW '24 findings as described)"
+    summary: >-
+      In users' first 1,000 videos, one third to one half were 'exploitation' videos
+      (shown based on predicted interest, linked to previously seen hashtags/creators);
+      the rest exploration. Following an account significantly increases the
+      probability of being shown its videos. Scrolling past a video faster 'does not
+      seem to impact as much what the algorithm is doing'.
+    content_kinds: [data, author_statement]
+    key_points:
+      - "Exploitation share 30-50% in the first 1,000 videos."
+      - "Follow relationships materially shape the feed."
+      - "Scroll-past speed appears to be a weak personalisation signal — directly relevant to skip-signal assumptions."
+  - section_id: s2-engagement
+    heading: "Engagement study (CHI '24 findings, figures from the paper)"
+    summary: >-
+      Attention metric = inferred viewing duration / video duration (capped at 100%).
+      Most participants watch 30-50% of videos to the end; attention is stable over
+      the first 120 days while daily usage time grows (~29 to ~50 minutes) and liking
+      increases. Videos from non-followed accounts are watched to the end more
+      (44-46%) than videos from followed accounts (~38-40%), but followed accounts'
+      videos are liked more (12-18% vs 6-12% after 120 days). The authors hypothesise
+      support-liking for known creators, and note the algorithm may deliberately mix
+      skippable videos.
+    content_kinds: [data, method, author_statement]
+    key_points:
+      - "Baseline completion: most videos are not watched to the end; 30-50% completion share is normal."
+      - "Followed-account paradox: lower completion, higher engagement."
+      - "Attention stable over tenure; usage time and liking grow."
+  - section_id: s3-interpretation
+    heading: "Interpretive commentary"
+    summary: >-
+      Roesner frames the 55%/45% completion split as an open question (platform
+      design vs recommendation quality), stresses the algorithm is a black box
+      'probably to TikTok itself to some extent', and cautions that platform designs
+      are not neutral.
+    content_kinds: [author_statement]
+    key_points:
+      - "Even the researchers decline to interpret the completion baseline as good or bad — a useful calibration for our own metric expectations."

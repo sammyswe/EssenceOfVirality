@@ -1,0 +1,38 @@
+fixture_id: fix-01-immediate-payoff
+title: 12-second Spotify transition with an immediate payoff
+description: >-
+  Well-executed baseline. Screen recording of the Spotify now-playing view; the
+  track transition begins at 00:02 and completes cleanly by 00:06; remaining
+  seconds ride the new groove. One small track-title overlay. Clean captured audio.
+video:
+  duration_seconds: 12
+  format: "9:16"
+  content: >-
+    Spotify now-playing UI, progress bar visible, deep-house track A blending
+    into track B with a filter sweep. No face, no branding.
+  audio: clean capture, transition beat-matched, no clipping
+  overlays: single lower-third track-title label, removed at 00:07
+known_strengths:
+  - payoff arrives early and is audible
+  - Spotify UI legible throughout
+  - music untouched by processing
+known_problems:
+  - first frame shows a static UI with no cue that a transition is imminent
+expected_diagnoses:
+  - skill: analyse-first-frame
+    expectation: >-
+      Flags the missing content promise in frame one (no visible cue of an
+      imminent transition) and proposes a concrete fix (e.g. progress-bar
+      proximity to the blend point, or 1-word anticipation overlay). Must NOT
+      propose changes that obscure the Spotify UI.
+  - skill: evaluate-transition-payoff
+    expectation: >-
+      Rates payoff timing as strong; recommends no structural change. A rewrite
+      recommendation here is a false positive.
+  - skill: preserve-spotify-mix-audio
+    expectation: Confirms audio integrity; recommends no processing.
+must_preserve:
+  - the transition audio exactly as captured
+  - Spotify interface legibility
+must_not:
+  - add overlays during the transition window (00:02-00:06)

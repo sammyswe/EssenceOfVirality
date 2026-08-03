@@ -1,0 +1,63 @@
+name: CI
+
+# Deterministic checks only. Agent evaluations are committed as reports under
+# evaluation/reports/ and reviewed by the creator; they never run here (ADR 0006).
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Schemas, skills, IDs, fixtures, tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: tools/requirements.txt
+      - run: pip install -r tools/requirements.txt
+      - run: python tools/validate_artifacts.py
+      - run: python tools/lint_skills.py
+      - run: python tools/check_ids.py
+      - run: python tools/run_fixtures.py
+      - run: pytest -q
+
+  markdown:
+    name: Markdown lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DavidAnson/markdownlint-cli2-action@v17
+        with:
+          globs: |
+            **/*.md
+            !.agents/skills/**
+            !node_modules/**
+
+  links:
+    name: Link check (internal)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --no-progress "**/*.md" --exclude-path .agents --exclude-path node_modules
+          fail: true
+
+  secrets:
+    name: Secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,33 @@
+artifact_type: source_manifest
+id: src-20240719-zhou-recommendation-engagement
+created_at: 2026-08-03
+produced_by: research-intake-coordinator
+version: 1
+human_review: pending
+
+source_type: academic_paper
+url: https://www.researchgate.net/publication/382423048_Understanding_the_Impact_of_TikTok's_Recommendation_Algorithm_on_User_Engagement
+local_path: null
+title: "Understanding the Impact of TikTok's Recommendation Algorithm on User Engagement"
+author: "Renwu Zhou"
+publisher: "International Journal of Computer Science and Information Technology 3(2), 201-208 (doi 10.62051/ijcsit.v3n2.24)"
+published_date: "2024-07-19"
+retrieved_at: 2026-08-03
+duplicate_check:
+  checked: true
+  duplicate_of: null
+licensing_notes: >-
+  The supplied ResearchGate URL is blocked to automated retrieval (Cloudflare 403);
+  the same paper was retrieved via its DOI from the publisher (wepub.org). Findings
+  stored; full text not copied into the repository.
+creator_priority_note: >-
+  Supplied by the creator in the first phase-2 research batch (2026-08-03), no
+  per-link note given.
+notes: >-
+  Serious quality concerns found during intake: the reference list contains many
+  citations irrelevant to the topic (e.g. alloy-segregation chemistry papers),
+  a pattern associated with citation-stuffing; the dataset ("1 million video
+  records" via "TikTok's public API") is not further described or published; no
+  ethics/consent detail for the claimed 30 interviews. Journal (IJCSIT/wepub) is not
+  an established venue. Treated as a low-credibility source: its regression findings
+  are recorded because they conflict with better sources, at low confidence.

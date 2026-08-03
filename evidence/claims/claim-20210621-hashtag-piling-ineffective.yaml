@@ -1,0 +1,30 @@
+artifact_type: claim_record
+id: claim-20210621-hashtag-piling-ineffective
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20210621-klug-trick-and-please]
+human_review: pending
+
+statement: >-
+  Adding trending hashtags, algorithm-targeted hashtags (#fyp, #foryou) or piling up
+  popular hashtags showed no relationship to play counts among 300,617 trending
+  videos (Jan 2021); videos with the most popular hashtag combinations often had low
+  plays, and almost no top-10% video used that day's trending hashtags.
+claim_type: finding
+source_ids: [src-20210621-klug-trick-and-please]
+domain: [tiktok_distribution, creative_production]
+metric_targets: [distribution_volume, search_discovery]
+evidence_basis: [academic]
+transferability: direct
+confidence: medium
+status: disputed
+publication_date: "2021-06-21"
+platform_dependent: true
+limitations:
+  - "Null relationship within trending videos; a gate-keeping role for hashtags below the trending threshold cannot be excluded."
+  - "2021 behaviour; hashtag semantics may have shifted as search grew (see claim-20231009-onscreen-text-categorisation)."
+contradictions: [contra-20260803-trending-hashtag-effect]
+proposed_actions:
+  - "Ground the anti-pattern 'do not pile trending/#fyp hashtags' in the new metadata-and-discovery knowledge doc."
+  - "Feed technique record tech-20260803-limit-hashtag-reliance."

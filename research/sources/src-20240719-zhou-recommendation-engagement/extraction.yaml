@@ -1,0 +1,41 @@
+artifact_type: extraction_report
+id: ext-20240719-zhou-recommendation-engagement
+created_at: 2026-08-03
+produced_by: source-extraction
+version: 1
+inputs: [src-20240719-zhou-recommendation-engagement]
+
+source_id: src-20240719-zhou-recommendation-engagement
+method: >-
+  Supplied ResearchGate URL returned Cloudflare 403 to automated retrieval; the paper
+  was retrieved in full via its DOI (10.62051/ijcsit.v3n2.24) from the publisher and
+  sectioned.
+limitations:
+  - "Low-credibility indicators: reference list heavily padded with off-topic citations (materials-chemistry, real-estate analytics); unverifiable dataset ('1M video records' collected via 'TikTok's public API' - no such public research API existed in the study window without scraping); methods described at textbook level without collection details."
+  - "The claimed regression sample, feature definitions and recommendation-outcome labelling are not specified; coefficients cannot be independently interpreted."
+  - "Findings conflict with methodologically transparent sources on two points (trending hashtags; video length) - recorded as contradictions, not silently dropped or accepted."
+  - "Qualitative interview findings are generic and add nothing beyond better sources; not recorded as claims."
+
+sections:
+  - section_id: s1-regression
+    heading: "Claimed regression findings"
+    summary: >-
+      Reports a regression on a six-month (Jan-Jun 2023) dataset of user interactions,
+      finding that a high like ratio (beta1=0.45, p<0.01), use of trending hashtags
+      (beta2=0.32, p<0.05) and shorter video length (beta3=-0.25, p<0.05) increase
+      the likelihood of a video being recommended; a gradient-boosting model
+      predicting recommendation reached 82% accuracy.
+    content_kinds: [data]
+    key_points:
+      - "Like ratio, trending hashtags, shorter length claimed to raise recommendation likelihood."
+      - "Directly conflicts with Klug et al. 2021 (hashtag piling ineffective) and with Romero 2023 as cited by Herman 2023 (views peak ~42s)."
+  - section_id: s2-generic
+    heading: "Generic framework content"
+    summary: >-
+      Standard descriptions of collaborative + content-based hybrid filtering, echo
+      chambers, transparency concerns, and interview themes (creators believe trending
+      hashtags and comment engagement increase visibility; users confused by FYP
+      selection). Consistent with other sources but adds no independent evidence.
+    content_kinds: [author_statement]
+    key_points:
+      - "No additional claims recorded from this section."

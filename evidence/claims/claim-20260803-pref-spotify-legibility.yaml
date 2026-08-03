@@ -1,0 +1,26 @@
+artifact_type: claim_record
+id: claim-20260803-pref-spotify-legibility
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [src-20260803-creator-brief]
+human_review: approved
+
+statement: >-
+  Creator requirement: videos must communicate that the mix was made in Spotify —
+  the Spotify interface stays legible at mobile size and is never fully obscured,
+  because "you can have this in your own Spotify" is the core value proposition.
+claim_type: preference
+source_ids: [src-20260803-creator-brief]
+domain: [spotify_mix_content, creative_production]
+metric_targets: [share_rate, follow_conversion, save_rate]
+evidence_basis: [creator_statement]
+transferability: direct
+confidence: high
+status: active
+publication_date: "2026-08-03"
+platform_dependent: false
+limitations:
+  - "Fastest-reading 'made in Spotify' signal is an open phase-2 question (knowledge/spotify-mix-niche/value-proposition.md)."
+proposed_actions:
+  - "Rubric dimension C.10; first-frame legibility check in analyse-first-frame"

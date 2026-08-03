@@ -1,0 +1,31 @@
+artifact_type: claim_record
+id: claim-20231009-onscreen-text-categorisation
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20231009-herman-for-who-page]
+human_review: pending
+
+statement: >-
+  On-screen text and spoken keywords are parsed by TikTok to categorise videos for
+  interest matching and search, and specific, topical on-screen wording can determine
+  whether a video is search-indexed (per-video search bar) and materially affect its
+  views — creator-perceived mechanism plus the author's documented museum/city-name
+  anecdote (Herman 2023).
+claim_type: hypothesis
+source_ids: [src-20231009-herman-for-who-page]
+domain: [tiktok_distribution, creative_production]
+metric_targets: [search_discovery, distribution_volume]
+evidence_basis: [academic, observational]
+transferability: adapted
+confidence: medium
+status: active
+publication_date: "2023-10-09"
+platform_dependent: true
+limitations:
+  - "Mechanism is creator lore plus one documented n=1 anecdote; no controlled test."
+  - "Consistent with ByteDance's stated NLP/CV content classification (background in src-20210621) — machine parsing exists; its ranking weight is the unproven part."
+  - "The per-video search-bar feedback loop is an interface feature that may change."
+contradictions: []
+proposed_actions:
+  - "Derive niche hypothesis claim-20260803-hyp-searchable-text and candidate experimental skill (scp-20260803-searchable-onscreen-text)."

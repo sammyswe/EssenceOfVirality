@@ -1,0 +1,28 @@
+artifact_type: claim_record
+id: claim-20250423-comments-follows-weighted
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20250423-lynch-decoding-the-algorithm]
+human_review: pending
+
+statement: >-
+  Comments and follows are weighted more heavily than other engagement signals
+  because they indicate deep interest in a creator or style of content (asserted by
+  Lynch 2025 without citation to data).
+claim_type: hypothesis
+source_ids: [src-20250423-lynch-decoding-the-algorithm]
+domain: [tiktok_distribution]
+metric_targets: [comment_rate, follow_conversion]
+evidence_basis: [academic]
+transferability: direct
+confidence: low
+status: active
+publication_date: "2025-04-23"
+platform_dependent: true
+limitations:
+  - "Uncited assertion; recorded as hypothesis rather than finding because no data or document quote supports the specific weighting order."
+  - "Plausible and consistent with creator lore recorded in Klug 2021 interviews (comments foremost), but lore convergence is not evidence."
+contradictions: []
+proposed_actions:
+  - "Relative signal weights remain in unknowns.md; this entry documents the popular assumption in claim form."

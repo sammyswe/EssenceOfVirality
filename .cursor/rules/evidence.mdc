@@ -1,0 +1,20 @@
+---
+globs: evidence/**
+alwaysApply: false
+---
+
+# Evidence-store rules
+
+- Records here are promoted, cross-source truth-state: changes arrive only through reviewed PRs.
+- Supersession over mutation (ADR 0003): substantive changes create a new record linked via
+  `supersedes`/`superseded_by`; permitted in-place edits are status transitions and adding
+  contradiction/limitation references.
+- Hypotheses live in `evidence/hypotheses/`, never mixed into `claims/` — they are test targets,
+  not accepted knowledge.
+- No time decay: old records stay `active` while evidence supports them; set
+  `platform_dependent: true` on TikTok-mechanics claims so revalidation can find them.
+- A contradiction involving a record must be listed in that record's `contradictions` field and
+  exist as a `contradiction_record`; `resolution: creator_review_required` blocks any dependent
+  skill promotion.
+- Validate with `python3 tools/validate_artifacts.py && python3 tools/check_ids.py` — dangling
+  references fail CI.

@@ -1,0 +1,37 @@
+artifact_type: technique_record
+id: tech-20260803-limit-hashtag-reliance
+created_at: 2026-08-03
+produced_by: virality-technique-analyst
+version: 1
+inputs: [claim-20210621-hashtag-piling-ineffective, claim-20231009-onscreen-text-categorisation]
+human_review: pending
+
+name: "Limit hashtag reliance"
+production_rule: limit_hashtag_reliance
+description: >-
+  Do not pile trending or algorithm-targeted hashtags (#fyp, #foryou, unrelated
+  trending tags) onto posts; use at most a few content-descriptive hashtags, and put
+  the discovery effort into honest, topical wording (caption, on-screen text)
+  instead.
+mechanism: >-
+  Hashtag piling showed no relationship to play counts in the only transparent test
+  (Klug 2021), while content-descriptive language plausibly feeds classification and
+  search matching (Herman 2023, hypothesis tier). Dropping the piling habit costs
+  nothing measured and removes visual/caption clutter.
+intended_effects: [search_discovery, distribution_volume]
+required_video_characteristics: []
+contraindications:
+  - "Do not remove genuinely descriptive tags (e.g. #housemusic) on the strength of the piling null result — the tested tactic was piling trending/algorithm tags, not topical labelling."
+niche_adaptation:
+  transfers: direct
+  adaptation_notes: >-
+    Directly applicable: mix posts need only genre/mood descriptors. No adaptation
+    beyond keeping captions consistent with the anonymous, music-first account voice.
+disposition: heuristic
+claim_ids: [claim-20210621-hashtag-piling-ineffective, claim-20231009-onscreen-text-categorisation]
+confidence: medium
+notes: >-
+  Disposition heuristic: informs caption/metadata guidance in
+  knowledge/production-techniques/metadata-and-discovery.md; not operational enough
+  for a standalone skill. Zhou 2024 disputes the underlying null result
+  (contra-20260803-trending-hashtag-effect) but is low-credibility.

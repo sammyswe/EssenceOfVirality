@@ -1,0 +1,18 @@
+---
+globs: analytics/**
+alwaysApply: false
+---
+
+# Analytics-area rules
+
+- Scaffold status (ADR 0007): schemas are provisional; no importers, dashboards or inference in
+  phase one. `/ingest-tiktok-analytics` validates and stores only.
+- Raw platform exports never enter git (`analytics/raw/` is gitignored); commit only
+  normalised, schema-validated, redacted-where-needed observation records.
+- One observation per video per capture date — append snapshots, never overwrite.
+- Keep absolute counts and rates in their separate structures; never conflate distribution
+  volume with conversion, or account growth with per-video performance.
+- No causal claims from small samples: analytics outputs are hypotheses and experiment
+  proposals until cohorts exist (phase 5).
+- Every observation must reference a `video_production_manifest` via `video_id` — lineage is the
+  point.

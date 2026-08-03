@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/technique-record.schema.json",
+  "title": "TechniqueRecord",
+  "description": "A controllable production technique mapped to intended viewer behaviours (never to 'the algorithm' directly). Produced by the virality-technique analyst, adapted by the Spotify-mix domain analyst.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "technique_record" },
+    "name": { "type": "string" },
+    "production_rule": { "type": "string", "pattern": "^[a-z0-9_]+$", "description": "Machine-usable slug, e.g. reveal_transition_payoff_early." },
+    "description": { "type": "string" },
+    "mechanism": {
+      "type": "string",
+      "description": "The viewer-perception chain: production decision -> viewer perception/behaviour -> observed metrics -> possible distribution effect."
+    },
+    "intended_effects": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/metricTarget" },
+      "minItems": 1
+    },
+    "required_video_characteristics": { "type": "array", "items": { "type": "string" } },
+    "contraindications": { "type": "array", "items": { "type": "string" } },
+    "niche_adaptation": {
+      "type": "object",
+      "properties": {
+        "transfers": { "type": "string", "enum": ["direct", "adapted", "uncertain", "not_applicable"] },
+        "adaptation_notes": { "type": "string" },
+        "music_experience_risk": { "type": "string", "description": "How this technique could damage the central Spotify-mix experience, and mitigation." }
+      },
+      "required": ["transfers"]
+    },
+    "disposition": {
+      "type": "string",
+      "enum": ["knowledge_only", "heuristic", "production_skill", "evaluation_criterion", "experiment", "rejected"],
+      "description": "What this technique should become."
+    },
+    "claim_ids": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/artifactId" },
+      "minItems": 1
+    },
+    "confidence": { "$ref": "common.schema.json#/$defs/confidence" }
+  },
+  "required": ["artifact_type", "name", "production_rule", "mechanism", "intended_effects", "disposition", "claim_ids", "confidence"]
+}

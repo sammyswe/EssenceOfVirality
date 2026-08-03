@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20200618-feed-diversification
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20200618-tiktok-newsroom-foryou]
+human_review: pending
+
+statement: >-
+  TikTok stated (2020) that the For You feed deliberately diversifies: it generally
+  will not show two videos in a row made with the same sound or by the same creator,
+  does not recommend duplicated or already-seen content or spam, and intentionally
+  injects videos outside a user's expressed interests, partly to gauge broader
+  popularity.
+claim_type: fact
+source_ids: [src-20200618-tiktok-newsroom-foryou]
+domain: [tiktok_distribution]
+metric_targets: [distribution_volume]
+evidence_basis: [official]
+transferability: adapted
+confidence: high
+status: active
+publication_date: "2020-06-18"
+platform_dependent: true
+limitations:
+  - "'Generally' hedges the same-sound/same-creator rule."
+  - "Implications for a single account posting a same-format series (our plan) are indirect and untested."
+proposed_actions:
+  - "Consider sound/format variation questions when series planning reaches production phases"

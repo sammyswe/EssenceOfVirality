@@ -1,0 +1,15 @@
+---
+globs: docs/adr/**
+alwaysApply: false
+---
+
+# ADR rules
+
+- One decision per file, numbered sequentially (`NNNN-title.md`), with: Status
+  (proposed/accepted/superseded), Date, Context, Decision, Alternatives, Consequences — plus
+  upgrade/pinning/exit strategy when the decision creates an external dependency.
+- Do not fake certainty: an ADR stays `proposed` while investigation remains (ADR 0007 is the
+  standing example). Acceptance is the creator's call.
+- Never edit an accepted ADR's decision; supersede it with a new ADR that links back.
+- Check existing ADRs before proposing architecture changes; contradicting an accepted ADR
+  requires a superseding ADR, not a workaround.

@@ -1,0 +1,31 @@
+artifact_type: claim_record
+id: claim-20250423-retention-watchtime-core-metrics
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20250423-lynch-decoding-the-algorithm]
+human_review: pending
+
+statement: >-
+  According to a leaked TikTok engineering document (as cited by Lynch 2025), the two
+  main metrics tracked to grow daily active viewership are retention (whether a user
+  returns) and watch time, and videos are scored by a machine-learned prediction over
+  summed user interactions (likes, comments, follows, shares), with the
+  highest-scoring videos served to each user.
+claim_type: finding
+source_ids: [src-20250423-lynch-decoding-the-algorithm]
+domain: [tiktok_distribution]
+metric_targets: [average_watch_time, completion_rate, distribution_volume]
+evidence_basis: [academic]
+transferability: adapted
+confidence: medium
+status: active
+publication_date: "2025-04-23"
+platform_dependent: true
+limitations:
+  - "Secondhand: thesis cites press coverage of a leaked document (likely the 2021 'TikTok Algo 101' leak) without naming or dating it."
+  - "Platform-level objectives (retention, watch time), not per-video ranking weights; the summation formula is reported without weights."
+  - "Consistent with, but not independent of, the official 2020 disclosure (claim-20200618-ranking-factor-categories)."
+contradictions: []
+proposed_actions:
+  - "Cite in current-working-model.md as converging support that watch-time behaviour is the platform's core currency."

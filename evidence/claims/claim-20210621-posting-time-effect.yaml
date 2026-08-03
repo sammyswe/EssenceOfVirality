@@ -1,0 +1,30 @@
+artifact_type: claim_record
+id: claim-20210621-posting-time-effect
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20210621-klug-trick-and-please]
+human_review: pending
+
+statement: >-
+  Among trending videos (Jan 2021), posting time significantly separated the top 10%
+  of play counts from the remaining 90% (KS test, p=1.8e-41): top-10% videos were
+  largely posted 06:00-16:00 UTC (peak ~11:00), the rest mostly 00:00-04:00 UTC.
+  Trending is not immediate — some top videos were 2+ weeks old.
+claim_type: finding
+source_ids: [src-20210621-klug-trick-and-please]
+domain: [tiktok_distribution]
+metric_targets: [distribution_volume]
+evidence_basis: [academic]
+transferability: uncertain
+confidence: medium
+status: active
+publication_date: "2021-06-21"
+platform_dependent: true
+limitations:
+  - "UTC only, no viewer-timezone or geography data: cannot be converted into a posting schedule for a UK audience."
+  - "Correlational within trending videos; the mechanism (audience activity vs algorithm batching) is unknown."
+  - "Confounded with video age: top-10% videos were older on average."
+contradictions: []
+proposed_actions:
+  - "Record as a bounded finding: posting time matters, but derive niche-specific times only from first-party analytics (phase 5)."

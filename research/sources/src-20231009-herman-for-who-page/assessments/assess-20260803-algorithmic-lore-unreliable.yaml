@@ -1,0 +1,34 @@
+artifact_type: evidence_assessment
+id: assess-20260803-algorithmic-lore-unreliable
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20231009-algorithmic-lore-unreliable]
+
+claim_id: claim-20231009-algorithmic-lore-unreliable
+dimensions:
+  relevance:
+    rating: strong
+    note: "Epistemic backbone for the project's evidence policy — perceived algorithmic preferences must not drive production without testing."
+  specificity:
+    rating: strong
+    note: "Two documented cases: Klug 2021 tested three assumptions and the most followed (hashtag piling) failed; Herman 2023 documents length lore falsified by data."
+  transparency:
+    rating: strong
+    note: "Supported by two peer-reviewed sources with described methods — Klug's quantitative tests and Herman's autoethnographic documentation."
+  incentive_bias:
+    rating: weak
+    note: "Low bias risk: both sources argue against uncritical lore adoption, including the authors' own previously held beliefs."
+  niche_transferability:
+    rating: strong
+    note: "Platform-independent epistemic principle; applies directly to any tactic considered for Spotify-mix videos."
+  agreement_other_sources:
+    rating: strong
+    note: "Self-corroborating across src-20210621-klug-trick-and-please and src-20231009-herman-for-who-page; Klug validated engagement and posting-time assumptions while falsifying hashtag piling."
+recommended_confidence: high
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  The highest-confidence meta-finding in this batch: lore shapes creator behaviour
+  but requires testing before adoption. Does not mean all lore is false — it
+  establishes the evidential standard the project already follows.

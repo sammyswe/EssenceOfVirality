@@ -1,0 +1,28 @@
+artifact_type: claim_record
+id: claim-20250423-fast-skip-negative-signal
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20250423-lynch-decoding-the-algorithm]
+human_review: pending
+
+statement: >-
+  Swiping past a video quickly is interpreted by TikTok as a negative interest
+  signal, causing less similar content to be shown to that viewer (asserted by Lynch
+  2025 without citation to data).
+claim_type: finding
+source_ids: [src-20250423-lynch-decoding-the-algorithm]
+domain: [tiktok_distribution, viewer_behaviour]
+metric_targets: [early_skip_rate, distribution_volume]
+evidence_basis: [academic]
+transferability: direct
+confidence: low
+status: disputed
+publication_date: "2025-04-23"
+platform_dependent: true
+limitations:
+  - "Uncited assertion in a secondary source; widely repeated in creator lore but not demonstrated."
+  - "Conflicts with the 2024 UW data-donation audit, which found scroll-past speed has little observable effect on subsequent recommendations (claim-20240424-scroll-speed-weak-signal)."
+contradictions: [contra-20260803-skip-speed-signal]
+proposed_actions:
+  - "Keep as disputed; skills must not assume fast skips actively punish a video — early-skip reduction remains motivated by watch-time/completion, not by a purported skip penalty."

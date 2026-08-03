@@ -1,0 +1,44 @@
+artifact_type: technique_record
+id: tech-20260803-use-searchable-onscreen-text
+created_at: 2026-08-03
+produced_by: virality-technique-analyst
+version: 1
+inputs: [claim-20231009-onscreen-text-categorisation, claim-20260803-hyp-searchable-text]
+human_review: pending
+
+name: "Use searchable on-screen text"
+production_rule: use_searchable_onscreen_text
+description: >-
+  Give each mix video one short, honest on-screen text cue whose wording doubles as
+  a search phrase a target listener would type (genre/mood/context, e.g. "melodic
+  house mix"), placed so Spotify-interface legibility is preserved; verify indexing
+  after posting via the video's search-bar suggestion.
+mechanism: >-
+  TikTok machine-parses text elements for classification (asserted by ByteDance;
+  creator-observed); topical on-screen wording appears to drive search indexing and
+  interest matching (Herman 2023 anecdote + lore) -> a cue that is both hook and
+  search phrase can serve promise communication and discovery without extra clutter.
+intended_effects: [search_discovery, distribution_volume, early_skip_rate]
+required_video_characteristics:
+  - "Exactly one primary text cue (the analyse-first-frame single-cue rule still applies)"
+  - "Wording true of the actual mix content (honesty policy)"
+contraindications:
+  - "Adding a second competing text element for SEO on top of a hook cue — merge them or drop the SEO wording (fixture fix-04 overlay-overload risk)."
+  - "Keyword-stuffed or misleading phrasing (violates honesty policy; also fixture fix-06)."
+niche_adaptation:
+  transfers: adapted
+  adaptation_notes: >-
+    Adaptation by the spotify-mix-domain analyst: the cue must not cover Spotify UI
+    elements that establish authenticity (claim-20260803-pref-spotify-legibility);
+    genre/mood vocabulary should match what house-mix listeners actually search,
+    which phase-5 analytics can later verify.
+  music_experience_risk: >-
+    Low: a single static text cue does not touch the audio; risk is only visual
+    clutter, bounded by the one-cue rule.
+disposition: production_skill
+claim_ids: [claim-20231009-onscreen-text-categorisation, claim-20260803-hyp-searchable-text]
+confidence: low
+notes: >-
+  Disposition production_skill: operational enough for a candidate skill
+  (scp-20260803-searchable-onscreen-text, experimental bank) because it requires
+  concrete wording decisions per video and has a post-hoc verification step.

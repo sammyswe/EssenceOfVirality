@@ -1,0 +1,20 @@
+---
+globs: knowledge/**
+alwaysApply: false
+---
+
+# Knowledge-base rules
+
+- Canonical documents follow the contract in `knowledge/README.md`: current conclusion,
+  supporting claims (IDs), disputed claims, open questions, practical implications, related
+  skills, related experiments, revision date. Update the revision date on every edit.
+- Every conclusion cites claim IDs from `evidence/` or `research/sources/*/claims/`. No
+  uncited assertions; no restating a claim as if it were new.
+- One conclusion, one owner: link to the owning document instead of duplicating. Keep
+  `knowledge/index.md` in sync when documents are added or seeded.
+- `algorithm-model/` and `viewer-behaviour/` are descriptive — never phrase them as levers.
+  Actionable rules belong in `production-techniques/` or `spotify-mix-niche/` with intended
+  viewer effects stated.
+- Disputed claims stay visible in their section until resolved; check
+  `knowledge/algorithm-model/unknowns.md` and update it when a source narrows an unknown.
+- Do not create empty planned documents; create them when evidence arrives (phase 2).

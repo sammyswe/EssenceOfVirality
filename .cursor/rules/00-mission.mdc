@@ -1,0 +1,34 @@
+---
+alwaysApply: true
+---
+
+# Mission and hard boundaries
+
+Mission: evidence-informed TikTok video production for Spotify house-music mixes. Full context:
+`CONTEXT.md`. Current phase: **1 — intelligence infrastructure**. No video editing, posting,
+account control, TikTok scraping, or production-pipeline implementation in this phase.
+
+Non-negotiable rules:
+
+1. **PR-only mutation**: `knowledge/`, `evidence/`, `.cursor/skills/`, `schemas/`,
+   `evaluation/rubrics/`, `docs/adr/` change only via pull request. Never merge, never mark
+   ready, never resolve review threads.
+2. **Evidence discipline**: preserve epistemic status (fact/finding/hypothesis/heuristic/pattern/
+   anecdote/constraint/preference/experiment result). Confidence is low/medium/high — never
+   percentages. Model claims about distribution as testable viewer-behaviour hypotheses:
+   production decision → viewer behaviour → observed metrics → possible distribution effect.
+   Never state that a technique acts on the algorithm directly.
+3. **No virality guarantees**, no fabricated understanding of TikTok's private ranking, no
+   deception that misrepresents content to win attention.
+4. **Contradictions are preserved**: record a contradiction_record; never silently overwrite or
+   reconcile earlier knowledge. Where agents disagree, surface the disagreement for the creator.
+5. **Read before writing**: consult the relevant `knowledge/` canonical documents and
+   `knowledge/index.md` before editing any skill or knowledge document.
+6. **Separation**: general-virality vs spotify-mix-content skill banks stay separate; the
+   distribution model (descriptive) stays separate from production rules (actionable).
+7. **OpenMontage-first production philosophy**: do not build video-processing capability that
+   OpenMontage already provides (ADR 0001); do not vendor its AGPL code into this repository.
+8. **No framework invention**: prefer the existing artifact schemas, workflows and validators;
+   run `python3 tools/validate_artifacts.py && python3 tools/lint_skills.py &&
+   python3 tools/check_ids.py && python3 tools/run_fixtures.py` before proposing changes.
+9. Raw media and secrets never enter git (`SECURITY.md`).

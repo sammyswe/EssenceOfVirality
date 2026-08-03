@@ -1,0 +1,30 @@
+artifact_type: claim_record
+id: claim-20240424-completion-baseline
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20240424-uw-tiktok-black-box]
+human_review: pending
+
+statement: >-
+  In 9.2M donated recommendations (CHI 2024), the majority of videos (~55%) were not
+  watched to the end; most participants watched 30-50% of their videos to completion,
+  and this attention level stayed stable over users' first 120 days even as daily
+  usage time and liking grew.
+claim_type: finding
+source_ids: [src-20240424-uw-tiktok-black-box]
+domain: [viewer_behaviour]
+metric_targets: [completion_rate, average_watch_time]
+evidence_basis: [academic]
+transferability: direct
+confidence: medium
+status: active
+publication_date: "2024-04-24"
+platform_dependent: true
+limitations:
+  - "Figures taken from the CHI 2024 primary paper; the UW interview inverts the statistic (says '55% watched to the end') — the paper's wording is authoritative."
+  - "Viewer-side average across all content; not a per-video benchmark and not niche-specific."
+  - "Attention metric caps loops at 100%, so loop-heavy short videos are under-described (relevant to sub-20s mixes)."
+contradictions: []
+proposed_actions:
+  - "Use as the first external calibration point for completion expectations in completion.md: watch-to-end is the exception, not the norm."

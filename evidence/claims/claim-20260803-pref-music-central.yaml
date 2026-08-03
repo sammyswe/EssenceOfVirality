@@ -1,0 +1,26 @@
+artifact_type: claim_record
+id: claim-20260803-pref-music-central
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [src-20260803-creator-brief]
+human_review: approved
+
+statement: >-
+  Creator requirement: the music is the product. Editing, overlays, hooks and CTAs
+  must never overwhelm the listening experience; captured mix audio must not be
+  degraded by processing; damaged audio is re-captured, not rescued.
+claim_type: preference
+source_ids: [src-20260803-creator-brief]
+domain: [spotify_mix_content, creative_production]
+metric_targets: [completion_rate, average_watch_time]
+evidence_basis: [creator_statement]
+transferability: direct
+confidence: high
+status: active
+publication_date: "2026-08-03"
+platform_dependent: false
+limitations:
+  - "A standing preference, revisable only by the creator."
+proposed_actions:
+  - "Veto dimensions C.8-C.9 in the video-evaluation rubric; preserve-spotify-mix-audio skill"

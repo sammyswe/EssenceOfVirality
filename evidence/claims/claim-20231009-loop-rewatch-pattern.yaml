@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20231009-loop-rewatch-pattern
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20231009-herman-for-who-page]
+human_review: pending
+
+statement: >-
+  TikTok auto-loops videos until the viewer scrolls, and additional loops register as
+  additional plays; creators exploit this with very short videos whose content takes
+  longer than one loop to absorb (e.g. dense on-screen text), inflating view counts
+  and perceived interest (Herman 2023, observed pattern).
+claim_type: pattern
+source_ids: [src-20231009-herman-for-who-page]
+domain: [viewer_behaviour, creative_production]
+metric_targets: [rewatch_rate, distribution_volume]
+evidence_basis: [academic, observational]
+transferability: adapted
+confidence: medium
+status: active
+publication_date: "2023-10-09"
+platform_dependent: true
+limitations:
+  - "How loops are weighted in ranking (vs raw play counting) is unknown; the exploit's effectiveness is inferred by creators."
+  - "The dishonest variant (unreadable text walls) conflicts with this project's honesty policy; only the honest form (content genuinely rewarding a second loop) is usable."
+contradictions: []
+proposed_actions:
+  - "Derive niche hypothesis claim-20260803-hyp-loop-rewatch-lever for sub-20s mix videos; answers part of the loop open question in completion.md."

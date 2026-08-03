@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/analytics-observation.schema.json",
+  "title": "AnalyticsObservation",
+  "description": "SCAFFOLD (ADR 0007, schema_maturity: scaffold). One snapshot of one video's metrics at one capture date. Snapshots are never overwritten; absolute counts and rates are never conflated. Field names are provisional until real TikTok exports are inspected.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "analytics_observation" },
+    "schema_maturity": { "const": "scaffold" },
+    "video_id": { "type": "string", "description": "Links to a VideoProductionManifest video_id." },
+    "captured_at": { "$ref": "common.schema.json#/$defs/timestamp" },
+    "capture_source": { "type": "string", "enum": ["tiktok_studio_export", "manual_reading", "api"] },
+    "absolute": {
+      "type": "object",
+      "description": "Raw counts only.",
+      "properties": {
+        "views": { "type": "integer", "minimum": 0 },
+        "likes": { "type": "integer", "minimum": 0 },
+        "comments": { "type": "integer", "minimum": 0 },
+        "shares": { "type": "integer", "minimum": 0 },
+        "saves": { "type": ["integer", "null"] },
+        "followers_gained": { "type": ["integer", "null"] },
+        "profile_visits": { "type": ["integer", "null"] }
+      },
+      "required": ["views"]
+    },
+    "rates": {
+      "type": "object",
+      "description": "Derived per-view/temporal measures; keep separate from counts.",
+      "properties": {
+        "average_watch_time_seconds": { "type": ["number", "null"] },
+        "completion_rate": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+        "rewatch_rate": { "type": ["number", "null"] },
+        "like_rate": { "type": ["number", "null"] },
+        "comment_rate": { "type": ["number", "null"] },
+        "share_rate": { "type": ["number", "null"] },
+        "follow_conversion": { "type": ["number", "null"] }
+      }
+    },
+    "retention_curve": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "second": { "type": "number", "minimum": 0 },
+          "fraction_retained": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "required": ["second", "fraction_retained"]
+      }
+    },
+    "traffic_sources": {
+      "type": "object",
+      "description": "Fraction or count per source (for_you, following, profile, search, sound, other).",
+      "additionalProperties": { "type": "number" }
+    },
+    "search_terms": { "type": "array", "items": { "type": "string" } },
+    "audience": {
+      "type": "object",
+      "properties": {
+        "geography": { "type": "object", "additionalProperties": { "type": "number" } },
+        "demographics": { "type": "object", "additionalProperties": { "type": "number" } }
+      }
+    },
+    "posting": {
+      "type": "object",
+      "properties": {
+        "posted_at": { "$ref": "common.schema.json#/$defs/timestamp" },
+        "duration_seconds": { "type": "number" },
+        "caption": { "type": "string" },
+        "hashtags": { "type": "array", "items": { "type": "string" } },
+        "sound": { "type": ["string", "null"] },
+        "cover_ref": { "type": ["string", "null"] }
+      }
+    },
+    "account_context": {
+      "type": "object",
+      "description": "Separates account growth and distribution volume from per-video conversion.",
+      "properties": {
+        "follower_count_at_post": { "type": ["integer", "null"] },
+        "account_total_videos": { "type": ["integer", "null"] }
+      }
+    }
+  },
+  "required": ["artifact_type", "schema_maturity", "video_id", "captured_at", "capture_source", "absolute"]
+}

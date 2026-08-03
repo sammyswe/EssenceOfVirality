@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20240719-zhou-engagement-features
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20240719-zhou-recommendation-engagement]
+human_review: pending
+
+statement: >-
+  A 2024 IJCSIT paper (Zhou) reports a regression over a claimed six-month, 1M-video
+  interaction dataset in which a high like ratio (beta=0.45), use of trending
+  hashtags (beta=0.32) and shorter video length (beta=-0.25) each significantly
+  increased a video's likelihood of being recommended.
+claim_type: finding
+source_ids: [src-20240719-zhou-recommendation-engagement]
+domain: [tiktok_distribution]
+metric_targets: [like_rate, distribution_volume, search_discovery]
+evidence_basis: [academic]
+transferability: uncertain
+confidence: low
+status: disputed
+publication_date: "2024-07-19"
+platform_dependent: true
+limitations:
+  - "Low-credibility source: citation-stuffed references, unverifiable dataset and collection method, no feature/outcome definitions (see manifest notes)."
+  - "Hashtag finding conflicts with the methodologically transparent Klug 2021 null result; length finding conflicts with Romero 2023 as cited by Herman 2023."
+contradictions: [contra-20260803-trending-hashtag-effect, contra-20260803-optimal-length]
+proposed_actions:
+  - "Retain as disputed low-confidence record so future sources have something to corroborate or bury; build nothing on it."

@@ -1,0 +1,22 @@
+---
+globs: .cursor/skills/**
+alwaysApply: false
+---
+
+# Skill-bank rules
+
+- Author to `.cursor/skills/meta/skill-authoring-standard/` and validate with
+  `python3 tools/lint_skills.py` before finishing.
+- Frontmatter `name` must equal the folder name; the bank (parent folder) must be one of:
+  general-virality, spotify-mix-content, research-workflows, meta, experimental.
+- `metadata` must carry `version` (semver), `maturity`, `confidence`, `evidence_basis`,
+  `requires_human_approval`; domain-bank skills also need non-empty `evidence_refs` (claim or
+  technique IDs that actually exist).
+- New research-generated skills start in `experimental/` with `maturity: experimental`
+  (ADR 0005). Any behavioural change bumps `version` and requires a regression record in
+  `evaluation/regression/`.
+- Keep skills operational: triggers, inputs, steps with completion criteria, testable output
+  contract. Background knowledge goes to `knowledge/` and is referenced, not inlined.
+- Every technique instruction states its intended viewer behaviour; never promise virality or a
+  direct algorithmic effect.
+- Do not edit `.agents/skills/` (third-party, lockfile-managed).

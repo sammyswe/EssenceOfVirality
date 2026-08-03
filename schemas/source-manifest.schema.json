@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/source-manifest.schema.json",
+  "title": "SourceManifest",
+  "description": "Registration record for one ingested source. Written by the research-intake coordinator; one per research/sources/<id>/ directory.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "source_manifest" },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "webpage", "academic_paper", "pdf", "youtube_video", "youtube_transcript",
+        "podcast_transcript", "tiktok_video_notes", "creator_case_study", "social_post",
+        "analytics_export", "csv", "json", "manual_observation", "software_repository",
+        "virality_scoring_product", "course_material", "text_or_markdown", "other"
+      ]
+    },
+    "url": { "type": ["string", "null"] },
+    "local_path": { "type": ["string", "null"], "description": "Repo-relative path for supplied files." },
+    "title": { "type": "string" },
+    "author": { "type": ["string", "null"] },
+    "publisher": { "type": ["string", "null"] },
+    "published_date": { "type": ["string", "null"], "description": "Preserved verbatim; no time decay is applied (ADR 0003)." },
+    "retrieved_at": { "$ref": "common.schema.json#/$defs/timestamp" },
+    "duplicate_check": {
+      "type": "object",
+      "properties": {
+        "checked": { "type": "boolean" },
+        "duplicate_of": { "type": ["string", "null"] }
+      },
+      "required": ["checked"]
+    },
+    "licensing_notes": {
+      "type": "string",
+      "description": "Access/terms/copyright observations; see docs/guides/content-and-source-handling.md."
+    },
+    "creator_priority_note": { "type": ["string", "null"], "description": "Why the creator supplied this source, if stated." }
+  },
+  "required": ["artifact_type", "source_type", "title", "retrieved_at", "duplicate_check"]
+}

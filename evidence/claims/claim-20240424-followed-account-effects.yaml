@@ -1,0 +1,30 @@
+artifact_type: claim_record
+id: claim-20240424-followed-account-effects
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20240424-uw-tiktok-black-box]
+human_review: pending
+
+statement: >-
+  In the 2024 UW data-donation studies: following an account significantly increases
+  the probability of being shown its videos; yet videos from followed accounts are
+  watched to the end less often (~38-40%) than videos from non-followed accounts
+  (44-46%), while being liked substantially more (12-18% vs 6-12% after 120 days) —
+  interpreted by the authors as support-liking for known creators.
+claim_type: finding
+source_ids: [src-20240424-uw-tiktok-black-box]
+domain: [tiktok_distribution, viewer_behaviour]
+metric_targets: [completion_rate, like_rate, follow_conversion]
+evidence_basis: [academic]
+transferability: adapted
+confidence: medium
+status: active
+publication_date: "2024-04-24"
+platform_dependent: true
+limitations:
+  - "Observational; the completion gap partly reflects that non-followed videos shown are algorithmically pre-filtered for broad popularity (median plays 755K vs 85K)."
+  - "Follower-side behaviour of established accounts; a new anonymous account's followers may behave differently."
+contradictions: []
+proposed_actions:
+  - "Cite in current-working-model.md: follower growth changes *who* sees videos and how they engage — likes from followers are partly social, so follower-heavy metrics can mislead about content quality."

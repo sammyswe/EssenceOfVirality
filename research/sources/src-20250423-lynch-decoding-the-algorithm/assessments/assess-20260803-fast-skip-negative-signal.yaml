@@ -1,0 +1,39 @@
+artifact_type: evidence_assessment
+id: assess-20260803-fast-skip-negative-signal
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20250423-fast-skip-negative-signal]
+
+claim_id: claim-20250423-fast-skip-negative-signal
+dimensions:
+  relevance:
+    rating: moderate
+    note: "If true, early-skip rate would be a direct hook-quality lever; even as disputed lore it motivates attention to the opening seconds."
+  specificity:
+    rating: weak
+    note: "Qualitative assertion only — no threshold for 'quickly', no data, no citation to the leaked document or any study."
+  transparency:
+    rating: weak
+    note: "Uncited assertion in a secondary thesis; extraction flags it as widely repeated creator lore without demonstrated evidence."
+  incentive_bias:
+    rating: moderate
+    note: "Repeats a flattering creator-community narrative (the algorithm punishes bad hooks); thesis has no original data to verify it."
+  niche_transferability:
+    rating: strong
+    note: "Applies to any short-form video including screen-recorded mixes, if the mechanism exists."
+  agreement_other_sources:
+    rating: weak
+    note: "Conflicts with claim-20240424-scroll-speed-weak-signal; contra-20260803-skip-speed-signal retains the UW audit as the stronger evidence."
+correlation_causation_note: >-
+  Asserted causal mechanism (fast skip → less similar content) without observational
+  or experimental support; the UW audit found scroll-past speed a weak
+  personalisation signal in 9.2M donated recommendations.
+recommended_confidence: low
+recommended_status: disputed
+unsupported_certainty_flags:
+  - "Source presents the skip penalty as established fact without citing data."
+reasoning: >-
+  Widely repeated but uncited; kept as a disputed low-confidence record so skills do
+  not assume a proven skip penalty — early-skip reduction should be motivated through
+  watch time and completion, not this assertion.
