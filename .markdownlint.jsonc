@@ -1,0 +1,12 @@
+{
+  // Content-heavy research repo: relax cosmetic rules, keep structural ones.
+  "default": true,
+  "MD013": false, // line length — long evidence statements and tables are normal here
+  "MD033": false, // inline HTML — needed for PR template comments
+  "MD024": { "siblings_only": true }, // repeated headings across sections are fine
+  "MD041": false, // first line need not be a top-level heading (frontmatter files)
+  "MD025": false, // frontmatter title + H1
+  "MD036": false, // emphasis-as-heading used in templates
+  "MD040": false, // fenced blocks without language (ASCII diagrams)
+  "MD029": false  // ordered list numbering style
+}
