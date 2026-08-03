@@ -52,9 +52,8 @@ requires_creator_review:
   - "Confirm the working positions adopted in the three contradiction records (no skip penalty; hashtag piling not a lever; no position on length)."
   - "Confirm the new research/batches/ directory for multi-source batch artifacts (documented in research/README.md)."
   - "Review the candidate skill searchable-onscreen-text (experimental bank) before any use."
-pr_url: null
+pr_url: https://github.com/sammyswe/EssenceOfVirality/pull/3
 notes: >-
   Batch ingestion of five links supplied by the creator on 2026-08-03 (no per-link
-  priority notes given). pr_url filled by the cloud agent when the PR exists. The
-  WWW '24 paper and the 2025 SIGIR reproduction study are natural follow-up
-  ingestion candidates.
+  priority notes given). The WWW '24 paper and the 2025 SIGIR reproduction study
+  are natural follow-up ingestion candidates.
