@@ -1,0 +1,87 @@
+artifact_type: evaluation_report
+id: eval-20260803-research-batch-01
+created_at: 2026-08-03
+produced_by: evaluation-agent
+version: 1
+inputs: [kcp-20260803-research-batch-01, scp-20260803-searchable-onscreen-text]
+human_review: pending
+
+subject_type: source_ingestion
+subject_ids:
+  - src-20210621-klug-trick-and-please
+  - src-20250423-lynch-decoding-the-algorithm
+  - src-20240424-uw-tiktok-black-box
+  - src-20231009-herman-for-who-page
+  - src-20240719-zhou-recommendation-engagement
+  - kcp-20260803-research-batch-01
+  - scp-20260803-searchable-onscreen-text
+
+checks:
+  - name: "Schema validation (tools/validate_artifacts.py)"
+    kind: structural
+    result: pass
+    details: "87 artifacts validate (40 new: 5 manifests, 5 extractions, 17 claims, 17 assessments, 2 hypotheses, 3 contradictions, 3 techniques, 1 kcp, 1 scp, this report — plus pr-summary). One authoring error caught and fixed during the run: invalid content_kind 'citation' in the Herman extraction (corrected to quoted_third_party)."
+  - name: "ID uniqueness and reference integrity (tools/check_ids.py)"
+    kind: structural
+    result: pass
+    details: "87 IDs unique; no dangling references across claims, contradictions, techniques, proposals and knowledge citations."
+  - name: "Skill lint (tools/lint_skills.py)"
+    kind: structural
+    result: pass
+    details: "16 project skills pass, including the new experimental searchable-onscreen-text; all its evidence_refs resolve to claims created by this batch or existing preference claims."
+  - name: "Fixture structure (tools/run_fixtures.py) + pytest"
+    kind: structural
+    result: pass
+    details: "6 fixtures well-formed; 8 validator tests pass."
+  - name: "Fixture consistency for new skill"
+    kind: fixture
+    result: pass
+    details: >-
+      scp fixtures_to_run reviewed against the new skill's guidance: fix-04
+      (overlay overload) — skill's one-cue rule and caption fallback cannot produce
+      the overloaded state the fixture penalises; fix-06 (misleading hook) — skill
+      requires wording true of the specific video. No fixture expectation conflicts.
+  - name: "Epistemic discipline review"
+    kind: instruction_quality
+    result: pass
+    details: >-
+      Secondary citations recorded at reduced confidence (fyp-dominant, length-42s);
+      uncited assertions recorded as hypothesis or low-confidence finding (Lynch);
+      the press-interview completion statistic corrected against the primary CHI
+      paper and the discrepancy documented; low-credibility source (Zhou) ingested
+      as disputed low-confidence claims rather than silently accepted or dropped;
+      all three cross-source disagreements captured as contradiction records with
+      explicit working positions.
+  - name: "Contradiction check"
+    kind: structural
+    result: pass
+    details: >-
+      First genuine exercise of the contradiction path on real sources: three
+      records created (skip-speed signal, trending-hashtag effect, optimal length);
+      all six involved claims carry matching contradictions references and disputed
+      statuses where warranted.
+  - name: "Assessment coverage"
+    kind: structural
+    result: pass
+    details: >-
+      All 17 source-derived claims received evidence assessments. Recorded skip: the
+      two derived hypotheses (searchable-text, loop-rewatch) received no separate
+      assessment — support and limitations are documented in the records themselves,
+      consistent with the vertical-slice precedent.
+
+fixtures_run: [fix-04-overlay-overload, fix-06-misleading-hook]
+regressions_found: []
+cannot_validate_without_real_data:
+  - "Whether topical on-screen text actually improves search discovery/distribution for mix videos (claim-20260803-hyp-searchable-text) — verify per post + phase-5 analytics."
+  - "Whether loop-seamed edits raise rewatch and watch time (claim-20260803-hyp-loop-rewatch-lever)."
+  - "Whether the 30-50% completion norm holds for this niche's viewers."
+  - "Optimal length within the 10-40s band (contra-20260803-optimal-length is unresolved by design)."
+  - "Whether 2021-2024 findings still describe 2026 behaviour — a 2025 reproduction study (noted in the Klug extraction) warns audit findings age quickly."
+
+overall: pass
+recommendation: merge
+notes: >-
+  First multi-source batch run of pipelines/research-ingestion.yaml plus the first
+  real exercise of the skill-refinement path (one candidate skill into
+  experimental/). fixtures_run lists consistency checks against the new skill's
+  guidance, not regression runs — no existing skill changed in this batch.

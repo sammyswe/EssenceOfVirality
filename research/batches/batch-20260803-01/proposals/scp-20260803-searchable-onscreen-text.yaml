@@ -1,0 +1,52 @@
+artifact_type: skill_change_proposal
+id: scp-20260803-searchable-onscreen-text
+created_at: 2026-08-03
+produced_by: skill-architect
+version: 1
+inputs:
+  - tech-20260803-use-searchable-onscreen-text
+  - claim-20260803-hyp-searchable-text
+human_review: pending
+
+skill_name: searchable-onscreen-text
+bank: experimental
+change_type: create
+summary: >-
+  New candidate skill: choose one honest on-screen text cue whose wording doubles as
+  a listener search phrase, with placement and hashtag-restraint rules and a per-post
+  indexing verification step.
+justification: >-
+  Belongs in a skill (not only knowledge) because it requires per-video wording
+  decisions, a merge negotiation with the hook cue, a placement check against the
+  Spotify-legibility preference, and a repeatable post-hoc verification — an
+  operational procedure with an output contract. The underlying evidence stays
+  documented in metadata-and-discovery.md; the skill only operationalises it.
+  Placed in experimental/ per ADR 0005: evidence tier is hypothesis (lore + one
+  documented anecdote), so it must earn promotion through use and phase-5 data.
+claim_ids:
+  - claim-20231009-onscreen-text-categorisation
+  - claim-20260803-hyp-searchable-text
+  - claim-20210621-hashtag-piling-ineffective
+  - claim-20260803-pref-spotify-legibility
+technique_ids: [tech-20260803-use-searchable-onscreen-text]
+critic_review:
+  status: passed
+  rounds: 1
+  notes: >-
+    Skill-critic review against evaluation/rubrics/skill-quality.md: steps have
+    completion criteria; output contract is machine-parseable; anti-patterns cover
+    the two realistic failure modes (second text element, keyword stuffing); every
+    recommendation cites its claim and the description says when to use it. Flagged
+    and fixed in round 1: the original draft allowed a separate SEO text element as
+    a fallback — changed to caption fallback to respect the one-cue rule
+    (fix-04-overlay-overload consistency).
+regression_risk: low
+fixtures_to_run:
+  - fix-04-overlay-overload
+  - fix-06-misleading-hook
+notes: >-
+  New skill, no version bump or regression bundle required (nothing pre-existing
+  changes behaviour). fixtures_to_run lists the fixtures whose expectations the new
+  skill's guidance must not contradict: fix-04 (overlay overload must still be
+  diagnosed — the one-cue rule aligns) and fix-06 (misleading hook — honesty rule
+  aligns). Structural fixture run recorded in eval-20260803-research-batch-01.
