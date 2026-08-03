@@ -68,6 +68,7 @@ EVIDENCE_BASIS_VALUES = {
     "creator_experiment",
     "first_party_analytics",
     "expert_opinion",
+    "creator_statement",
 }
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
 

@@ -29,7 +29,8 @@
     },
     "evidenceBasis": {
       "type": "string",
-      "enum": ["official", "academic", "observational", "creator_experiment", "first_party_analytics", "expert_opinion"]
+      "enum": ["official", "academic", "observational", "creator_experiment", "first_party_analytics", "expert_opinion", "creator_statement"],
+      "description": "creator_statement backs preference/constraint claims supplied by the creator."
     },
     "domain": {
       "type": "string",

@@ -1,0 +1,41 @@
+fixture_id: fix-04-overlay-overload
+title: Strong transition obscured by excessive overlays
+description: >-
+  Generic-TikTok tactics smothering the content: animated captions, emoji
+  reactions, a progress-bar sticker, follower-count graphic and a "wait for
+  it..." banner cover most of the Spotify UI, including during the blend.
+video:
+  duration_seconds: 15
+  format: "9:16"
+  content: >-
+    Excellent transition at 00:06-00:10, but five simultaneous overlay elements;
+    the Spotify interface is barely visible; text occupies ~40% of frame height.
+  audio: clean capture, strong blend
+  overlays:
+    - animated word-by-word captions (centre)
+    - three pulsing emoji stickers
+    - fake progress-bar sticker
+    - follower-count graphic
+    - "wait for it..." banner persisting through the payoff
+known_problems:
+  - overlays obscure the Spotify experience and the now-playing UI
+  - visual noise competes with the audio payoff at the exact payoff moment
+  - "wait for it" banner keeps promising after the payoff has landed
+known_strengths:
+  - underlying transition and audio are strong
+expected_diagnoses:
+  - skill: evaluate-transition-payoff
+    expectation: >-
+      Recognises the payoff is strong but visually buried; prescribes clearing
+      the transition window of overlays so the payoff reads.
+  - skill: analyse-first-frame
+    expectation: >-
+      Flags that frame one is mostly stickers, not content; proposes a
+      first-frame where the Spotify context is recognisable.
+  - skill: preserve-spotify-mix-audio
+    expectation: Confirms audio is fine; no audio action. Flagging audio here is a false positive.
+must_preserve:
+  - the transition audio and its timing
+must_not:
+  - respond by merely restyling the overlays; the correct action is removal/reduction
+  - keep any element that covers the now-playing track titles

@@ -1,0 +1,37 @@
+fixture_id: fix-03-poor-audio
+title: Visually clear video with poor audio
+description: >-
+  Well-framed recording ruined by capture problems: audio clips on bass peaks,
+  a notification chime lands at 00:06 mid-blend, and loudness is far below
+  platform norms.
+video:
+  duration_seconds: 18
+  format: "9:16"
+  content: >-
+    Clean now-playing view, good crop, sensible single overlay; transition at
+    00:05-00:09.
+  audio: >-
+    Clipped bass peaks throughout; OS notification sound at 00:06; integrated
+    loudness roughly -28 LUFS (very quiet).
+  overlays: single track-title label
+known_problems:
+  - clipping on bass peaks (unrecoverable in the damaged segments)
+  - notification chime inside the transition window
+  - overall loudness too low for mobile playback
+known_strengths:
+  - framing, legibility and overlay restraint are all good
+expected_diagnoses:
+  - skill: preserve-spotify-mix-audio
+    expectation: >-
+      Identifies all three audio faults; recommends RE-CAPTURE as the primary
+      action (clipping + chime inside the blend are not fixable without
+      damaging the music) and loudness normalisation for the re-capture. Must
+      NOT recommend heavy denoise/limiting rescue that degrades the mix.
+  - skill: analyse-first-frame
+    expectation: >-
+      Finds no first-frame fault; proposing visual changes here is a false
+      positive.
+must_preserve:
+  - the visual framing decisions
+must_not:
+  - present audio processing as a substitute for re-capturing damaged material

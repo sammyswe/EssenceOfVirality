@@ -1,0 +1,69 @@
+# Workflow manifest for /refine-skills-from-source (read by the orchestrator agent).
+# Requires a completed ingestion (research/sources/<id>/ exists with assessments).
+
+name: skill-refinement
+version: 1
+entry_skill: refine-skills-from-source
+
+stages:
+  - id: preconditions
+    agent: orchestrator
+    reads: [research/sources/<source-id>/]
+    produces: []
+    gate: orchestrator_check
+    notes: Extraction and assessments must exist; otherwise run research-ingestion first.
+
+  - id: context
+    agent: skill-architect
+    reads: [evidence_assessment, relevant knowledge/ documents, relevant .cursor/skills/]
+    produces: []
+    gate: none
+    notes: >-
+      Read before writing: canonical knowledge and existing skills, to prevent
+      duplication and contradiction.
+
+  - id: disposition
+    agent: skill-architect
+    reads: [claim_record, technique_record]
+    produces: [skill_change_proposal, knowledge_change_proposal]
+    gate: none
+    notes: >-
+      For each potential change decide: knowledge doc | skill resource | skill |
+      rubric | pipeline manifest | experiment. Minimal, well-justified changes;
+      no source rewrites every related skill.
+
+  - id: candidate
+    agent: skill-architect
+    reads: [skill_change_proposal, .cursor/skills/meta/skill-authoring-standard/]
+    produces: [candidate skill files]
+    gate: none
+
+  - id: critic-loop
+    agent: skill-critic
+    reads: [candidate skill files, evaluation/rubrics/skill-quality.md]
+    produces: [skill_change_proposal (critic_review updated)]
+    gate: orchestrator_check
+    notes: Revise until passed or two rounds, then escalate.
+
+  - id: validation
+    agent: evaluation-agent
+    reads: [candidate skill files]
+    produces: []
+    gate: orchestrator_check
+    notes: tools/lint_skills.py + tools/validate_artifacts.py + tools/check_ids.py must pass.
+
+  - id: fixtures-and-regression
+    agent: evaluation-agent
+    reads: [evaluation/fixtures/, old + new skill versions]
+    produces: [evaluation_report, regression records]
+    gate: orchestrator_check
+    notes: >-
+      Old and new versions against the same fixtures; before/after examples;
+      newer/longer is not presumed better.
+
+  - id: pr-preparation
+    agent: pr-curator
+    reads: [all stage outputs]
+    produces: [pull_request_summary]
+    gate: human
+    notes: Creator approval required; no self-merge (ADR 0006).

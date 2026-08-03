@@ -1,0 +1,48 @@
+# SYNTHETIC example demonstrating the video-production-manifest scaffold schema (ADR 0007).
+# No renderer exists; this shows the lineage anchor that phase 3+ will write per video.
+artifact_type: video_production_manifest
+schema_maturity: scaffold
+id: vpm-example-synthetic
+created_at: 2026-08-03
+produced_by: creator
+version: 1
+human_review: not_required
+notes: Synthetic record demonstrating decision-to-outcome lineage.
+
+video_id: vpm-example-synthetic
+source_assets:
+  - local://raw/2026-08-01-spotify-mix-take3.mov
+pipeline_version: "0.0-manual"
+openmontage_version: null
+duration_seconds: 14
+format: "9:16"
+audience: uk-house-music
+content_series: transition-of-the-week
+
+general_virality_skills:
+  - { name: analyse-first-frame, version: 0.1.0 }
+  - { name: evaluate-hook-clarity, version: 0.1.0 }
+spotify_mix_skills:
+  - { name: preserve-spotify-mix-audio, version: 0.1.0 }
+  - { name: evaluate-transition-payoff, version: 0.1.0 }
+
+editing_decisions:
+  - decision: "Open on the Spotify progress bar 4s before the transition point"
+    rationale: "Anticipation of the payoff; establishes the content promise early"
+    technique_ids: [tech-20260803-optimise-for-completed-watches]
+  - decision: "Single track-title overlay, lower third, removed during the transition"
+    rationale: "Keeps the Spotify UI legible and the music central"
+
+hook: { type: text_overlay, text: "this transition should not work on spotify..." }
+cta: { type: caption_prompt, text: "which pair should I mix next?" }
+audio: { source: original_capture, processing: [loudness_normalise] }
+visual:
+  crop: "centre 9:16 on now-playing view"
+  overlays: [track_title_lower_third]
+  motion: [none]
+export: { codec: h264, resolution: 1080x1920, frame_rate: 30 }
+
+quality_reviews: ["manual creator review 2026-08-01: pass"]
+creator_feedback: ["transition audible dip at 00:07 — acceptable"]
+published_post: { url: null, date: null }
+analytics_records: [obs-example-synthetic]

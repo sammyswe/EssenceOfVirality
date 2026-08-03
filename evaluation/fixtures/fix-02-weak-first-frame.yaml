@@ -1,0 +1,41 @@
+fixture_id: fix-02-weak-first-frame
+title: 25-second transition with a weak first frame
+description: >-
+  Strong mix, badly opened. The first 9 seconds show a static Spotify playlist
+  screen with no motion, no text, and no hint of what is coming; the (excellent)
+  transition happens at 00:14-00:19.
+video:
+  duration_seconds: 25
+  format: "9:16"
+  content: >-
+    00:00-00:09 static playlist view; 00:09 switch to now-playing; transition
+    at 00:14; groove until 00:25. No hook text anywhere.
+  audio: clean capture, strong beat-matched blend
+  overlays: none
+known_problems:
+  - first frame communicates nothing (static playlist, no promise)
+  - 9 seconds of dead time before anything happens
+  - no hook text; a first-time viewer has no reason to wait until 00:14
+known_strengths:
+  - the transition itself is excellent
+  - audio is clean
+expected_diagnoses:
+  - skill: analyse-first-frame
+    expectation: >-
+      Identifies the absent content promise and the dead opening; proposes
+      trimming to start nearer the transition and/or an honest anticipation cue
+      in frame one.
+  - skill: evaluate-hook-clarity
+    expectation: >-
+      Reports that no hook exists; proposes a short, honest hook that promises
+      the transition without overclaiming, readable at mobile size.
+  - skill: evaluate-transition-payoff
+    expectation: >-
+      Rates the payoff itself as strong but flags that it arrives too late
+      relative to anticipated early-skip behaviour; proposes restructure
+      (trim dead time), not a different transition.
+must_preserve:
+  - the full transition (00:14-00:19) unaltered
+must_not:
+  - fabricate urgency the content does not deliver
+  - cut so aggressively that the blend loses its build-up context

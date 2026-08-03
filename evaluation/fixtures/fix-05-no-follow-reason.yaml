@@ -1,0 +1,43 @@
+fixture_id: fix-05-no-follow-reason
+title: Good mix with no reason to follow
+description: >-
+  Technically competent one-off. Clean 20-second video, decent hook, good
+  transition, fine audio — but nothing signals a series, a repeatable skill, or
+  any reason to expect more; caption is empty; no CTA of any kind.
+video:
+  duration_seconds: 20
+  format: "9:16"
+  content: >-
+    Now-playing view, honest hook text ("two tracks that mix perfectly on
+    spotify"), transition at 00:08-00:12, groove out. No caption, no CTA, no
+    series marker.
+  audio: clean capture, good blend
+  overlays: hook text (first 3 seconds) + track-title label
+known_problems:
+  - no follow conversion path: nothing communicates "there is more where this came from"
+  - no comment prompt; conversation is left to chance
+  - caption unused (no discoverability text, no invitation)
+known_strengths:
+  - hook is honest and clear
+  - payoff timing is good
+  - music and UI are respected
+expected_diagnoses:
+  - skill: evaluate-hook-clarity
+    expectation: >-
+      Passes the hook itself; may suggest the hook hint at a series (e.g.
+      "part 3") only if honest. Must not rewrite a working hook wholesale.
+  - skill: evaluate-transition-payoff
+    expectation: Rates payoff as good; no structural change.
+future_skills:
+  # Diagnoses that need skills beyond the phase-one exemplar set; kept so the
+  # fixture is ready when those skills exist (run_fixtures ignores this list).
+  - skill: evaluate-follow-conversion
+    expectation: >-
+      Flags the absent follow reason; proposes series framing, a caption with a
+      forward promise, and an on-taste comment prompt — without adding overlays
+      during the transition.
+must_preserve:
+  - the honest hook
+  - overlay restraint
+must_not:
+  - add follower-bait ("follow or you'll miss it") or engagement-bait prompts
