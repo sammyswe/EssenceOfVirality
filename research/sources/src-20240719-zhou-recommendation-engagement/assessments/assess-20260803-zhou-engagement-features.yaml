@@ -1,0 +1,40 @@
+artifact_type: evidence_assessment
+id: assess-20260803-zhou-engagement-features
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20240719-zhou-engagement-features]
+
+claim_id: claim-20240719-zhou-engagement-features
+dimensions:
+  relevance:
+    rating: moderate
+    note: "Would directly inform like-ratio, hashtag and length tactics if credible — but source-quality flags prevent building on it."
+  specificity:
+    rating: moderate
+    note: "Named beta coefficients (0.45, 0.32, -0.25) and a claimed 1M-video six-month dataset; feature definitions and outcome labelling unspecified."
+  transparency:
+    rating: weak
+    note: "Unverifiable dataset, no collection details, textbook-level methods section; extraction flags citation-stuffed references and no public data."
+  incentive_bias:
+    rating: strong
+    note: "High bias risk: manifest records citation-stuffing pattern, unverifiable '1M video records via TikTok public API' claim, no ethics detail, and non-established venue (IJCSIT/wepub) — indicators associated with publication-quality inflation."
+  niche_transferability:
+    rating: unknown
+    note: "Cannot assess transferability when the underlying sample, features and recommendation-outcome definition are not described."
+  agreement_other_sources:
+    rating: weak
+    note: "Conflicts with claim-20210621-hashtag-piling-ineffective (contra-20260803-trending-hashtag-effect) and claim-20231009-length-42s-peak (contra-20260803-optimal-length); both contradictions favour the more transparent sources."
+correlation_causation_note: >-
+  Claimed regression associations presented as raising recommendation likelihood;
+  without feature definitions or a described outcome variable the causal and
+  correlational interpretation cannot be independently verified.
+recommended_confidence: low
+recommended_status: disputed
+unsupported_certainty_flags:
+  - "Source reports significant betas and 82% model accuracy without verifiable data or reproducible methods."
+  - "Claims trending hashtags increase recommendation likelihood despite Klug 2021's transparent null result."
+reasoning: >-
+  Retained as a disputed low-confidence record so future sources have something to
+  corroborate or bury; the publication-quality flags in the manifest and direct
+  conflicts with transparent sources mean nothing should be built on it.

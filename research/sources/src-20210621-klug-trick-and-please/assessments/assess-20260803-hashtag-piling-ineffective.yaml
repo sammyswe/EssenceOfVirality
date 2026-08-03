@@ -1,0 +1,39 @@
+artifact_type: evidence_assessment
+id: assess-20260803-hashtag-piling-ineffective
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20210621-hashtag-piling-ineffective]
+
+claim_id: claim-20210621-hashtag-piling-ineffective
+dimensions:
+  relevance:
+    rating: strong
+    note: "Directly grounds the anti-pattern of piling #fyp, #foryou and trending tags on mix videos."
+  specificity:
+    rating: moderate
+    note: "Null relationship across 300,617 videos with qualitative top-10% detail; no effect-size statistics for individual hashtag types."
+  transparency:
+    rating: strong
+    note: "Peer-reviewed paper with described hashtag-hotness scoring and play-count analysis on a documented sample."
+  incentive_bias:
+    rating: weak
+    note: "Low bias risk: the tested assumption is the most widespread creator tactic and it failed — little incentive to misstate a null result."
+  niche_transferability:
+    rating: strong
+    note: "Hashtag piling is a platform-wide tactic; the null finding transfers directly to content-relevant metadata strategy for Spotify-mix videos."
+  agreement_other_sources:
+    rating: weak
+    note: "Conflicts with claim-20240719-zhou-engagement-features (trending hashtags beta=0.32); contra-20260803-trending-hashtag-effect retains Klug as the working position given transparent method."
+correlation_causation_note: >-
+  Null correlation within trending videos; a gate-keeping role for hashtags below
+  the trending threshold cannot be excluded, and hashtag semantics may have shifted
+  since 2021 as search grew.
+recommended_confidence: medium
+recommended_status: disputed
+unsupported_certainty_flags: []
+reasoning: >-
+  Methodologically the strongest hashtag evidence in the store and the direct basis
+  for limiting hashtag reliance, but marked disputed because Zhou 2024 reports the
+  opposite on an unverifiable dataset; practical guidance follows Klug until a
+  credible post-2021 source corroborates or supersedes it.

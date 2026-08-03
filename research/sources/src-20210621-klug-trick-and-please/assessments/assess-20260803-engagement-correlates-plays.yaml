@@ -1,0 +1,38 @@
+artifact_type: evidence_assessment
+id: assess-20260803-engagement-correlates-plays
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20210621-engagement-correlates-plays]
+
+claim_id: claim-20210621-engagement-correlates-plays
+dimensions:
+  relevance:
+    rating: strong
+    note: "Directly supports treating comments, likes and shares as co-moving indicators of distribution success."
+  specificity:
+    rating: moderate
+    note: "300,617 trending videos and three named metrics; no coefficients, thresholds or per-signal weights."
+  transparency:
+    rating: strong
+    note: "Peer-reviewed WebSci paper with described pair-plot analysis on a documented sample."
+  incentive_bias:
+    rating: weak
+    note: "Low bias risk: academic mixed-method study with no platform or commercial stake in the direction of the correlation."
+  niche_transferability:
+    rating: moderate
+    note: "Trending-section sample from Jan 2021; correlational pattern among already-distributed videos may not describe how a new UK mix account gains its first views."
+  agreement_other_sources:
+    rating: moderate
+    note: "Directionally consistent with first-party engagement-factor disclosures and Lynch's leaked-document synthesis, though none independently quantify these three signals."
+correlation_causation_note: >-
+  Correlational only: high plays mechanically produce more engagement as well as
+  vice versa; the paper explicitly does not establish which direction, if any,
+  drives distribution.
+recommended_confidence: medium
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  One of the few transparent empirical tests of a widespread creator assumption;
+  useful as correlational support for engagement co-movement, provided the trending-
+  section scope and 2021 date are preserved and no causal lever is inferred.

@@ -1,0 +1,38 @@
+artifact_type: evidence_assessment
+id: assess-20260803-posting-time-effect
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20210621-posting-time-effect]
+
+claim_id: claim-20210621-posting-time-effect
+dimensions:
+  relevance:
+    rating: moderate
+    note: "Posting schedule is a controllable distribution input, but the UTC windows cannot be converted into a UK audience timetable without first-party analytics."
+  specificity:
+    rating: strong
+    note: "KS test p=1.8e-41; named UTC windows (06:00-16:00 vs 00:00-04:00) and peak ~11:00; notes top videos can be 2+ weeks old."
+  transparency:
+    rating: strong
+    note: "Named statistical test, sample (trending videos, Jan 2021) and time bins reported in the peer-reviewed paper."
+  incentive_bias:
+    rating: weak
+    note: "Low bias risk: descriptive separation within trending videos, not a prescriptive posting guide."
+  niche_transferability:
+    rating: weak
+    note: "UTC only with no geography or viewer-timezone data; extraction flags that 'good posting times' are not directly actionable for a UK account."
+  agreement_other_sources:
+    rating: unknown
+    note: "No other ingested claim tests posting-time separation at this precision."
+correlation_causation_note: >-
+  Correlational within already-trending videos; mechanism (audience activity vs
+  algorithm batching) is unknown and confounded with video age — top-10% videos
+  were older on average.
+recommended_confidence: medium
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  Statistically precise bounded finding that posting time separates play-count tiers
+  among trending videos, but transferability to a niche UK posting schedule remains
+  uncertain until phase-5 first-party data.

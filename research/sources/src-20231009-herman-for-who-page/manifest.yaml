@@ -1,0 +1,30 @@
+artifact_type: source_manifest
+id: src-20231009-herman-for-who-page
+created_at: 2026-08-03
+produced_by: research-intake-coordinator
+version: 1
+human_review: pending
+
+source_type: academic_paper
+url: https://dl.designresearchsociety.org/cgi/viewcontent.cgi?article=1248&context=iasdr
+local_path: null
+title: "For who page? TikTok creators' algorithmic dependencies"
+author: "Laura M. Herman (Oxford Internet Institute)"
+publisher: "Design Research Society, IASDR 2023 (doi 10.21606/iasdr.2023.576)"
+published_date: "2023-10-09"
+retrieved_at: 2026-08-03
+duplicate_check:
+  checked: true
+  duplicate_of: null
+licensing_notes: >-
+  CC BY-NC 4.0 (stated on the paper). Findings and short attributed quotes stored;
+  full text not copied into the repository.
+creator_priority_note: >-
+  Supplied by the creator in the first phase-2 research batch (2026-08-03), no
+  per-link note given.
+notes: >-
+  Peer-reviewed design-research paper: autoethnography, walkthrough, 8 creator
+  interviews and observation sessions. Strongest on how creators behave and on
+  documented 'algorithmic lore' (including the author's own falsified lore about
+  video length); its distribution statistics are secondary citations of an industry
+  study (Romero 2023) and are recorded at correspondingly lower confidence.

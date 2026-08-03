@@ -1,0 +1,80 @@
+artifact_type: extraction_report
+id: ext-20210621-klug-trick-and-please
+created_at: 2026-08-03
+produced_by: source-extraction
+version: 1
+inputs: [src-20210621-klug-trick-and-please]
+
+source_id: src-20210621-klug-trick-and-please
+method: >-
+  Fetched the ACM full-text HTML page (2026-08-03; direct fetch timed out twice,
+  retrieved successfully via search-cached copy of the same URL) and sectioned the
+  full paper text.
+limitations:
+  - "Data is from the trending section only (Jan 2021): correlations describe already-trending videos, not the path from posting to trending."
+  - "All engagement results are correlational; the authors explicitly do not claim to know how videos are selected."
+  - "Posting-time analysis uses UTC with no timezone/geography data; 'good posting times' are not directly actionable for a UK account."
+  - "Interviews are US users aged 18-25 recruited via location hashtags (Aug 2020); folk-theory prevalence may differ elsewhere."
+  - "2021 platform behaviour; a 2025 SIGIR reproduction study (not ingested) reports TikTok audit findings often have short-term validity."
+
+sections:
+  - section_id: s1-interviews
+    heading: "Qualitative results: three main user assumptions (RQ1, RQ2)"
+    summary: >-
+      From 28 interviews, three main assumptions about how the algorithm picks up
+      videos: (1) high engagement, foremost comments; (2) posting at times of high
+      user activity; (3) adding trending and algorithm-related hashtags (#fyp,
+      #foryou) and piling hashtags. These assumptions demonstrably shape creation
+      practices (comment-bait elements, strategic posting delays, hashtag piling
+      regardless of content relevance). Creators experience the algorithm as
+      favourable when consuming but erratic when creating.
+    content_kinds: [data, author_statement]
+    key_points:
+      - "Assumptions drive practice even when unverified: 'I don't know if this is how the algorithm works but...' (P21)."
+      - "Creators hold the algorithm, not video content/style, responsible for reach."
+  - section_id: s2-engagement
+    heading: "Data analysis: engagement correlates with play counts"
+    summary: >-
+      Across 300,617 trending videos, comments, likes and shares each positively
+      correlate with play counts (normalised pair plots). The engagement assumption is
+      'validated' for trending videos in general — as correlation, not mechanism.
+    content_kinds: [data]
+    key_points:
+      - "Comments/likes/shares and play counts rise together among trending videos."
+      - "Direction of causation is not established (more views also produce more engagement)."
+  - section_id: s3-posting-time
+    heading: "Data analysis: posting time differentiates top-10% play counts"
+    summary: >-
+      Two-sample Kolmogorov-Smirnov test on createTime: top-10%-play-count trending
+      videos were largely posted 6am-4pm UTC (peak ~11am UTC), remaining 90% mostly
+      midnight-4am UTC (peak ~1am UTC); p = 1.779e-41. Top-10% videos were also
+      generally older (some 2+ weeks old), i.e. trending is not immediate.
+    content_kinds: [data]
+    key_points:
+      - "Posting time significantly separates top-10% from remaining-90% play counts within trending videos."
+      - "Videos can take days-weeks to trend, contradicting the user assumption of immediacy."
+  - section_id: s4-hashtags
+    heading: "Data analysis: hashtag piling disproved"
+    summary: >-
+      Hashtag hotness score (total popularity of a video's hashtags) shows no
+      relationship to play counts; videos with many popular hashtags often had low
+      plays. Almost none of the top-10% videos used any of the daily trending hashtags
+      (partly a timing artifact: trending videos are older than today's trending
+      hashtags). The most common creator tactic (piling #fyp/#foryou/trending tags)
+      is found not applicable.
+    content_kinds: [data]
+    key_points:
+      - "No relationship between hashtag popularity/piling and play counts."
+      - "The most widespread creator assumption tested is the one that failed."
+  - section_id: s5-background
+    heading: "Background: how recommendation reportedly works"
+    summary: >-
+      Literature/press background (not the paper's own findings): feeds are curated
+      from engagement signals (viewing time, likes, comments, shares); ByteDance
+      applies NLP and computer vision to classify text, audio and visual elements;
+      new videos are initially shown to a small group likely to interact, then
+      expanded on favourable engagement.
+    content_kinds: [author_statement]
+    key_points:
+      - "Small-initial-cohort testing is asserted via journalistic sources, not measured here."
+      - "Machine classification of video content (text/audio/visual) is asserted via ByteDance's own AI-lab material."

@@ -1,0 +1,55 @@
+artifact_type: extraction_report
+id: ext-20250423-lynch-decoding-the-algorithm
+created_at: 2026-08-03
+produced_by: source-extraction
+version: 1
+inputs: [src-20250423-lynch-decoding-the-algorithm]
+
+source_id: src-20250423-lynch-decoding-the-algorithm
+method: "Fetched the full thesis text from UConn Digital Commons (2026-08-03) and sectioned it."
+limitations:
+  - "Undergraduate honours thesis, not peer-reviewed platform research; no original data collection."
+  - "Key platform assertions rest on a secondhand reading of a leaked TikTok engineering document (cited via press coverage), whose exact provenance/date the thesis does not establish."
+  - "Most technical sections are explicitly hypothetical ('TikTok likely leverages...'): standard recommender-systems mathematics presented as plausible mechanism, not observed platform behaviour."
+  - "Several strong assertions (e.g. fast swipe-past interpreted as dislike; comments and follows weighted more heavily) are given without citation to data."
+
+sections:
+  - section_id: s1-leaked-doc
+    heading: "Leaked-document assertions (Section 1.2)"
+    summary: >-
+      Citing a leaked document from TikTok's engineering team: the business model has
+      four pillars (short-term user value, long-term user value, creator value,
+      platform value); the two main tracked metrics for daily active viewership are
+      retention (whether a user returns) and watch time; user behaviour is summed over
+      likes, comments, follows and shares to score each video, and the highest-scoring
+      content is served.
+    content_kinds: [author_statement]
+    key_points:
+      - "Retention and watch time named as the two core tracked metrics."
+      - "Videos scored by an ML prediction over summed interactions (likes, comments, follows, shares)."
+      - "Consistent with press reporting of the 2021 leaked 'TikTok Algo 101' document, though the thesis does not name it."
+  - section_id: s2-skip-signal
+    heading: "Swipe-past as negative signal (Sections 1.2, 2.2)"
+    summary: >-
+      Asserts that watch duration is a key interest indicator and that swiping past a
+      video quickly signals disinterest, causing less of that content to be shown;
+      also asserts comments and follows are 'ranked more heavily' as deep-interest
+      signals, and that completion rate (watch time / video length) raises ranking.
+    content_kinds: [author_statement]
+    key_points:
+      - "Fast swipe-past asserted (uncited) to be read as a negative preference signal."
+      - "Comments/follows asserted to carry more weight than other interactions."
+      - "Completion-rate framing matches the official 2020 disclosure's emphasis on full watches."
+  - section_id: s3-speculative-maths
+    heading: "Speculative mechanism modelling (Sections 2-4)"
+    summary: >-
+      Textbook expositions of matrix factorisation/SVD, feedback loops and
+      reinforcement learning, CNN video classification and moderation, split testing,
+      PLSA hashtag topic modelling, and Fourier-transform audio analysis — presented
+      as how TikTok 'likely' works. Useful as recommender-systems background; not
+      evidence of TikTok's actual implementation.
+    content_kinds: [author_statement, method]
+    key_points:
+      - "Hashtags described as a categorisation/searchability mechanism (consistent with other sources)."
+      - "Continuous split testing of recommendations asserted as 'likely'."
+      - "No claims recorded from this section: mechanism speculation, marked as such by the author."

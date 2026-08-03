@@ -1,0 +1,28 @@
+artifact_type: source_manifest
+id: src-20210621-klug-trick-and-please
+created_at: 2026-08-03
+produced_by: research-intake-coordinator
+version: 1
+human_review: pending
+
+source_type: academic_paper
+url: https://dl.acm.org/doi/fullHtml/10.1145/3447535.3462512
+local_path: null
+title: "Trick and Please. A Mixed-Method Study On User Assumptions About the TikTok Algorithm"
+author: "Daniel Klug, Yiluo Qin, Morgan Evans, Geoff Kaufman"
+publisher: "ACM (WebSci '21, 13th ACM Web Science Conference)"
+published_date: "2021-06-21"
+retrieved_at: 2026-08-03
+duplicate_check:
+  checked: true
+  duplicate_of: null
+licensing_notes: >-
+  Open access under CC BY 4.0 (stated on the ACM full-text page). Findings and short
+  attributed quotes stored; full text not copied into the repository.
+creator_priority_note: >-
+  Supplied by the creator in the first phase-2 research batch (2026-08-03), no
+  per-link note given.
+notes: >-
+  Peer-reviewed mixed-method study: 28 qualitative interviews (Aug 2020) plus
+  quantitative analysis of 300,617 trending-section videos (Jan 14-29, 2021). One of
+  the few peer-reviewed sources that tests creator folk theories against data.

@@ -1,0 +1,34 @@
+artifact_type: evidence_assessment
+id: assess-20260803-trending-sound-boost
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20231009-trending-sound-boost]
+
+claim_id: claim-20231009-trending-sound-boost
+dimensions:
+  relevance:
+    rating: weak
+    note: "The editor's recommendation flywheel is observed, but the distribution boost is unverified lore — and this niche never overlays platform Sounds."
+  specificity:
+    rating: weak
+    note: "Qualitative description of editor behaviour plus widespread creator belief; no quantified boost or A/B evidence."
+  transparency:
+    rating: moderate
+    note: "Peer-reviewed design research documenting observed editor mechanics; the FYP distribution effect is explicitly recorded as lore in the claim."
+  incentive_bias:
+    rating: moderate
+    note: "Creator interviews report beliefs shaped by platform UI nudges toward trending Sounds; the flywheel benefits TikTok's Sound ecosystem."
+  niche_transferability:
+    rating: not_applicable
+    note: "Mix videos use original captured Spotify audio, never overlaid platform Sounds (claim-20260803-pref-music-central); recorded mainly to document why this common tactic is unavailable."
+  agreement_other_sources:
+    rating: unknown
+    note: "No other ingested claim tests trending-Sound distribution effects."
+recommended_confidence: low
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  Kept active at low confidence as documentation of a widespread tactic this project
+  cannot use; sharpens the open question of how original-audio music content competes
+  without platform-recognised sounds.
