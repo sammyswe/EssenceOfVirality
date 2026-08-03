@@ -1,0 +1,45 @@
+# Secrets and local config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Scratch
+tmp/
+.scratch/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# Raw media never enters git by default (local-first policy, SECURITY.md)
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.webm
+*.wav
+*.flac
+*.aiff
+*.m4a
+*.mp3
+
+# Raw analytics exports (only normalised records are committed)
+analytics/raw/
+
+# External clones (OpenMontage is pinned by ref, not vendored)
+integrations/openmontage/clone/

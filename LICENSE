@@ -1,0 +1,13 @@
+Copyright (c) 2026. All rights reserved.
+
+This repository is private and proprietary. No licence is granted to copy, modify, distribute or
+use its contents, in whole or in part, without the explicit written permission of the repository
+owner.
+
+Third-party components retain their own licences:
+
+- Skills installed under `.agents/skills/` originate from https://github.com/mattpocock/skills
+  (MIT License, Copyright (c) 2026 Matt Pocock).
+- OpenMontage (https://github.com/calesthio/OpenMontage, AGPL-3.0) is NOT included in this
+  repository; it is used, when used at all, as an external unmodified clone. See
+  docs/adr/0001-openmontage-integration-strategy.md.
