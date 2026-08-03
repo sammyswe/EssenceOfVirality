@@ -7,16 +7,16 @@ one owner; other documents link rather than restate.
 
 | Topic | Document | Status |
 |---|---|---|
-| Working model overview | `algorithm-model/current-working-model.md` | seeded (vertical slice) |
+| Working model overview | `algorithm-model/current-working-model.md` | v0.1 (batch 2026-08-03: 5 sources) |
 | Official disclosures | `algorithm-model/known-platform-disclosures.md` | seeded (vertical slice) |
-| Inferred hypotheses | `algorithm-model/inferred-distribution-hypotheses.md` | seeded (vertical slice) |
-| What we don't know | `algorithm-model/unknowns.md` | seeded (vertical slice) |
+| Inferred hypotheses | `algorithm-model/inferred-distribution-hypotheses.md` | 4 active hypotheses |
+| What we don't know | `algorithm-model/unknowns.md` | updated (batch 2026-08-03) |
 
 ## Viewer behaviour
 
 | Topic | Document | Status | Related skills |
 |---|---|---|---|
-| Completion / full watch | `viewer-behaviour/completion.md` | seeded | `evaluate-transition-payoff`, `evaluate-hook-clarity` |
+| Completion / full watch | `viewer-behaviour/completion.md` | updated (external baseline, loop hypothesis) | `evaluate-transition-payoff`, `evaluate-hook-clarity` |
 | Attention, comprehension, curiosity, anticipation, payoff, rewatching, sharing, commenting, following | planned (phase 2) | not created — see `viewer-behaviour/README.md` | — |
 
 ## Production techniques (controllable rules)
@@ -24,7 +24,8 @@ one owner; other documents link rather than restate.
 | Topic | Document | Status | Related skills |
 |---|---|---|---|
 | Hooks | `production-techniques/hooks.md` | seeded | `evaluate-hook-clarity` |
-| First frame, pacing, overlays, captions, motion, loops, CTAs, audio, packaging | planned (phase 2) | not created — see `production-techniques/README.md` | `analyse-first-frame`, `preserve-spotify-mix-audio` |
+| Metadata & discovery (hashtags, on-screen text, sounds, search) | `production-techniques/metadata-and-discovery.md` | seeded (batch 2026-08-03) | `searchable-onscreen-text` (experimental) |
+| First frame, pacing, overlays, motion, loops, CTAs, audio, packaging | planned (phase 2) | not created — see `production-techniques/README.md` | `analyse-first-frame`, `preserve-spotify-mix-audio` |
 
 ## Spotify-mix niche
 
