@@ -1,0 +1,29 @@
+artifact_type: evidence_assessment
+id: assess-20260803-negative-feedback
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20200618-negative-feedback-shapes-feed]
+
+claim_id: claim-20200618-negative-feedback-shapes-feed
+dimensions:
+  relevance:
+    rating: moderate
+    note: "Indirect production guidance: avoid provoking hide/not-interested responses."
+  specificity:
+    rating: strong
+    note: "Mechanisms individually named."
+  transparency:
+    rating: moderate
+  incentive_bias:
+    rating: weak
+    note: "User-control feature description; minimal bias incentive."
+  niche_transferability:
+    rating: strong
+correlation_causation_note: >-
+  Note carefully: the source does NOT say early skips are negative feedback; only
+  explicit actions are listed. Do not let future reasoning conflate them.
+recommended_confidence: high
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: "Straightforward disclosure-fact with a scoping trap worth the explicit note."

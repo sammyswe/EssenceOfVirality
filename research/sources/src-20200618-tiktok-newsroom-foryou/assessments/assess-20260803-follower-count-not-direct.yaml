@@ -1,0 +1,34 @@
+artifact_type: evidence_assessment
+id: assess-20260803-follower-count-not-direct
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20200618-follower-count-not-direct]
+
+claim_id: claim-20200618-follower-count-not-direct
+dimensions:
+  relevance:
+    rating: strong
+    note: "Directly relevant to a small anonymous account's prospects."
+  specificity:
+    rating: strong
+    note: "Unusually precise negative statement ('neither... nor... are direct factors')."
+  transparency:
+    rating: moderate
+  incentive_bias:
+    rating: moderate
+    note: "TikTok benefits from small creators believing they can break through; however the statement is falsifiable enough that fabrication would be risky. Treat as credible but watch for contrary measurements."
+  niche_transferability:
+    rating: strong
+  agreement_other_sources:
+    rating: unknown
+    note: "Expected to conflict with creator folklore in future ingestions — contradiction records will form here."
+correlation_causation_note: >-
+  'Direct' is doing work: indirect account effects (follower-base seeding, audience
+  priors) remain possible and unmeasured.
+recommended_confidence: high
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  Clear official negative claim; high confidence as a disclosure-fact with the
+  'direct' scoping preserved verbatim in the statement.

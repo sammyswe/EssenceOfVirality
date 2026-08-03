@@ -1,0 +1,24 @@
+# SYNTHETIC test fixture — not evidence. See README.md in this directory.
+artifact_type: claim_record
+id: claim-test-fixture-short-hooks
+created_at: 2026-08-03
+produced_by: creator
+version: 1
+human_review: not_required
+notes: "Synthetic claim A for the contradiction/experiment schema proof."
+
+statement: >-
+  (Synthetic) Text hooks of five words or fewer outperform longer hooks on early
+  retention for music content.
+claim_type: pattern
+source_ids: [src-test-fixture-synthetic]
+domain: [creative_production]
+metric_targets: [early_skip_rate]
+evidence_basis: [observational]
+transferability: uncertain
+confidence: low
+status: disputed
+publication_date: null
+platform_dependent: false
+limitations: ["Synthetic test data."]
+contradictions: [contra-test-fixture-hook-length]

@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20260803-hyp-early-skip-promise
+created_at: 2026-08-03
+produced_by: distribution-model-analyst
+version: 1
+inputs: [claim-20200618-completion-strong-signal]
+human_review: pending
+
+statement: >-
+  Videos whose first ~1 second fails to communicate an honest content promise may
+  suffer higher early-skip rates, lowering average watch time and completion.
+  Testable: compare retention curves of promise-bearing vs neutral first frames on
+  comparable posts.
+claim_type: hypothesis
+source_ids: [src-20200618-tiktok-newsroom-foryou, src-20260803-creator-brief]
+domain: [viewer_behaviour, creative_production]
+metric_targets: [early_skip_rate, average_watch_time, completion_rate]
+evidence_basis: [official, expert_opinion]
+transferability: direct
+confidence: medium
+status: active
+publication_date: "2026-08-03"
+platform_dependent: false
+limitations:
+  - "General attention reasoning, not disclosed platform behaviour; the disclosure only establishes that full watches matter, not why viewers skip."
+  - "The ~1 second threshold is an assumption, not a measurement."
+proposed_actions:
+  - "Grounds evaluate-hook-clarity and analyse-first-frame (both maturity: experimental, confidence: low)"
+  - "Phase-5 experiment: first-frame promise A/B"

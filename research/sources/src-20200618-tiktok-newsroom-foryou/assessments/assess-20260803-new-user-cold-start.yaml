@@ -1,0 +1,29 @@
+artifact_type: evidence_assessment
+id: assess-20260803-new-user-cold-start
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20200618-new-user-cold-start]
+
+claim_id: claim-20200618-new-user-cold-start
+dimensions:
+  relevance:
+    rating: moderate
+    note: "Viewer-side cold start; our pressing question (new posting account) is only obliquely informed."
+  specificity:
+    rating: moderate
+  transparency:
+    rating: moderate
+  incentive_bias:
+    rating: weak
+    note: "Onboarding description; negligible bias incentive."
+  niche_transferability:
+    rating: moderate
+    note: "Transferability marked uncertain on the claim: viewer-side mechanics, creator-side implications unknown."
+correlation_causation_note: "Descriptive; no causal content."
+recommended_confidence: high
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  Kept mainly for the replay mention (rare official rewatch signal) and to scope what
+  the source does NOT say about creator cold start.

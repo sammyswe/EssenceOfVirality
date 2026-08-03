@@ -1,0 +1,20 @@
+# SYNTHETIC test fixture — not evidence. Proves contradiction representation.
+artifact_type: contradiction_record
+id: contra-test-fixture-hook-length
+created_at: 2026-08-03
+produced_by: contradiction-synthesis
+version: 1
+human_review: not_required
+notes: "Synthetic contradiction for schema/workflow proof."
+
+claim_ids: [claim-test-fixture-short-hooks, claim-test-fixture-specific-hooks]
+description: >-
+  (Synthetic) Claim A attributes early-retention differences to hook word count;
+  claim B attributes them to hook specificity and predicts the opposite outcome for
+  long-but-specific hooks. Both cannot be generally true as stated.
+disagreement_causes: [different_definitions, different_methods]
+resolution: experiment_proposed
+resolution_notes: >-
+  Both sides survive as disputed records; a sequential comparison isolating length
+  from specificity could discriminate. Neither claim is deleted or rewritten.
+experiment_id: exp-test-fixture-hook-length

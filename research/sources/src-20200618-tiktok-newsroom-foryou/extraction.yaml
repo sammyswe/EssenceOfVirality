@@ -1,0 +1,88 @@
+artifact_type: extraction_report
+id: ext-20200618-tiktok-newsroom-foryou
+created_at: 2026-08-03
+produced_by: source-extraction
+version: 1
+inputs: [src-20200618-tiktok-newsroom-foryou]
+
+source_id: src-20200618-tiktok-newsroom-foryou
+method: "Fetched the live newsroom page (2026-08-03) and sectioned the full post text."
+limitations:
+  - "Corporate self-description: the platform describing itself, with no method or data shown."
+  - "Published 2020-06-18; the page carries no update notice, but current (2026) behaviour may differ."
+  - "Examples of factors are explicitly non-exhaustive ('including things like')."
+  - "No quantitative weights disclosed beyond the strong-vs-weak indicator example."
+
+sections:
+  - section_id: s1-context
+    heading: "Intro + the basics about recommendation systems"
+    summary: >-
+      Framing: the For You feed is central to TikTok, powered by a recommendation
+      system that personalises per user; generic explanation of recommender systems
+      using expressed preferences (comments, follows).
+    content_kinds: [author_statement]
+    key_points:
+      - "Each user's For You feed is unique and personalised."
+
+  - section_id: s2-factors
+    heading: "What factors contribute to For You?"
+    summary: >-
+      Lists ranking factor categories with examples and describes weighting by value
+      to the user, including the strong-vs-weak indicator example and the explicit
+      statement about follower count.
+    content_kinds: [author_statement, data]
+    key_points:
+      - "Factors include: user interactions (videos liked/shared, accounts followed, comments posted, content created); video information (captions, sounds, hashtags); device and account settings (language, country, device type) — the last 'receive lower weight' because not actively expressed."
+      - "Quote: 'A strong indicator of interest, such as whether a user finishes watching a longer video from beginning to end, would receive greater weight than a weak indicator, such as whether the video's viewer and creator are both in the same country.'"
+      - "Quote: 'neither follower count nor whether the account has had previous high-performing videos are direct factors in the recommendation system.' (while noting accounts with more followers may get more views by virtue of the follower base)"
+
+  - section_id: s3-cold-start
+    heading: "Curating your personalized For You feed / getting started"
+    summary: >-
+      New users select interest categories, or receive a 'generalized feed of popular
+      videos'; first likes/comments/replays initiate early recommendations; follows and
+      Discover-tab exploration also refine recommendations.
+    content_kinds: [author_statement]
+    key_points:
+      - "Cold start: interest selection or popular-video feed; early interactions initiate personalisation."
+      - "Replays are named among the initiating interactions."
+
+  - section_id: s4-negative-feedback
+    heading: "Seeing less of what you're not interested in"
+    summary: >-
+      Long-press 'Not Interested', hide-creator, hide-sound and reports all feed future
+      recommendations.
+    content_kinds: [author_statement]
+    key_points:
+      - "Explicit negative-feedback mechanisms shape the feed."
+
+  - section_id: s5-diversification
+    heading: "Interrupting repetitive patterns / diversifying recommendations"
+    summary: >-
+      The system intersperses diverse content to counter filter bubbles: generally no
+      two consecutive videos with the same sound or by the same creator; duplicated
+      content, already-seen content and spam are not recommended; deliberately
+      non-matching videos are sometimes injected, partly to gauge wider popularity.
+    content_kinds: [author_statement, method]
+    key_points:
+      - "Same-sound/same-creator consecutive suppression; duplicate/seen/spam exclusion."
+      - "Intentional diversity injection is framed as both discovery and popularity sensing."
+
+  - section_id: s6-safety-eligibility
+    heading: "Safeguarding the viewing experience"
+    summary: >-
+      Some content may be ineligible for recommendation: reviewed content depicting e.g.
+      graphic medical procedures or regulated-goods consumption; just-uploaded or
+      under-review videos; spam including artificial traffic seeking.
+    content_kinds: [author_statement]
+    key_points:
+      - "Eligibility gates exist upstream of ranking."
+
+  - section_id: s7-improvement
+    heading: "Improving For You"
+    summary: >-
+      Continuous refinement of models, factors and weights; work on engagement-bias
+      protections; invited-expert transparency centre mentioned.
+    content_kinds: [author_statement, advertising_claim]
+    key_points:
+      - "Weights and factors are explicitly described as changing over time — supports treating all details as dated."

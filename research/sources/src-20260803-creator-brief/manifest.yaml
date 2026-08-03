@@ -1,0 +1,27 @@
+artifact_type: source_manifest
+id: src-20260803-creator-brief
+created_at: 2026-08-03
+produced_by: research-intake-coordinator
+version: 1
+human_review: approved
+
+source_type: manual_observation
+url: null
+local_path: CONTEXT.md
+title: "Creator project brief (phase-one master specification)"
+author: creator
+publisher: null
+published_date: "2026-08-03"
+retrieved_at: 2026-08-03
+duplicate_check:
+  checked: true
+  duplicate_of: null
+licensing_notes: "Creator's own material; no restrictions."
+creator_priority_note: >-
+  Registered so creator preferences and constraints exist as first-class claim
+  records that skills can cite via evidence_refs, instead of floating as unsourced
+  assumptions.
+notes: >-
+  The brief's requirements are preserved in CONTEXT.md; this manifest anchors the
+  preference claims extracted from it. human_review is approved because the creator
+  authored the source content.

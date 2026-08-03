@@ -1,0 +1,30 @@
+artifact_type: claim_record
+id: claim-20200618-ranking-factor-categories
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20200618-tiktok-newsroom-foryou]
+human_review: pending
+
+statement: >-
+  TikTok stated (2020) that For You ranking combines factors including: user
+  interactions (videos liked or shared, accounts followed, comments posted, content
+  created), video information (captions, sounds, hashtags), and device/account
+  settings (language, country, device type) — with device/account settings weighted
+  lower because users do not actively express them as preferences.
+claim_type: fact
+source_ids: [src-20200618-tiktok-newsroom-foryou]
+domain: [tiktok_distribution]
+metric_targets: [like_rate, share_rate, comment_rate, follow_conversion, distribution_volume]
+evidence_basis: [official]
+transferability: direct
+confidence: high
+status: active
+publication_date: "2020-06-18"
+platform_dependent: true
+limitations:
+  - "Factor list explicitly non-exhaustive ('including things like')."
+  - "Describes 2020 behaviour; the same post says factors and weights are continuously adjusted."
+  - "Fact about the disclosure; individual weights undisclosed."
+proposed_actions:
+  - "Seed knowledge/algorithm-model/known-platform-disclosures.md"

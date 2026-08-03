@@ -1,0 +1,36 @@
+artifact_type: evidence_assessment
+id: assess-20260803-completion-strong-signal
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20200618-completion-strong-signal]
+
+claim_id: claim-20200618-completion-strong-signal
+dimensions:
+  relevance:
+    rating: strong
+    note: "Directly grounds the project's primary retention target."
+  specificity:
+    rating: moderate
+    note: "One concrete strong-vs-weak example; 'longer video' undefined; no thresholds."
+  transparency:
+    rating: moderate
+    note: "First-party assertion without data."
+  incentive_bias:
+    rating: weak
+    note: "Low bias risk: encouraging full watches is not a flattering or defensive claim; little reason to misstate it."
+  niche_transferability:
+    rating: moderate
+    note: "Our videos are short; how completion of a 12s clip compares to 'a longer video from beginning to end' is genuinely unclear — hence transferability: adapted."
+  agreement_other_sources:
+    rating: unknown
+correlation_causation_note: >-
+  The disclosure describes a ranking input, not a guarantee that raising completion
+  raises distribution; that causal step is deliberately split into
+  claim-20260803-hyp-completion-lever.
+recommended_confidence: high
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  The strongest actionable disclosure in the source, provided its scope ('longer
+  video', 2020) is preserved and the causal extension is kept as a hypothesis.

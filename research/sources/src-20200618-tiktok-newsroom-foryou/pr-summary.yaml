@@ -1,0 +1,45 @@
+artifact_type: pull_request_summary
+id: prs-20260803-foryou-ingestion
+created_at: 2026-08-03
+produced_by: pr-curator
+version: 1
+inputs: [kcp-20260803-foryou-disclosures, eval-20260803-foryou-ingestion]
+human_review: pending
+
+source_ids: [src-20200618-tiktok-newsroom-foryou, src-20260803-creator-brief]
+findings_summary: >-
+  TikTok's official 2020 For You disclosure yields seven high-confidence,
+  platform-dependent disclosure claims (ranking factor categories; completion as a
+  strong weighted signal; follower count not a direct factor; viewer cold start; feed
+  diversification rules; explicit negative-feedback mechanisms; eligibility gates).
+  Two testable hypotheses were derived (completion as a distribution lever for short
+  mix videos; first-second promise vs early skipping) and one heuristic technique
+  record (optimise for completed watches, niche-adapted). The creator brief was
+  registered as a source so three standing preferences (music centrality, anonymity,
+  Spotify legibility) exist as citable claims.
+
+knowledge_changes: [kcp-20260803-foryou-disclosures]
+skill_changes: []
+contradictions: []
+evaluations: [eval-20260803-foryou-ingestion]
+
+risks_and_uncertainty: >-
+  Single-source seed: the working model currently rests on one 2020 corporate
+  communication. All disclosure claims are dated and platform-dependent; the same
+  post states that factors and weights change continuously. The two hypotheses are
+  unmeasured; the ~40% payoff-placement threshold circulating in the exemplar skills
+  is explicitly provisional. Marketing-reviewed source: incentive-bias assessed per
+  claim (highest on follower-count and diversification framing).
+
+recommendation: merge
+follow_up_experiments: []
+requires_creator_review:
+  - "Confirm the recorded skip: preference claims and derived hypotheses received no evidence_assessment (rationale in eval-20260803-foryou-ingestion)."
+  - "Confirm placement of the four exemplar skills directly in their banks (ADR 0005 clarified wording) rather than experimental/."
+  - "No contradictions found — trivially true on an empty store; the contradiction path is schema+fixture-proven but not yet exercised on real conflicting sources."
+pr_url: null
+notes: >-
+  Assembled within the phase-one infrastructure PR; pr_url stays null because this
+  summary rides the phase-one branch rather than a dedicated research/<source-id>
+  branch. Follow-up experiments deliberately deferred to phase 5 (no account or
+  analytics exist to run them against).

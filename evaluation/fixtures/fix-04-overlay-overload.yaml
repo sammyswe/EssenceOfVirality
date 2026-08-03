@@ -16,11 +16,11 @@ video:
     - three pulsing emoji stickers
     - fake progress-bar sticker
     - follower-count graphic
-    - "wait for it..." banner persisting through the payoff
+    - persistent 'wait for it...' banner that outlives the payoff
 known_problems:
   - overlays obscure the Spotify experience and the now-playing UI
   - visual noise competes with the audio payoff at the exact payoff moment
-  - "wait for it" banner keeps promising after the payoff has landed
+  - the 'wait for it' banner keeps promising after the payoff has landed
 known_strengths:
   - underlying transition and audio are strong
 expected_diagnoses:

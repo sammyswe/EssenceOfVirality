@@ -1,0 +1,69 @@
+artifact_type: evaluation_report
+id: eval-20260803-foryou-ingestion
+created_at: 2026-08-03
+produced_by: evaluation-agent
+version: 1
+inputs: [kcp-20260803-foryou-disclosures]
+human_review: pending
+
+subject_type: source_ingestion
+subject_ids:
+  - src-20200618-tiktok-newsroom-foryou
+  - kcp-20260803-foryou-disclosures
+
+checks:
+  - name: "Schema validation (tools/validate_artifacts.py)"
+    kind: structural
+    result: pass
+    details: "All ingestion artifacts validate against schemas/ (source manifest, extraction, 12 claims incl. hypotheses and preferences, 7 assessments, 1 technique record, this proposal chain)."
+  - name: "ID uniqueness and reference integrity (tools/check_ids.py)"
+    kind: structural
+    result: pass
+    details: "No duplicate IDs; no dangling references across research/, evidence/, knowledge citations."
+  - name: "Skill lint (tools/lint_skills.py)"
+    kind: structural
+    result: pass
+    details: "15 project skills pass; the four domain exemplars cite only claims created by this ingestion."
+  - name: "Fixture structure (tools/run_fixtures.py)"
+    kind: structural
+    result: pass
+    details: "Six fixtures well-formed; every expected_diagnoses skill exists."
+  - name: "Epistemic discipline review"
+    kind: instruction_quality
+    result: pass
+    details: >-
+      Disclosure facts scoped as facts-about-the-disclosure with dates; causal
+      extensions split into hypotheses; hedges ('generally', 'may') preserved;
+      preferences carry creator_statement basis; no percentages anywhere.
+  - name: "Contradiction check"
+    kind: structural
+    result: not_applicable
+    details: >-
+      No contradictions found: the evidence store was empty before this ingestion, so
+      there was nothing to disagree with. First genuine test arrives with the next
+      overlapping source.
+  - name: "Assessment coverage"
+    kind: structural
+    result: pass
+    details: >-
+      Seven official claims assessed. Recorded skip: the three preference claims and
+      two derived hypotheses received no evidence_assessment — dimension ratings are
+      not_applicable for creator statements, and the hypotheses' support is documented
+      in their own limitations. Skip recorded here per workflow skip discipline.
+
+fixtures_run: []
+regressions_found: []
+cannot_validate_without_real_data:
+  - "Whether completion actually drives distribution for 10-40s Spotify-mix videos (claim-20260803-hyp-completion-lever) — needs phase-5 analytics."
+  - "Whether first-frame promises reduce early skips in this niche (claim-20260803-hyp-early-skip-promise)."
+  - "Whether the 2020 disclosure still describes 2026 ranking behaviour — no current official source ingested yet."
+  - "All four exemplar skills' behavioural value: fixtures test their instructions' shape, not real retention outcomes."
+
+overall: pass
+recommendation: merge
+notes: >-
+  Vertical-slice run of pipelines/research-ingestion.yaml executed within the
+  phase-one infrastructure PR itself; the PR gate for this ingestion is that PR's
+  creator review. fixtures_run is empty because no skill changed as part of the
+  ingestion (exemplar skills entered via the same PR as new infrastructure, with
+  fixture expectations defined against them for future runs).

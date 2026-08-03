@@ -1,0 +1,53 @@
+artifact_type: knowledge_change_proposal
+id: kcp-20260803-foryou-disclosures
+created_at: 2026-08-03
+produced_by: skill-architect
+version: 1
+inputs:
+  - claim-20200618-ranking-factor-categories
+  - claim-20200618-completion-strong-signal
+  - claim-20200618-follower-count-not-direct
+  - claim-20200618-new-user-cold-start
+  - claim-20200618-feed-diversification
+  - claim-20200618-negative-feedback-shapes-feed
+  - claim-20200618-eligibility-gates
+  - claim-20260803-hyp-completion-lever
+  - claim-20260803-hyp-early-skip-promise
+human_review: pending
+
+target_documents:
+  - knowledge/algorithm-model/known-platform-disclosures.md
+  - knowledge/algorithm-model/current-working-model.md
+  - knowledge/algorithm-model/inferred-distribution-hypotheses.md
+  - knowledge/algorithm-model/unknowns.md
+  - knowledge/viewer-behaviour/completion.md
+  - knowledge/platform-constraints/eligibility.md
+  - knowledge/production-techniques/hooks.md
+change_type: add
+summary: >-
+  Seed the algorithm-model area from the 2020 official For You disclosure: disclosure
+  facts, a v0 working model, two derived hypotheses, the unknowns the source does not
+  answer; seed completion, eligibility and hooks canonical documents with cited
+  conclusions.
+claim_ids:
+  - claim-20200618-ranking-factor-categories
+  - claim-20200618-completion-strong-signal
+  - claim-20200618-follower-count-not-direct
+  - claim-20200618-new-user-cold-start
+  - claim-20200618-feed-diversification
+  - claim-20200618-negative-feedback-shapes-feed
+  - claim-20200618-eligibility-gates
+  - claim-20260803-hyp-completion-lever
+  - claim-20260803-hyp-early-skip-promise
+diff_summary: >-
+  All target documents are new (knowledge base previously empty). Disclosures table
+  with per-claim citations; working model as six cited propositions with the
+  production consequence stated; hypotheses with named tests; unknowns list;
+  completion/eligibility/hooks conclusions each citing their claims and marking their
+  evidence tier.
+requires_creator_review: true
+notes: >-
+  No skill_change_proposal accompanies this source: the four exemplar domain skills
+  were authored as phase-one infrastructure (reviewed in this same PR), and the
+  technique record's disposition is heuristic — below the operational bar for a new
+  skill.

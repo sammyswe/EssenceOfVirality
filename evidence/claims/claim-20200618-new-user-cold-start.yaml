@@ -1,0 +1,27 @@
+artifact_type: claim_record
+id: claim-20200618-new-user-cold-start
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20200618-tiktok-newsroom-foryou]
+human_review: pending
+
+statement: >-
+  TikTok stated (2020) that new users either select interest categories or receive a
+  generalized feed of popular videos, and that their first likes, comments and
+  replays initiate early personalisation of recommendations.
+claim_type: fact
+source_ids: [src-20200618-tiktok-newsroom-foryou]
+domain: [tiktok_distribution, viewer_behaviour]
+metric_targets: [rewatch_rate, distribution_volume]
+evidence_basis: [official]
+transferability: uncertain
+confidence: high
+status: active
+publication_date: "2020-06-18"
+platform_dependent: true
+limitations:
+  - "Viewer-side cold start; says nothing directly about the creator-side cold start of a new posting account."
+  - "Replays named as an initiating signal — one of the few official mentions of rewatch behaviour."
+proposed_actions:
+  - "Note for future creator-cold-start research (knowledge/algorithm-model/unknowns.md, structural unknowns)"

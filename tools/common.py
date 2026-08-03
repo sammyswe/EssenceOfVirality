@@ -81,9 +81,22 @@ BANNED_SKILL_PATTERNS = [
 ]
 
 
+def _normalise_dates(value):
+    """PyYAML parses unquoted ISO dates into date objects; schemas expect strings."""
+    import datetime
+
+    if isinstance(value, (datetime.date, datetime.datetime)):
+        return value.isoformat()
+    if isinstance(value, dict):
+        return {k: _normalise_dates(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_normalise_dates(v) for v in value]
+    return value
+
+
 def load_yaml(path: Path):
     with path.open("r", encoding="utf-8") as fh:
-        return yaml.safe_load(fh)
+        return _normalise_dates(yaml.safe_load(fh))
 
 
 def iter_artifact_files(root: Path = REPO_ROOT):

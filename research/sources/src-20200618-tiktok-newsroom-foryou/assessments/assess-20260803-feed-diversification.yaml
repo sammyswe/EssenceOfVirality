@@ -1,0 +1,31 @@
+artifact_type: evidence_assessment
+id: assess-20260803-feed-diversification
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20200618-feed-diversification]
+
+claim_id: claim-20200618-feed-diversification
+dimensions:
+  relevance:
+    rating: moderate
+    note: "Matters for series/sound-reuse strategy, not per-video editing."
+  specificity:
+    rating: strong
+    note: "Concrete rules named (same sound/creator consecutively, duplicates, seen content, spam)."
+  transparency:
+    rating: moderate
+  incentive_bias:
+    rating: moderate
+    note: "Filter-bubble section serves a public-responsibility narrative; the concrete rules are nonetheless specific enough to be credible."
+  niche_transferability:
+    rating: moderate
+    note: "A one-account mix series reusing original audio may interact with these rules in unstated ways — adapted, not direct."
+correlation_causation_note: "Descriptive; no causal content."
+recommended_confidence: high
+recommended_status: active
+unsupported_certainty_flags:
+  - "'Generally won't show' — the hedge must survive into any knowledge statement."
+reasoning: >-
+  Specific official mechanics with a hedge; useful boundary knowledge for future
+  series planning.
