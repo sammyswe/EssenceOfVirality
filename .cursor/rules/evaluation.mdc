@@ -1,0 +1,19 @@
+---
+globs: evaluation/**
+alwaysApply: false
+---
+
+# Evaluation-area rules
+
+- No universal virality score, ever: rubrics are multidimensional; evaluation reports carry
+  per-check results and an overall pass/pass_with_warnings/fail — not a number.
+- Every evaluation report must fill `cannot_validate_without_real_data` honestly.
+- Fixtures are a fixed benchmark set: changing an existing fixture invalidates historical
+  comparisons, so prefer adding fixtures; edits to existing ones need explicit justification in
+  the PR.
+- Regression rule: on any skill version bump, run old and new against the same fixtures, record
+  material differences under `evaluation/regression/`, and have the skill critic name both
+  improvements and regressions. Newer or longer output is not presumed better.
+- Rubric changes are PR-gated like skills (they are evaluation policy).
+- Structural validity: `python3 tools/run_fixtures.py` and
+  `python3 tools/validate_artifacts.py` must pass.

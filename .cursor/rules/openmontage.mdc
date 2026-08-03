@@ -1,0 +1,18 @@
+---
+globs: integrations/openmontage/**
+alwaysApply: false
+---
+
+# OpenMontage integration rules
+
+- OpenMontage is AGPL-3.0 and lives outside this repository. Never vendor, copy or commit its
+  code, schemas or skills here; `integrations/openmontage/clone/` is gitignored (ADR 0001).
+- Sync direction is ours → pinned clone only. Extensions are authored here and materialised into
+  the clone's `projects/<name>/` scope.
+- All extension sources must state the upstream schema versions they target; the pin is
+  `integrations/openmontage/PINNED_REF` and changes only via `/review-openmontage-integration`
+  with the upgrade checklist from ADR 0001.
+- Phase gate: no executable integration work before phase 3. Until then this directory contains
+  documentation and the pin only.
+- Do not reimplement capabilities OpenMontage provides (reframe, compose, subtitles, export);
+  evidence of a genuine gap goes to the ADR 0001 fork-trigger list instead.
