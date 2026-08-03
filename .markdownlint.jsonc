@@ -8,5 +8,6 @@
   "MD025": false, // frontmatter title + H1
   "MD036": false, // emphasis-as-heading used in templates
   "MD040": false, // fenced blocks without language (ASCII diagrams)
-  "MD029": false  // ordered list numbering style
+  "MD029": false, // ordered list numbering style
+  "MD060": false  // table pipe alignment/spacing — cosmetic; compact delimiter rows are fine
 }
