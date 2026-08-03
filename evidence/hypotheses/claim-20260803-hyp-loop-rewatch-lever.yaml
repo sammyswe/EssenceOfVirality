@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20260803-hyp-loop-rewatch-lever
+created_at: 2026-08-03
+produced_by: distribution-model-analyst
+version: 1
+inputs: [claim-20231009-loop-rewatch-pattern, claim-20240424-completion-baseline]
+human_review: pending
+
+statement: >-
+  For sub-20-second Spotify-mix videos, loop-driven rewatch (the transition rewarding
+  a second listen, the loop seam landing musically) may function as an additional
+  retention signal beyond single-view completion; structuring the edit so the end
+  flows back into the start could raise measured plays and watch time per viewer.
+claim_type: hypothesis
+source_ids: [src-20231009-herman-for-who-page, src-20240424-uw-tiktok-black-box]
+domain: [spotify_mix_content, viewer_behaviour]
+metric_targets: [rewatch_rate, average_watch_time, completion_rate]
+evidence_basis: [academic, observational]
+transferability: adapted
+confidence: low
+status: active
+publication_date: null
+platform_dependent: true
+limitations:
+  - "Loop weighting in ranking is unknown (unknowns.md); the CHI 2024 attention metric capped loops at 100%, so external baselines cannot measure this."
+  - "Only the honest form is permitted: the loop must be musically rewarding, not an artificial comprehension delay (contrast the text-wall exploit in claim-20231009-loop-rewatch-pattern)."
+proposed_actions:
+  - "Test (phase 5): compare loop-seamed vs hard-ending edits of comparable transitions on rewatch and total watch time."
+  - "Partially answers the loop open question in knowledge/viewer-behaviour/completion.md."

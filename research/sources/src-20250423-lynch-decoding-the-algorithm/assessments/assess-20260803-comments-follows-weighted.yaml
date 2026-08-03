@@ -1,0 +1,35 @@
+artifact_type: evidence_assessment
+id: assess-20260803-comments-follows-weighted
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20250423-comments-follows-weighted]
+
+claim_id: claim-20250423-comments-follows-weighted
+dimensions:
+  relevance:
+    rating: moderate
+    note: "If true, would prioritise comment and follow CTAs over likes/shares in mix-video overlays — but weights remain unverified."
+  specificity:
+    rating: weak
+    note: "Relative ordering asserted (comments and follows > other signals) with no magnitudes, formula or document quote."
+  transparency:
+    rating: weak
+    note: "Uncited assertion; extraction explicitly flags no data or document quote supports the specific weighting order."
+  incentive_bias:
+    rating: moderate
+    note: "Aligns with creator lore (Klug interviews record comments as foremost among assumptions) but lore convergence is not evidence."
+  niche_transferability:
+    rating: strong
+    note: "Signal-weighting claim is platform-wide; would apply to anonymous mix videos if substantiated."
+  agreement_other_sources:
+    rating: unknown
+    note: "Klug 2021 validates engagement co-movement but does not separate comment vs like vs share weights; no ingested source confirms this ordering."
+recommended_confidence: low
+recommended_status: active
+unsupported_certainty_flags:
+  - "Recorded as hypothesis because the source asserts a specific weighting order without supporting data."
+reasoning: >-
+  Documents a popular assumption in claim form for the unknowns register; plausible
+  enough to keep active as a testable hypothesis but too thin to build production
+  rules on.

@@ -1,0 +1,28 @@
+artifact_type: claim_record
+id: claim-20231009-algorithmic-lore-unreliable
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20231009-herman-for-who-page, ext-20210621-klug-trick-and-please]
+human_review: pending
+
+statement: >-
+  Creator theories about the TikTok algorithm ('algorithmic lore') materially shape
+  what creators make, yet are often unfounded: Klug 2021 tested the three most common
+  assumptions and found the most followed one (hashtag piling) false, and Herman 2023
+  documents the author's own plausible length lore being contradicted by data.
+  Perceived algorithmic preferences must not be treated as evidence of actual ones.
+claim_type: finding
+source_ids: [src-20231009-herman-for-who-page, src-20210621-klug-trick-and-please]
+domain: [tiktok_distribution, creative_production]
+evidence_basis: [academic]
+transferability: direct
+confidence: high
+status: active
+publication_date: "2023-10-09"
+platform_dependent: false
+limitations:
+  - "Does not mean all lore is false — Klug validated the engagement and posting-time assumptions; it means lore requires testing before adoption."
+contradictions: []
+proposed_actions:
+  - "Cite as the evidential backbone of the project's epistemic policy (classify-evidence-claim meta skill; evidence rules in AGENTS.md are already aligned)."

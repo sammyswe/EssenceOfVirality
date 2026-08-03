@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20231009-trending-sound-boost
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20231009-herman-for-who-page]
+human_review: pending
+
+statement: >-
+  TikTok's editor recommends Sounds based on video content, the creator's history and
+  platform-wide trending status, creating a trend flywheel; creators widely believe
+  using a trending Sound pushes a video to more For You pages (Herman 2023 —
+  observed editor behaviour plus creator lore for the distribution effect).
+claim_type: hypothesis
+source_ids: [src-20231009-herman-for-who-page]
+domain: [tiktok_distribution, creative_production]
+metric_targets: [distribution_volume]
+evidence_basis: [academic, observational]
+transferability: not_applicable
+confidence: low
+status: active
+publication_date: "2023-10-09"
+platform_dependent: true
+limitations:
+  - "The editor's recommendation flywheel is directly observed; the distribution boost is unverified lore."
+  - "Largely not applicable to this niche: mix videos use original captured Spotify audio, never overlaid platform Sounds (claim-20260803-pref-music-central); recorded mainly to document why this common tactic is unavailable to us."
+contradictions: []
+proposed_actions:
+  - "Note in unknowns.md (niche): how original-audio music content competes without platform-recognised sounds is still unknown; this claim sharpens that question."

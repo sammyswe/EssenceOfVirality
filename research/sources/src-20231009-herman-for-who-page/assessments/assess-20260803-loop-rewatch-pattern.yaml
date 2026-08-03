@@ -1,0 +1,34 @@
+artifact_type: evidence_assessment
+id: assess-20260803-loop-rewatch-pattern
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20231009-loop-rewatch-pattern]
+
+claim_id: claim-20231009-loop-rewatch-pattern
+dimensions:
+  relevance:
+    rating: strong
+    note: "Auto-loop mechanics directly affect how sub-20s mix videos accumulate plays and perceived interest — a core format consideration."
+  specificity:
+    rating: moderate
+    note: "Platform auto-loop behaviour and creator exploit pattern described; loop weighting in ranking vs raw play counting is unknown."
+  transparency:
+    rating: moderate
+    note: "Observed platform behaviour and documented creator pattern in peer-reviewed design research; ranking weight of loops not measured."
+  incentive_bias:
+    rating: weak
+    note: "Low bias risk: descriptive observation of a platform UI mechanic and an associated creator tactic, not a promotional claim."
+  niche_transferability:
+    rating: strong
+    note: "Sub-20s looping mix videos are a core honest format variant — content genuinely rewarding a second loop (transition reveal, track ID) without text-wall deception."
+  agreement_other_sources:
+    rating: moderate
+    note: "Consistent with claim-20240424-completion-baseline caveat that attention metrics cap loops at 100%; complements completion-focused disclosures without quantifying loop weight."
+recommended_confidence: medium
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  The honest loop-rewatch lever is directly usable in the mix niche; kept active at
+  medium confidence because the exploit's ranking effectiveness is creator-inferred,
+  and the dishonest text-wall variant is excluded by project policy.

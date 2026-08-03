@@ -1,0 +1,30 @@
+artifact_type: source_manifest
+id: src-20240424-uw-tiktok-black-box
+created_at: 2026-08-03
+produced_by: research-intake-coordinator
+version: 1
+human_review: pending
+
+source_type: webpage
+url: https://www.washington.edu/news/2024/04/24/tiktok-black-box-algorithm-and-design-user-behavior-recommendation/
+local_path: null
+title: "Q&A: How TikTok's 'black box' algorithm and design shape user behavior"
+author: "UW News interview with Franziska Roesner (co-author)"
+publisher: "University of Washington News"
+published_date: "2024-04-24"
+retrieved_at: 2026-08-03
+duplicate_check:
+  checked: true
+  duplicate_of: null
+licensing_notes: >-
+  University press page (archived, no longer updated). Findings and short attributed
+  quotes stored; full text not copied into the repository.
+creator_priority_note: >-
+  Supplied by the creator in the first phase-2 research batch (2026-08-03), no
+  per-link note given.
+notes: >-
+  Interview describing two peer-reviewed 2024 studies built on 347 users' donated
+  data (9.2M video recommendations): a WWW '24 personalisation audit and a CHI '24
+  engagement study (doi 10.1145/3613904.3642433, open access). Quantitative
+  statements were cross-checked against the CHI paper during extraction because the
+  interview inverts one key statistic (completion).

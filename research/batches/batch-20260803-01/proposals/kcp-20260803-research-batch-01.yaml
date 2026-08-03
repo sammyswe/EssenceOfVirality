@@ -1,0 +1,78 @@
+artifact_type: knowledge_change_proposal
+id: kcp-20260803-research-batch-01
+created_at: 2026-08-03
+produced_by: skill-architect
+version: 1
+inputs:
+  - claim-20210621-engagement-correlates-plays
+  - claim-20210621-posting-time-effect
+  - claim-20210621-hashtag-piling-ineffective
+  - claim-20250423-retention-watchtime-core-metrics
+  - claim-20250423-fast-skip-negative-signal
+  - claim-20250423-comments-follows-weighted
+  - claim-20240424-exploitation-share
+  - claim-20240424-completion-baseline
+  - claim-20240424-scroll-speed-weak-signal
+  - claim-20240424-followed-account-effects
+  - claim-20231009-fyp-dominant-surface
+  - claim-20231009-onscreen-text-categorisation
+  - claim-20231009-trending-sound-boost
+  - claim-20231009-length-42s-peak
+  - claim-20231009-loop-rewatch-pattern
+  - claim-20231009-algorithmic-lore-unreliable
+  - claim-20240719-zhou-engagement-features
+  - claim-20260803-hyp-searchable-text
+  - claim-20260803-hyp-loop-rewatch-lever
+human_review: pending
+
+target_documents:
+  - knowledge/algorithm-model/current-working-model.md
+  - knowledge/algorithm-model/inferred-distribution-hypotheses.md
+  - knowledge/algorithm-model/unknowns.md
+  - knowledge/viewer-behaviour/completion.md
+  - knowledge/production-techniques/metadata-and-discovery.md
+  - knowledge/index.md
+change_type: revise
+summary: >-
+  First multi-source research batch (5 creator-supplied links): advance the working
+  model to v0.1 (exploration/exploitation share, FYP dominance, engagement
+  correlation, followed-account effects, posting-time bound), add an external
+  completion baseline and skip-signal nuance to the completion doc, create the
+  metadata-and-discovery canonical doc (hashtag piling null result, on-screen
+  text/search, trending sounds), register two new niche hypotheses (searchable text,
+  loop rewatch), and record three contradictions with working positions.
+claim_ids:
+  - claim-20210621-engagement-correlates-plays
+  - claim-20210621-posting-time-effect
+  - claim-20210621-hashtag-piling-ineffective
+  - claim-20250423-retention-watchtime-core-metrics
+  - claim-20250423-fast-skip-negative-signal
+  - claim-20250423-comments-follows-weighted
+  - claim-20240424-exploitation-share
+  - claim-20240424-completion-baseline
+  - claim-20240424-scroll-speed-weak-signal
+  - claim-20240424-followed-account-effects
+  - claim-20231009-fyp-dominant-surface
+  - claim-20231009-onscreen-text-categorisation
+  - claim-20231009-trending-sound-boost
+  - claim-20231009-length-42s-peak
+  - claim-20231009-loop-rewatch-pattern
+  - claim-20231009-algorithmic-lore-unreliable
+  - claim-20240719-zhou-engagement-features
+  - claim-20260803-hyp-searchable-text
+  - claim-20260803-hyp-loop-rewatch-lever
+diff_summary: >-
+  current-working-model.md: v0 -> v0.1, four new numbered propositions plus a real
+  Disputed claims section (was 'None yet'). completion.md: external baseline
+  paragraph, two 2024-study nuances, loop lever, disputed skip-signal entry.
+  unknowns.md: three entries narrowed with citations, two new quantitative unknowns
+  (length weighting; skip effect on wider distribution).
+  inferred-distribution-hypotheses.md: two new hypothesis entries.
+  metadata-and-discovery.md: new document (four conclusions, mixed tiers).
+  index.md: statuses updated, new doc row.
+requires_creator_review: true
+notes: >-
+  claim-20231009-algorithmic-lore-unreliable is cited in the working model's evidence
+  policy rather than a single canonical doc; the three contradiction records carry
+  their own working positions. Zhou 2024 contributes only a disputed low-confidence
+  claim retained for future corroboration or burial.

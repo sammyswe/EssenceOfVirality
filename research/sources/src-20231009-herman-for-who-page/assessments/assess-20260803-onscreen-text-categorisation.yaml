@@ -1,0 +1,35 @@
+artifact_type: evidence_assessment
+id: assess-20260803-onscreen-text-categorisation
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20231009-onscreen-text-categorisation]
+
+claim_id: claim-20231009-onscreen-text-categorisation
+dimensions:
+  relevance:
+    rating: strong
+    note: "Directly informs overlay and caption wording for searchable, categorisable mix videos without overwhelming the listening experience."
+  specificity:
+    rating: weak
+    note: "Mechanism described qualitatively plus one documented n=1 anecdote (museum name → city name); no controlled test or ranking weight."
+  transparency:
+    rating: moderate
+    note: "Peer-reviewed design research with described interview method; the categorisation mechanism itself is creator lore, though ByteDance NLP classification is background-supported in Klug 2021."
+  incentive_bias:
+    rating: moderate
+    note: "Author documents her own search-indexing anecdote; plausible self-selection toward a favourable outcome, though the paper itself stresses lore unreliability."
+  niche_transferability:
+    rating: moderate
+    note: "Search-indexable on-screen text transfers with adaptation — mix videos need genre/track wording that aids discovery without obscuring the Spotify interface."
+  agreement_other_sources:
+    rating: moderate
+    note: "Consistent with Klug 2021 background on ByteDance NLP/CV content classification; the ranking weight of parsed text remains unproven across sources."
+recommended_confidence: medium
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  Recorded as an active hypothesis because the search-bar feedback loop is
+  observable and the parsing mechanism is plausible, but the distribution effect
+  rests on creator perception plus a single anecdote — suitable for a phase-5
+  searchable-text experiment, not a production rule.

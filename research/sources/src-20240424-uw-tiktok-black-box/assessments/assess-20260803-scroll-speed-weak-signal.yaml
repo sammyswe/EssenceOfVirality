@@ -1,0 +1,38 @@
+artifact_type: evidence_assessment
+id: assess-20260803-scroll-speed-weak-signal
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20240424-scroll-speed-weak-signal]
+
+claim_id: claim-20240424-scroll-speed-weak-signal
+dimensions:
+  relevance:
+    rating: moderate
+    note: "Nuance the early-skip rationale: hook quality matters for watch time and completion, not for avoiding a proven skip penalty."
+  specificity:
+    rating: moderate
+    note: "Qualitative finding from a 9.2M-recommendation audit; no effect size or formal test reported in the press piece."
+  transparency:
+    rating: moderate
+    note: "Empirical data-donation audit described in a press interview; the underlying WWW '24 paper was not separately ingested."
+  incentive_bias:
+    rating: weak
+    note: "Low bias risk: researchers reporting an observational null-ish result on personalisation, not promoting a creator tactic."
+  niche_transferability:
+    rating: strong
+    note: "Personalisation mechanics apply platform-wide; finding transfers to any content including Spotify screen recordings."
+  agreement_other_sources:
+    rating: weak
+    note: "Conflicts with claim-20250423-fast-skip-negative-signal; contra-20260803-skip-speed-signal treats this audit as the stronger evidence."
+correlation_causation_note: >-
+  Measures personalisation of the skipping viewer's own subsequent feed; does not
+  directly establish whether fast skips harm the skipped video's wider distribution
+  to other viewers.
+recommended_confidence: medium
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  Empirically grounded counterweight to skip-penalty lore; active at medium
+  confidence with scope preserved — motivates early-hook quality through watch-time
+  mechanics, not through an assumed algorithmic punishment for fast scrolls.

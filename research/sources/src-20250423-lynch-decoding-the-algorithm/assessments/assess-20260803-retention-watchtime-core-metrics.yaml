@@ -1,0 +1,37 @@
+artifact_type: evidence_assessment
+id: assess-20260803-retention-watchtime-core-metrics
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20250423-retention-watchtime-core-metrics]
+
+claim_id: claim-20250423-retention-watchtime-core-metrics
+dimensions:
+  relevance:
+    rating: strong
+    note: "Names retention and watch time as the platform's core tracked objectives — the currency behind completion and hook decisions for short mix videos."
+  specificity:
+    rating: moderate
+    note: "Two platform-level metrics and a summed-interaction scoring frame named; no per-signal weights or per-video formula."
+  transparency:
+    rating: moderate
+    note: "Secondhand citation of a leaked engineering document via press coverage; thesis does not name, date or quote the underlying document."
+  incentive_bias:
+    rating: moderate
+    note: "Undergraduate honours thesis synthesising lore and a leak; not independent platform research, though the disclosed metrics align with TikTok's 2020 public statement."
+  niche_transferability:
+    rating: moderate
+    note: "Platform-level objectives apply to all content, but the summation formula is reported without weights — adaptation needed before inferring mix-specific lever priority."
+  agreement_other_sources:
+    rating: strong
+    note: "Consistent with claim-20200618-completion-strong-signal (full watches as strong signal) and claim-20200618-ranking-factor-categories (user interactions as ranking inputs)."
+correlation_causation_note: >-
+  Describes reported platform objectives and a scoring architecture, not a guarantee
+  that improving any single interaction metric raises a given video's distribution.
+recommended_confidence: medium
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  Converging secondhand support that watch-time behaviour is the platform's core
+  currency, useful for grounding the working model provided the leak's secondhand
+  provenance and lack of weights are preserved.

@@ -1,0 +1,38 @@
+artifact_type: evidence_assessment
+id: assess-20260803-followed-account-effects
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [claim-20240424-followed-account-effects]
+
+claim_id: claim-20240424-followed-account-effects
+dimensions:
+  relevance:
+    rating: moderate
+    note: "Follower growth changes who sees videos and how they engage — relevant once the mix account gains followers, less so at cold start."
+  specificity:
+    rating: strong
+    note: "Named percentage bands: completion 38-40% (followed) vs 44-46% (non-followed); likes 12-18% vs 6-12% after 120 days; follow increases show probability."
+  transparency:
+    rating: strong
+    note: "CHI 2024 primary paper figures; extraction retrieved and cross-checked the open-access paper against the press interview."
+  incentive_bias:
+    rating: weak
+    note: "Low bias risk: descriptive observational findings with authors' support-liking interpretation explicitly flagged."
+  niche_transferability:
+    rating: moderate
+    note: "Follower-side behaviour of established accounts in a US-recruited sample; a new anonymous UK mix account's early followers may behave differently."
+  agreement_other_sources:
+    rating: unknown
+    note: "No other ingested claim reports the followed-account completion/like paradox at this precision."
+correlation_causation_note: >-
+  Observational; the completion gap partly reflects that non-followed videos shown
+  are algorithmically pre-filtered for broad popularity (median plays 755K vs 85K),
+  so lower follower-video completion does not straightforwardly mean worse content.
+recommended_confidence: medium
+recommended_status: active
+unsupported_certainty_flags: []
+reasoning: >-
+  Important calibration that follower-heavy like rates can mislead about content
+  quality; useful for interpreting metrics once the account grows, with the
+  selection-bias and new-account caveats preserved.

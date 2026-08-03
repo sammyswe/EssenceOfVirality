@@ -25,6 +25,22 @@ rates, lowering average watch time and completion. Grounded in general attention
 the official weight on full watches; not itself disclosed by the platform. Test: first-frame
 variants (promise vs neutral) on comparable posts.
 
+### `claim-20260803-hyp-searchable-text`
+
+One short, honest on-screen text cue naming genre/mood/context ("melodic house mix") may
+improve interest matching and search discovery for mix videos without harming Spotify
+legibility. Derived from `claim-20231009-onscreen-text-categorisation` (creator lore + one
+documented anecdote + ByteDance's stated machine classification). Test: compare per-video
+search-bar indexing and views for topical vs non-topical text on comparable posts (phase 5).
+
+### `claim-20260803-hyp-loop-rewatch-lever`
+
+For sub-20 s mix videos, a musically seamless loop (ending flows back into the opening) may
+raise rewatch and total watch time per viewer, functioning as an extra retention signal beyond
+single-view completion. Derived from `claim-20231009-loop-rewatch-pattern` (loops register as
+plays) with loop *weighting* unknown. Test: loop-seamed vs hard-ending edits of comparable
+transitions (phase 5).
+
 ## Rules for this document
 
 - Every entry cites its motivating claims and names a concrete test.

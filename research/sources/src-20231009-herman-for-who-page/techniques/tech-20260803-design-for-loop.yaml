@@ -1,0 +1,41 @@
+artifact_type: technique_record
+id: tech-20260803-design-for-loop
+created_at: 2026-08-03
+produced_by: virality-technique-analyst
+version: 1
+inputs: [claim-20231009-loop-rewatch-pattern, claim-20260803-hyp-loop-rewatch-lever]
+human_review: pending
+
+name: "Design short mixes to loop"
+production_rule: design_short_mixes_to_loop
+description: >-
+  For sub-20s mix videos, choose in/out points so the ending flows musically back
+  into the opening (key/energy continuity), making an auto-loop replay feel like a
+  continuation rather than a restart.
+mechanism: >-
+  TikTok auto-loops until scroll, and loops register as additional plays (Herman
+  2023 pattern) -> a musically seamless loop invites a voluntary second listen ->
+  higher rewatch and total watch time per viewer, which MAY feed ranking
+  (hypothesis; loop weighting unknown).
+intended_effects: [rewatch_rate, average_watch_time]
+required_video_characteristics:
+  - "Sub-20s duration where a loop is plausible within one viewing impulse"
+  - "Outro and intro compatible in key/energy so the seam is musical"
+contraindications:
+  - "Artificial comprehension delays (dense text readable only over multiple loops) — the dishonest exploit variant is banned by the honesty policy."
+  - "Forcing loop structure onto 30-40s videos with a full payoff arc — the settle-and-end structure of evaluate-transition-payoff takes precedence there."
+niche_adaptation:
+  transfers: adapted
+  adaptation_notes: >-
+    Native fit: house music is loop-based, so a seamless edit is achievable without
+    damaging the mix (preserve-spotify-mix-audio constraints still apply at the
+    seam). The loop seam must not clip the transition payoff itself.
+  music_experience_risk: >-
+    Moderate: a bad seam (key clash, energy drop) is more damaging than no loop;
+    the technique only applies when source material genuinely supports it.
+disposition: heuristic
+claim_ids: [claim-20231009-loop-rewatch-pattern, claim-20260803-hyp-loop-rewatch-lever]
+confidence: low
+notes: >-
+  Disposition heuristic pending phase-5 rewatch data; if loop-seamed edits show
+  measurably higher rewatch, promote to a production skill with edit-point rules.

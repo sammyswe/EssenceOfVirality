@@ -1,0 +1,31 @@
+artifact_type: source_manifest
+id: src-20250423-lynch-decoding-the-algorithm
+created_at: 2026-08-03
+produced_by: research-intake-coordinator
+version: 1
+human_review: pending
+
+source_type: academic_paper
+url: https://digitalcommons.lib.uconn.edu/cgi/viewcontent.cgi?article=2104&context=srhonors_theses
+local_path: null
+title: "Decoding the Algorithm: The Mathematics Behind TikTok's Short-Form Content Success"
+author: "Ashley N. Lynch (advisor: Jane Gu)"
+publisher: "University of Connecticut, Honors Scholar Theses (no. 1102)"
+published_date: "2025-04-23"
+retrieved_at: 2026-08-03
+duplicate_check:
+  checked: true
+  duplicate_of: null
+licensing_notes: >-
+  Publicly hosted on UConn Digital Commons. Findings and short attributed statements
+  stored; full text not copied into the repository.
+creator_priority_note: >-
+  Supplied by the creator in the first phase-2 research batch (2026-08-03), no
+  per-link note given.
+notes: >-
+  Undergraduate honours thesis. Valuable as a synthesis of the leaked TikTok
+  engineering document's disclosed metrics, but most of the mathematical content is
+  explicitly speculative modelling ("likely leverages", "likely performs") of how a
+  recommender of this kind would work — not evidence about TikTok specifically.
+  Extraction deliberately separates the sourced assertions from the illustrative
+  mathematics.

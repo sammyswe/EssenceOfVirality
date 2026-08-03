@@ -1,0 +1,29 @@
+artifact_type: claim_record
+id: claim-20210621-engagement-correlates-plays
+created_at: 2026-08-03
+produced_by: evidence-analyst
+version: 1
+inputs: [ext-20210621-klug-trick-and-please]
+human_review: pending
+
+statement: >-
+  Among 300,617 TikTok trending-section videos (Jan 2021), the numbers of comments,
+  likes and shares each positively correlate with play counts; videos with high plays
+  tend to have high engagement across all three, and vice versa.
+claim_type: finding
+source_ids: [src-20210621-klug-trick-and-please]
+domain: [tiktok_distribution, viewer_behaviour]
+metric_targets: [comment_rate, like_rate, share_rate, distribution_volume]
+evidence_basis: [academic]
+transferability: adapted
+confidence: medium
+status: active
+publication_date: "2021-06-21"
+platform_dependent: true
+limitations:
+  - "Correlational only: high plays also mechanically produce more engagement; no causal direction established."
+  - "Trending-section sample: says nothing about how non-trending videos gain or fail to gain distribution."
+  - "2021 data; strengths of individual signals are not separable in this analysis."
+contradictions: []
+proposed_actions:
+  - "Cite in current-working-model.md as correlational support for engagement-driven distribution (kcp-20260803-research-batch-01)."
