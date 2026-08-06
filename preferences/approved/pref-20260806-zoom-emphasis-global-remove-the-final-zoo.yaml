@@ -7,9 +7,9 @@ value: false
 scope: global
 scope_value: ''
 statement: remove the final zoom
-status: proposed
-confidence: low
-updated_at: '2026-08-06T11:13:03Z'
+status: approved
+confidence: medium
+updated_at: '2026-08-06T11:26:09Z'
 evidence:
 - ref: fb-20260806-111303-job-001-r1
   job_id: job-001
@@ -17,6 +17,6 @@ evidence:
   quote: remove the final zoom
   recorded_at: '2026-08-06T11:13:03Z'
 supersedes: null
-approved_by: null
-approved_at: null
+approved_by: creator
+approved_at: '2026-08-06T11:26:09Z'
 retired_reason: ''
