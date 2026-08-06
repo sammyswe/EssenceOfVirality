@@ -1,0 +1,60 @@
+name: comment-prompt
+family: comment_prompt
+version: "0.1.0"
+description: >
+  The edit is built around a genuine choice or opinion. The question appears early,
+  the transition supplies the evidence, and the closing frame asks for the answer.
+
+requires:
+  minimum_supporting_assets: 0
+  maximum_supporting_assets: 1
+
+layout:
+  mode: full
+  spotify_area_fraction: 1.0
+
+pacing:
+  preferred_lead_in_seconds: 7.0
+  preferred_tail_seconds: 14.0
+
+retention_devices:
+  - question_in_first_second
+  - progress_bar
+  - evidence_at_transition
+  - restated_question_at_end
+
+hook_patterns:
+  - text: "which one wins?"
+    kind: choice
+  - text: "{first_track} or {second_track}?"
+    kind: choice
+    requires_fields: [first_track, second_track]
+  - text: "does this blend work?"
+    kind: opinion
+
+cta_patterns:
+  - text: "settle it in the comments"
+    intent: comment_answer
+  - text: "which song won?"
+    intent: comment_rate
+  - text: "next pairing?"
+    intent: comment_suggest
+
+text_styles:
+  hook: question
+  cta: question
+
+constraints:
+  # The question must be answerable from what the video actually shows.
+  question_answerable_from_video: true
+  # No fabricated controversy.
+  no_manufactured_disagreement: true
+
+retention_hypothesis: >
+  A genuine either/or question is expected to raise comment_rate, and restating it
+  at the end is expected to convert viewers who stayed for the payoff. The risk is
+  a weaker hook for viewers with no opinion about either track.
+
+evidence_refs:
+  - claim-20250423-comments-follows-weighted
+  - claim-20260803-pref-music-central

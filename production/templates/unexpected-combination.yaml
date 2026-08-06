@@ -1,0 +1,58 @@
+name: unexpected-combination
+family: unexpected_combination
+version: "0.1.0"
+description: >
+  The hook states plainly that the two tracks should not fit together; the
+  transition disproves it. Only valid when the tracks really are dissimilar.
+
+requires:
+  minimum_supporting_assets: 0
+  maximum_supporting_assets: 1
+
+layout:
+  mode: full
+  spotify_area_fraction: 1.0
+
+pacing:
+  preferred_lead_in_seconds: 7.0
+  preferred_tail_seconds: 14.0
+
+retention_devices:
+  - contrast_claim_in_first_second
+  - progress_bar
+  - claim_disproved_at_transition
+  - zoom_emphasis_at_transition
+  - closing_question
+
+hook_patterns:
+  - text: "these two should not work"
+    kind: contrast
+    requires_true: "The two tracks are audibly dissimilar in genre, tempo or era."
+  - text: "{first_artist} and {second_artist}. really."
+    kind: contrast
+    requires_fields: [first_artist, second_artist]
+    requires_true: "The two artists come from noticeably different scenes."
+
+cta_patterns:
+  - text: "did it work?"
+    intent: comment_rate
+  - text: "rate this transition"
+    intent: comment_rate
+
+text_styles:
+  hook: bold_outline
+  cta: question
+
+constraints:
+  # Refuse this family when the tracks are similar — the hook would be false.
+  requires_track_contrast: true
+  contrast_evidence_required: true
+
+retention_hypothesis: >
+  A specific contrast claim is expected to reduce early_skip_rate more than a
+  generic anticipation cue, because it names what the viewer is waiting to test.
+  It fails the honesty gate if the tracks are not actually dissimilar.
+
+evidence_refs:
+  - claim-20260803-hyp-early-skip-promise
+  - claim-20231009-onscreen-text-categorisation

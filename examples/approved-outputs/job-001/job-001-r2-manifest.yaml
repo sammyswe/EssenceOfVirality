@@ -1,0 +1,98 @@
+artifact_kind: production_manifest
+video_id: job-001-r2
+job_id: job-001
+revision: 2
+created_at: '2026-08-06T10:58:30Z'
+source_assets:
+  spotify_recording: jobs/review/job-001/spotify-screen-recording.mp4
+  supporting_clips: []
+pipeline_version: 0.1.0
+openmontage:
+  available: true
+  expected_ref: 4eab34c5cfcccaa4f1970554928feccce73ee930
+  actual_ref: 4eab34c5cfcccaa4f1970554928feccce73ee930
+  matches_pin: true
+  note: ''
+backends:
+  probe: openmontage:audio_probe
+  transition: spectral_flux_novelty
+  beats: onset_autocorrelation
+  loudness: ffmpeg:loudnorm
+  composite: ffmpeg:filter_complex
+  text: ffmpeg:drawtext
+  audio: ffmpeg:loudnorm
+  openmontage: available
+format_family: clean_showcase
+template: clean-showcase
+duration_seconds: 19.0
+format: 1080x1920
+transition:
+  seconds: 14.2
+  start_seconds: 13.0
+  end_seconds: 16.2
+  method: spectral_flux_novelty
+  confidence: high
+  novelty_score: 0.341
+  alternatives:
+  - 12.6
+  - 15.8
+  notes: []
+crop_profile: vertical_full
+editing_decisions:
+- decision: format_family=clean_showcase
+  rationale: works from the Spotify recording alone
+  stage: creative
+- decision: source window 9.20s-28.20s
+  rationale: keeps the transition at 5.00s of a 19.00s edit, with the cut clear of
+    the blend region
+  stage: retention
+- decision: rejected format ai-scene
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format comedy-hook
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format picture-in-picture
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format reaction
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format split-screen
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format unexpected-combination
+  rationale: hook asserts the tracks clash, but no track metadata confirms a contrast
+    — would risk a false claim
+  stage: creative
+- decision: 'revision: increase_spotify_area'
+  rationale: split band 0.62 -> 0.70, content zoom 0.00 -> 0.40 (triggered by 'make
+    the waveform larger')
+  stage: revision
+- decision: 'revision: shorten_lead_in'
+  rationale: lead-in cap 12.0s -> 10.0s and template lead-in adjusted by -2.0s (triggered
+    by 'opening is too slow')
+  stage: revision
+- decision: 'revision: disable_zoom'
+  rationale: zoom emphasis disabled (triggered by 'remove the final zoom')
+  stage: revision
+audio:
+  source_path: /workspace/jobs/review/job-001/spotify-screen-recording.mp4
+  normalise: true
+  target_lufs: -14.0
+  true_peak_db: -1.5
+  measured_lufs: -15.73
+  reason: integrated loudness -15.73 LUFS is 1.73 dB from the -14.0 LUFS target
+quality_status: pass
+artifacts:
+  final: outputs/final/job-001-r2.mp4
+  preview: outputs/previews/job-001-r2-preview.mp4
+  posting_package: outputs/posting-packages/job-001-r2-posting-package.yaml
+  quality_report: outputs/quality-reports/job-001-r2-quality-report.yaml
+  edit_plan: outputs/edit-plans/job-001-r2-edit-plan.yaml
+experiment: exp-20260806-job-001-r2
+retention_hypothesis: Keeping the Spotify surface unobstructed and marking the transition
+  with a single zoom is expected to protect completion_rate by making the payoff legible,
+  with no competing visual to explain.
+preference_refs: []
+research_refs: []

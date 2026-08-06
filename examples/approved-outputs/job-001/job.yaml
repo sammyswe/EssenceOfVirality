@@ -1,0 +1,30 @@
+job_id: job-001
+spotify_recording: spotify-screen-recording.mp4
+additional_assets: []
+tracks:
+  first:
+    title: Night Drive
+    artist: Lowbeam
+  second:
+    title: Paper Lanterns
+    artist: Ashra Kite
+transition:
+  seconds: null
+creative_direction:
+  preferred_format: auto
+  mood: ''
+  must_include: []
+  avoid: []
+  notes: ''
+render:
+  target_platform: tiktok
+  aspect_ratio: 9:16
+  minimum_duration_seconds: 15
+  maximum_duration_seconds: 45
+research:
+  enabled: false
+outputs:
+  preview: true
+  final: true
+  posting_package: true
+  quality_report: true

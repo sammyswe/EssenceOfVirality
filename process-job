@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+"""Entry point for the Spotify-mix TikTok production pipeline.
+
+Usage:
+    ./process-job jobs/incoming/job-001
+    ./process-job newest
+    ./process-job revise job-001 "the opening is too slow, make the waveform larger"
+    ./process-job status
+"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from production.cli import main  # noqa: E402
+
+if __name__ == "__main__":
+    raise SystemExit(main())

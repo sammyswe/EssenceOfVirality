@@ -1,0 +1,64 @@
+name: picture-in-picture
+family: picture_in_picture
+version: "0.1.0"
+description: >
+  Spotify fills the frame; a small supporting clip sits in a corner for movement and
+  humour without competing with the song information.
+
+requires:
+  minimum_supporting_assets: 1
+  maximum_supporting_assets: 1
+  preferred_roles: [overlay, unassigned]
+
+layout:
+  mode: pip
+  spotify_area_fraction: 1.0
+  pip_scale: 0.34
+  pip_corner: top_right
+  pip_margin: 48
+  pip_corner_radius: 0
+  # The inset is removed for the blend so nothing competes with the payoff.
+  hide_during_transition: true
+  loop_secondary: true
+
+pacing:
+  preferred_lead_in_seconds: 6.5
+  preferred_tail_seconds: 13.0
+
+retention_devices:
+  - corner_motion
+  - inset_removed_at_transition
+  - anticipation_text_before_transition
+  - zoom_emphasis_at_transition
+  - closing_question
+
+hook_patterns:
+  - text: "wait for the switch"
+    kind: anticipation
+  - text: "these two should not blend"
+    kind: contrast
+    requires_true: "The two tracks are audibly dissimilar."
+
+cta_patterns:
+  - text: "rate this transition"
+    intent: comment_rate
+  - text: "which song won?"
+    intent: comment_rate
+
+text_styles:
+  hook: sleek
+  cta: question
+
+constraints:
+  # The inset must not overlap the song-information or waveform regions.
+  inset_clear_of_protected_regions: true
+  no_supporting_footage_during_transition: true
+
+retention_hypothesis: >
+  A small moving inset is expected to hold attention during the lead-in while
+  keeping the Spotify surface dominant; removing it at the blend is expected to
+  focus attention on the payoff.
+
+evidence_refs:
+  - claim-20260803-pref-spotify-legibility
+  - claim-20200618-completion-strong-signal

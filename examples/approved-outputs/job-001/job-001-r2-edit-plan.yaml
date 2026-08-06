@@ -1,0 +1,136 @@
+job_id: job-001
+revision: 2
+format_family: clean_showcase
+template_name: clean-showcase
+source_in_seconds: 9.2
+source_out_seconds: 28.2
+duration_seconds: 19.0
+transition_output_seconds: 5.0
+transition_window:
+- 3.8
+- 7.0
+layout_mode: full
+spotify_placement:
+  x: 0
+  y: 0
+  width: 1080
+  height: 1920
+  area_fraction: 1.0
+background: blurred_spotify
+spotify_content_zoom: 0.4
+waveform_end_trim: 0.0
+secondary_clips: []
+text_cues:
+- id: hook-1
+  text: Lowbeam into Ashra Kite
+  role: hook
+  style: sleek
+  start_seconds: 0.1
+  end_seconds: 2.7
+  y: 380
+  align: center
+  animation: fade
+  box:
+    x1: 182
+    y1: 380
+    x2: 897
+    y2: 612
+    lines: 2
+  rationale: opening promise; clears the transition window so the payoff is uncontested
+    (sits over artwork, which is permitted but noted)
+- id: cta-2
+  text: next pairing?
+  role: cta
+  style: question
+  start_seconds: 14.5
+  end_seconds: 17.7
+  y: 1043
+  align: center
+  animation: fade
+  box:
+    x1: 314
+    y1: 1043
+    x2: 766
+    y2: 1166
+    lines: 1
+  rationale: appears after the payoff so it never competes with the transition (sits
+    over artwork, which is permitted but noted)
+emphasis:
+  enabled: false
+  at_seconds: 5.0
+  amount: 0.08
+  attack_seconds: 0.35
+  release_seconds: 0.55
+progress_bar:
+  enabled: true
+  height: 10
+  colour: '#1DB954'
+  opacity: 0.85
+  position: bottom
+audio:
+  source_path: /workspace/jobs/review/job-001/spotify-screen-recording.mp4
+  normalise: true
+  target_lufs: -14.0
+  true_peak_db: -1.5
+  measured_lufs: -15.73
+  reason: integrated loudness -15.73 LUFS is 1.73 dB from the -14.0 LUFS target
+hook_text: Lowbeam into Ashra Kite
+cta_text: next pairing?
+retention_hypothesis: Keeping the Spotify surface unobstructed and marking the transition
+  with a single zoom is expected to protect completion_rate by making the payoff legible,
+  with no competing visual to explain.
+creative_rationale:
+- 'format clean-showcase: works from the Spotify recording alone'
+- selected 'artist_pairing' hook from 2 valid candidates
+- selected call to action with intent 'comment_suggest'
+decisions:
+- decision: format_family=clean_showcase
+  rationale: works from the Spotify recording alone
+  stage: creative
+- decision: source window 9.20s-28.20s
+  rationale: keeps the transition at 5.00s of a 19.00s edit, with the cut clear of
+    the blend region
+  stage: retention
+- decision: rejected format ai-scene
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format comedy-hook
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format picture-in-picture
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format reaction
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format split-screen
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format unexpected-combination
+  rationale: hook asserts the tracks clash, but no track metadata confirms a contrast
+    — would risk a false claim
+  stage: creative
+- decision: 'revision: increase_spotify_area'
+  rationale: split band 0.62 -> 0.70, content zoom 0.00 -> 0.40 (triggered by 'make
+    the waveform larger')
+  stage: revision
+- decision: 'revision: shorten_lead_in'
+  rationale: lead-in cap 12.0s -> 10.0s and template lead-in adjusted by -2.0s (triggered
+    by 'opening is too slow')
+  stage: revision
+- decision: 'revision: disable_zoom'
+  rationale: zoom emphasis disabled (triggered by 'remove the final zoom')
+  stage: revision
+experiment:
+  hypothesis: Keeping the Spotify surface unobstructed and marking the transition
+    with a single zoom is expected to protect completion_rate by making the payoff
+    legible, with no competing visual to explain.
+  variable: format_family
+  control_reference: clean_showcase
+  expected_effect: higher_completion_rate
+  status: awaiting_results
+research_refs: []
+preference_refs: []
+warnings:
+- cta text moved from y=1280 to y=1043 to clear the song_info, waveform region(s)
+artifact_kind: edit_plan

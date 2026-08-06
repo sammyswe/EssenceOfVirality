@@ -1,0 +1,60 @@
+name: split-screen
+family: split_screen
+version: "0.1.0"
+description: >
+  Spotify occupies the lower, larger band; a supporting clip runs in the upper band
+  for the whole video. Movement above, mix below.
+
+requires:
+  minimum_supporting_assets: 1
+  maximum_supporting_assets: 1
+  preferred_roles: [overlay, unassigned]
+
+layout:
+  mode: split
+  # Fraction of frame height given to the Spotify surface (lower band).
+  spotify_fraction: 0.62
+  spotify_position: bottom
+  spotify_area_fraction: 0.62
+  # The supporting clip loops if it is shorter than the edit.
+  loop_secondary: true
+
+pacing:
+  preferred_lead_in_seconds: 6.0
+  preferred_tail_seconds: 13.0
+
+retention_devices:
+  - constant_secondary_motion
+  - anticipation_text_before_transition
+  - zoom_emphasis_at_transition
+  - closing_question
+
+hook_patterns:
+  - text: "watch the waveform"
+    kind: instruction
+  - text: "wait for the switch"
+    kind: anticipation
+
+cta_patterns:
+  - text: "rate this transition"
+    intent: comment_rate
+  - text: "next pairing?"
+    intent: comment_suggest
+
+text_styles:
+  hook: sleek
+  cta: question
+
+constraints:
+  # Song labels and waveform live in the Spotify band; text may not enter it.
+  text_confined_to_secondary_band: true
+  minimum_spotify_fraction: 0.55
+
+retention_hypothesis: >
+  Continuous secondary motion is expected to hold attention through the lead-in
+  without hiding the Spotify surface, protecting average_watch_time. The risk is
+  divided attention at the transition, which the zoom emphasis is meant to offset.
+
+evidence_refs:
+  - claim-20260803-pref-spotify-legibility
+  - claim-20260803-pref-music-central

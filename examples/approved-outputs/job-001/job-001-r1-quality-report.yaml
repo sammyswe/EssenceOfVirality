@@ -1,0 +1,139 @@
+job_id: job-001
+revision: 1
+video_path: outputs/final/job-001-r1.mp4
+created_at: '2026-08-06T10:51:06Z'
+status: pass
+post_ready: true
+summary:
+  passed: 24
+  warnings: 0
+  failures: 0
+hard_rule_violations: []
+checks:
+- id: file_exists
+  description: Rendered file exists and is readable
+  status: pass
+  detail: /workspace/outputs/final/job-001-r1.mp4
+  measurement: null
+- id: playable
+  description: Container reports a decodable video stream
+  status: pass
+  detail: h264 1080x1920, 21.00s
+  measurement: null
+- id: aspect_and_resolution
+  description: Output is vertical 1080x1920
+  status: pass
+  detail: 1080x1920 (9:16)
+  measurement:
+    width: 1080
+    height: 1920
+- id: duration_window
+  description: Duration is inside the configured posting window
+  status: pass
+  detail: 21.00s
+  measurement: 21.0
+- id: duration_matches_plan
+  description: Rendered duration matches the edit plan
+  status: pass
+  detail: plan 21.00s, render 21.00s (delta 0.00s)
+  measurement: 0.0
+- id: audio_present
+  description: Output carries an audio track
+  status: pass
+  detail: aac 48000Hz 2ch
+  measurement: null
+- id: single_audio_stream
+  description: Exactly one audio stream, from the Spotify recording
+  status: pass
+  detail: '1 audio stream(s); sources used: jobs/incoming/job-001/spotify-screen-recording.mp4'
+  measurement: 1
+- id: no_clipping
+  description: True peak stays below the clipping ceiling
+  status: pass
+  detail: true peak -8.03 dBTP (ceiling -0.5 dBTP)
+  measurement: -8.03
+- id: loudness_measured
+  description: Integrated loudness recorded for the posted file
+  status: pass
+  detail: -13.78 LUFS
+  measurement: -13.78
+- id: audio_video_sync
+  description: Audio and video streams span the same duration
+  status: pass
+  detail: video 21.00s, audio 21.00s (drift 0.00s)
+  measurement: 0.0
+- id: no_black_frames
+  description: No unintended black or blank stretches
+  status: pass
+  detail: 0.00s black across 0 interval(s) (0.0% of the video; limit 4%)
+  measurement: 0.0
+- id: first_frame_has_content
+  description: The opening frame carries visible information
+  status: pass
+  detail: mean luma 50.1 at 0.05s (a near-black opening frame wastes the scroll-stopping
+    moment)
+  measurement: 50.09
+- id: no_frozen_frames
+  description: No frozen stretches
+  status: pass
+  detail: no interval of 1.5s or longer is completely static
+  measurement: 0.0
+- id: spotify_recognisable
+  description: Spotify keeps at least the minimum share of the frame
+  status: pass
+  detail: Spotify occupies 100% of the frame (fitted by cover; 0% of the source frame
+    cropped away, all of it outside the must-remain-visible regions)
+  measurement: 1.0
+- id: spotify_visible_at_transition
+  description: Nothing covers the Spotify surface at the blend
+  status: pass
+  detail: no supporting clip overlaps the transition window
+  measurement: null
+- id: song_info_unobstructed
+  description: Text never covers song names or the waveform
+  status: pass
+  detail: 2 cue(s) clear of 2 protected region(s)
+  measurement: null
+- id: text_in_safe_zone
+  description: Text stays inside the TikTok-safe area
+  status: pass
+  detail: 2 cue(s) inside the safe area
+  measurement: null
+- id: text_readable
+  description: Text is large enough to read on a phone
+  status: pass
+  detail: smallest cue is 52px
+  measurement: 52
+- id: transition_untouched
+  description: No cut or speed change inside the transition
+  status: pass
+  detail: transition at 7.00s sits inside a single uncut segment at normal speed
+  measurement: null
+- id: one_transition
+  description: The edit contains exactly one Spotify transition
+  status: pass
+  detail: one transition planned at 7.00s (spectral_flux_novelty detection, high confidence)
+  measurement: null
+- id: no_dead_time
+  description: The payoff is not buried late
+  status: pass
+  detail: payoff begins at 33% of the runtime
+  measurement: 0.333
+- id: cta_readable
+  description: The call to action is on screen long enough to read
+  status: pass
+  detail: '''next pairing?'' visible for 3.20s'
+  measurement: 3.2
+- id: export_settings
+  description: Codec and container suit TikTok upload
+  status: pass
+  detail: h264/aac, 30.00 fps, 2.6 MB
+  measurement: null
+- id: sources_unmodified
+  description: Original input files were not modified
+  status: pass
+  detail: no source file changed
+  measurement: null
+language_note: This report describes technical conformance and a retention hypothesis.
+  It does not predict distribution or view counts.
+artifact_kind: quality_report

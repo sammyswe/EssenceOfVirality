@@ -1,0 +1,68 @@
+name: ai-scene
+family: ai_scene
+version: "0.1.0"
+description: >
+  A clearly fictional AI-generated scene introduces the mix and resolves when the
+  second track arrives. Parody and transformation are permitted; passing fabricated
+  footage off as real is not.
+
+requires:
+  minimum_supporting_assets: 1
+  maximum_supporting_assets: 2
+  preferred_roles: [hook, payoff]
+
+layout:
+  mode: hook_cutaway
+  hook_seconds: 2.4
+  maximum_hook_seconds: 4.0
+  spotify_area_fraction: 1.0
+  minimum_margin_before_transition_seconds: 2.5
+  # When a payoff clip is supplied it returns briefly after the transition.
+  payoff_cutaway_seconds: 1.6
+
+pacing:
+  preferred_lead_in_seconds: 6.0
+  preferred_tail_seconds: 13.0
+
+retention_devices:
+  - surprising_opening
+  - transformation_timed_to_second_track
+  - anticipation_text_before_transition
+  - zoom_emphasis_at_transition
+  - closing_question
+
+hook_patterns:
+  - text: "when the second song hits"
+    kind: anticipation
+  - text: "this pairing should not work"
+    kind: contrast
+    requires_true: "The two tracks are audibly dissimilar."
+
+cta_patterns:
+  - text: "rate this transition"
+    intent: comment_rate
+  - text: "which song won?"
+    intent: comment_rate
+
+text_styles:
+  hook: bold_outline
+  cta: question
+
+constraints:
+  spotify_visible_by_seconds: 4.5
+  no_supporting_footage_during_transition: true
+  # Honesty gate enforced by the copywriter and the quality controller.
+  requires_fiction_signal: true
+  fiction_signal_options:
+    - visibly_stylised_or_impossible_scene
+    - on_screen_word "ai"
+    - parody_framing
+
+retention_hypothesis: >
+  An unexpected fictional opening is expected to reduce early_skip_rate; timing the
+  visual transformation to the second track is expected to make the transition the
+  moment of resolution and protect completion_rate.
+
+evidence_refs:
+  - claim-20260803-hyp-early-skip-promise
+  - claim-20200618-completion-strong-signal

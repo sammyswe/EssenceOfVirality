@@ -1,0 +1,65 @@
+name: comedy-hook
+family: comedy_hook
+version: "0.1.0"
+description: >
+  A short amusing clip opens full-screen, then hands over to the Spotify surface
+  before the transition lands. The joke buys attention; the mix is the payoff.
+
+requires:
+  minimum_supporting_assets: 1
+  maximum_supporting_assets: 2
+  preferred_roles: [hook]
+
+layout:
+  mode: hook_cutaway
+  # Full-screen hook clip length; capped so the Spotify concept arrives early.
+  hook_seconds: 2.2
+  maximum_hook_seconds: 3.5
+  # After the cutaway the Spotify surface fills the frame.
+  spotify_area_fraction: 1.0
+  # The hook clip must end before this margin ahead of the transition.
+  minimum_margin_before_transition_seconds: 3.0
+
+pacing:
+  preferred_lead_in_seconds: 6.0
+  preferred_tail_seconds: 13.0
+
+retention_devices:
+  - comedic_opening
+  - pattern_interrupt_on_handover
+  - anticipation_text_before_transition
+  - zoom_emphasis_at_transition
+  - closing_question
+
+hook_patterns:
+  - text: "me explaining this mix to my friends"
+    kind: relatable_comedy
+  - text: "nobody asked for this pairing"
+    kind: self_deprecating
+  - text: "hear me out"
+    kind: curiosity
+
+cta_patterns:
+  - text: "was that worth it?"
+    intent: comment_rate
+  - text: "rate the transition"
+    intent: comment_rate
+
+text_styles:
+  hook: bold_outline
+  cta: question
+
+constraints:
+  # The hook may not run so long that a viewer cannot tell this is a Spotify mix.
+  spotify_visible_by_seconds: 4.0
+  # Comedy footage must be clearly separate from the mix; never over the blend.
+  no_supporting_footage_during_transition: true
+
+retention_hypothesis: >
+  A funny opening is expected to reduce early_skip_rate in the first two seconds,
+  while handing over to Spotify before the transition preserves the viewer's
+  understanding of what produced the mix.
+
+evidence_refs:
+  - claim-20260803-hyp-early-skip-promise
+  - claim-20260803-pref-spotify-legibility
