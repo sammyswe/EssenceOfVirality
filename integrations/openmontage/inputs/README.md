@@ -1,4 +1,4 @@
-# Drop your Spotify mix screen recordings here.
+# Drop your Spotify mix screen recordings here
 
 Supported formats: `.mp4`, `.mov`, `.mkv`, `.webm`  
 Raw media is gitignored (see repo root `.gitignore`).

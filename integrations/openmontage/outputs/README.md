@@ -1,4 +1,4 @@
-# Pipeline run outputs (gitignored run folders except this README).
+# Pipeline run outputs (gitignored run folders except this README)
 
 Each run creates a timestamped subdirectory with:
 
