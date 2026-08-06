@@ -1,12 +1,17 @@
-artifact_kind: production_manifest
+artifact_type: video_production_manifest
+id: vpm-job-001-r1
+created_at: '2026-08-06T11:11:51Z'
+produced_by: workflow:production-pipeline
+inputs:
+- exp-20260806-job-001-r1
+schema_maturity: scaffold
 video_id: job-001-r1
 job_id: job-001
 revision: 1
-created_at: '2026-08-06T10:51:08Z'
 source_assets:
-  spotify_recording: jobs/incoming/job-001/spotify-screen-recording.mp4
-  supporting_clips: []
+- jobs/incoming/job-001/spotify-screen-recording.mp4
 pipeline_version: 0.1.0
+openmontage_version: 4eab34c5cfcccaa4f1970554928feccce73ee930
 openmontage:
   available: true
   expected_ref: 4eab34c5cfcccaa4f1970554928feccce73ee930
@@ -22,10 +27,11 @@ backends:
   text: ffmpeg:drawtext
   audio: ffmpeg:loudnorm
   openmontage: available
+format: '9:16'
+resolution: 1080x1920
+duration_seconds: 21.0
 format_family: clean_showcase
 template: clean-showcase
-duration_seconds: 21.0
-format: 1080x1920
 transition:
   seconds: 14.2
   start_seconds: 13.0
@@ -68,6 +74,12 @@ editing_decisions:
   rationale: hook asserts the tracks clash, but no track metadata confirms a contrast
     — would risk a false claim
   stage: creative
+hook:
+  type: onscreen_text
+  text: Lowbeam into Ashra Kite
+cta:
+  type: onscreen_text
+  text: next pairing?
 audio:
   source_path: /workspace/jobs/incoming/job-001/spotify-screen-recording.mp4
   normalise: true

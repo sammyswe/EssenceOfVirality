@@ -18,7 +18,9 @@ from typing import Any
 
 import yaml
 
+from .. import __version__
 from . import (
+    artifacts,
     creative,
     experiments,
     feedback as feedback_module,
@@ -47,6 +49,9 @@ from .paths import (
     rel,
 )
 from .probe import MediaError, require_binaries
+
+
+PIPELINE_VERSION = __version__
 
 
 class PipelineError(RuntimeError):
@@ -132,25 +137,20 @@ def next_revision(job_id: str) -> int:
 
 
 def _write_plan(plan: EditPlan) -> Path:
-    OUTPUTS_PLANS.mkdir(parents=True, exist_ok=True)
-    path = OUTPUTS_PLANS / f"{plan.job_id}-r{plan.revision}-edit-plan.yaml"
-    payload = plan.as_dict()
-    payload["artifact_kind"] = "edit_plan"
-    path.write_text(
-        yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8"
+    stamp = artifacts.stamp(plan.job_id, plan.revision)
+    return artifacts.write(
+        OUTPUTS_PLANS / f"{stamp}-edit-plan.yaml",
+        "edit_plan", artifacts.artifact_id("plan", stamp), plan.as_dict(),
     )
-    return path
 
 
 def _write_quality(report: quality.QualityReport) -> Path:
-    OUTPUTS_QUALITY.mkdir(parents=True, exist_ok=True)
-    path = OUTPUTS_QUALITY / f"{report.job_id}-r{report.revision}-quality-report.yaml"
-    payload = report.as_dict()
-    payload["artifact_kind"] = "quality_report"
-    path.write_text(
-        yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8"
+    stamp = artifacts.stamp(report.job_id, report.revision)
+    return artifacts.write(
+        OUTPUTS_QUALITY / f"{stamp}-quality-report.yaml",
+        "quality_report", artifacts.artifact_id("qr", stamp), report.as_dict(),
+        created_at=report.created_at,
     )
-    return path
 
 
 def _write_manifest(
@@ -162,53 +162,57 @@ def _write_manifest(
     package_path: Path,
     experiment_id: str | None,
 ) -> Path:
-    """Production manifest: the lineage record linking a render to its decisions."""
-    OUTPUTS_FINAL.mkdir(parents=True, exist_ok=True)
-    path = OUTPUTS_FINAL / f"{plan.job_id}-r{plan.revision}-manifest.yaml"
-    capabilities = capability_report()
+    """Production manifest: the lineage record linking a render to its decisions.
 
-    manifest = {
-        "artifact_kind": "production_manifest",
-        "video_id": f"{plan.job_id}-r{plan.revision}",
+    Conforms to ``schemas/video-production-manifest.schema.json`` so analytics can
+    later trace a post's outcome back to the decisions that produced it.
+    """
+    stamp = artifacts.stamp(plan.job_id, plan.revision)
+    capabilities = capability_report()
+    openmontage = capabilities["openmontage"]
+
+    body = {
+        "schema_maturity": "scaffold",
+        "video_id": stamp,
         "job_id": plan.job_id,
         "revision": plan.revision,
-        "created_at": _now(),
-        "source_assets": {
-            "spotify_recording": rel(job.spotify_recording),
-            "supporting_clips": [rel(asset.path) for asset in job.assets],
-        },
-        "pipeline_version": "0.1.0",
-        "openmontage": capabilities["openmontage"],
+        "source_assets": [
+            rel(job.spotify_recording),
+            *(rel(asset.path) for asset in job.assets),
+        ],
+        "pipeline_version": PIPELINE_VERSION,
+        "openmontage_version": openmontage.get("actual_ref") or None,
+        "openmontage": openmontage,
         "backends": {**input_report.backends, **render_result.backends},
+        "format": "9:16",
+        "resolution": f"{render_result.width}x{render_result.height}",
+        "duration_seconds": round(render_result.duration_seconds, 3),
         "format_family": plan.format_family,
         "template": plan.template_name,
-        "duration_seconds": round(render_result.duration_seconds, 3),
-        "format": f"{render_result.width}x{render_result.height}",
         "transition": input_report.transition,
         "crop_profile": input_report.crop_profile.name,
         "editing_decisions": plan.decisions,
+        "hook": {"type": "onscreen_text", "text": plan.hook_text},
+        "cta": {"type": "onscreen_text", "text": plan.cta_text},
         "audio": plan.audio.as_dict() if plan.audio else None,
         "quality_status": quality_report.status,
         "artifacts": {
             "final": rel(render_result.output_path),
             "preview": rel(render_result.preview_path) if render_result.preview_path else None,
             "posting_package": rel(package_path),
-            "quality_report": rel(
-                OUTPUTS_QUALITY / f"{plan.job_id}-r{plan.revision}-quality-report.yaml"
-            ),
-            "edit_plan": rel(
-                OUTPUTS_PLANS / f"{plan.job_id}-r{plan.revision}-edit-plan.yaml"
-            ),
+            "quality_report": rel(OUTPUTS_QUALITY / f"{stamp}-quality-report.yaml"),
+            "edit_plan": rel(OUTPUTS_PLANS / f"{stamp}-edit-plan.yaml"),
         },
         "experiment": experiment_id,
         "retention_hypothesis": plan.retention_hypothesis,
         "preference_refs": plan.preference_refs,
         "research_refs": plan.research_refs,
     }
-    path.write_text(
-        yaml.safe_dump(manifest, sort_keys=False, allow_unicode=True), encoding="utf-8"
+    return artifacts.write(
+        OUTPUTS_FINAL / f"{stamp}-manifest.yaml",
+        "video_production_manifest", artifacts.artifact_id("vpm", stamp), body,
+        inputs=[reference for reference in (experiment_id,) if reference],
     )
-    return path
 
 
 def move_job(job_dir: Path, destination_root: Path) -> Path:

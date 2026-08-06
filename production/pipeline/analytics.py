@@ -19,6 +19,7 @@ from typing import Any, Iterable
 
 import yaml
 
+from . import artifacts
 from .paths import ANALYTICS_DIR, rel
 
 # Below this many posts in a group, no comparison is offered at all.
@@ -93,11 +94,13 @@ def record_post(**fields: Any) -> PostRecord:
     record = PostRecord(**known)
     record.recorded_at = _now()
 
-    ANALYTICS_DIR.mkdir(parents=True, exist_ok=True)
-    payload = record.as_dict()
-    payload["artifact_kind"] = "tiktok_post_result"
-    _path(record.video_id).write_text(
-        yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8"
+    artifacts.write(
+        _path(record.video_id),
+        "tiktok_post_result",
+        artifacts.artifact_id("post", record.video_id),
+        record.as_dict(),
+        produced_by=artifacts.CREATOR,
+        created_at=record.recorded_at,
     )
     return record
 
@@ -107,8 +110,9 @@ def load_all() -> list[PostRecord]:
         return []
     records: list[PostRecord] = []
     for path in sorted(ANALYTICS_DIR.glob("post-*.yaml")):
-        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        data.pop("artifact_kind", None)
+        data = artifacts.strip_envelope(
+            yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        )
         for key, value in list(data.items()):
             if hasattr(value, "isoformat"):
                 data[key] = value.isoformat()

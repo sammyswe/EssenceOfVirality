@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/creator-feedback.schema.json",
+  "title": "CreatorFeedback",
+  "description": "One piece of creator feedback, kept verbatim alongside the concrete changes it was read as. Every directive names the phrase that triggered it, so a misreading can be corrected rather than argued with.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "$defs": {
+    "directive": {
+      "type": "object",
+      "properties": {
+        "action": { "type": "string" },
+        "parameters": { "type": "object" },
+        "stage": {
+          "type": "string",
+          "enum": ["creative", "retention", "layout", "text", "render", "copy", "audio"]
+        },
+        "trigger_phrase": {
+          "type": "string",
+          "description": "The creator's own words this directive was derived from."
+        },
+        "confidence": { "$ref": "common.schema.json#/$defs/confidence" }
+      },
+      "required": ["action", "stage", "trigger_phrase", "confidence"]
+    }
+  },
+  "properties": {
+    "artifact_type": { "const": "creator_feedback" },
+    "job_id": { "type": "string" },
+    "revision": { "type": "integer", "minimum": 0 },
+    "raw_feedback": { "type": "string", "minLength": 1 },
+    "raw_file": { "type": "string" },
+    "interpreted_issues": { "type": "array", "items": { "type": "string" } },
+    "directives": { "type": "array", "items": { "$ref": "#/$defs/directive" } },
+    "scope": {
+      "type": "string",
+      "enum": ["one_off", "format_specific", "artist_specific", "asset_specific", "potential_permanent_preference"]
+    },
+    "scope_value": { "type": "string" },
+    "confidence": { "$ref": "common.schema.json#/$defs/confidence" },
+    "approval_required": {
+      "type": "boolean",
+      "description": "True when the reading is uncertain or the feedback sounds like a lasting rule."
+    },
+    "proposed_preferences": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/artifactId" },
+      "description": "Preference proposals written from this feedback. Proposals never take effect on their own."
+    },
+    "unmatched_phrases": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Feedback that was not understood as a concrete change. Recorded rather than guessed at."
+    },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": [
+    "artifact_type", "id", "created_at", "produced_by",
+    "job_id", "revision", "raw_feedback", "scope", "confidence", "approval_required"
+  ]
+}

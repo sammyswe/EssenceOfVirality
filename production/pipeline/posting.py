@@ -17,7 +17,7 @@ from typing import Any
 
 import yaml
 
-from . import rules
+from . import artifacts, rules
 from .editplan import EditPlan
 from .inspector import InputReport
 from .om import write_export_bundle
@@ -262,12 +262,14 @@ def build_package(
 def write_package(package: PostingPackage, directory: Path) -> Path:
     """Write the package as YAML plus a copy-paste friendly Markdown sheet."""
     directory.mkdir(parents=True, exist_ok=True)
-    stem = f"{package.job_id}-r{package.revision}"
+    stem = artifacts.stamp(package.job_id, package.revision)
 
-    yaml_path = directory / f"{stem}-posting-package.yaml"
-    yaml_path.write_text(
-        yaml.safe_dump(package.as_dict(), sort_keys=False, allow_unicode=True),
-        encoding="utf-8",
+    yaml_path = artifacts.write(
+        directory / f"{stem}-posting-package.yaml",
+        "posting_package",
+        artifacts.artifact_id("pkg", stem),
+        package.as_dict(),
+        created_at=package.created_at,
     )
 
     markdown_path = directory / f"{stem}-posting-package.md"

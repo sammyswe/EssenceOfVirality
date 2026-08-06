@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/tiktok-post-result.schema.json",
+  "title": "TikTokPostResult",
+  "description": "What one posted video actually did, entered by the creator from TikTok's own figures. Metrics are optional because TikTok does not always expose them; a missing field means unknown, never zero.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "tiktok_post_result" },
+    "video_id": { "type": "string", "minLength": 1 },
+    "posted_date": { "$ref": "common.schema.json#/$defs/timestamp" },
+    "job_id": { "type": "string" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "format_family": { "type": "string" },
+    "duration_seconds": { "type": "number", "minimum": 0 },
+    "hook": { "type": "string" },
+    "caption": { "type": "string" },
+    "hashtags": { "type": "array", "items": { "type": "string" } },
+    "hashtag_strategy": { "type": "array", "items": { "type": "string" } },
+    "first_artist": { "type": "string" },
+    "second_artist": { "type": "string" },
+    "first_track": { "type": "string" },
+    "second_track": { "type": "string" },
+    "views": { "type": ["integer", "null"], "minimum": 0 },
+    "likes": { "type": ["integer", "null"], "minimum": 0 },
+    "comments": { "type": ["integer", "null"], "minimum": 0 },
+    "shares": { "type": ["integer", "null"], "minimum": 0 },
+    "saves": { "type": ["integer", "null"], "minimum": 0 },
+    "followers_gained": { "type": ["integer", "null"] },
+    "average_watch_time_seconds": { "type": ["number", "null"], "minimum": 0 },
+    "completion_rate": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+    "rewatch_rate": { "type": ["number", "null"], "minimum": 0 },
+    "experiment_id": {
+      "oneOf": [
+        { "$ref": "common.schema.json#/$defs/artifactId" },
+        { "type": "null" }
+      ]
+    },
+    "notes": { "type": "string" },
+    "recorded_at": { "$ref": "common.schema.json#/$defs/timestamp" }
+  },
+  "required": ["artifact_type", "id", "created_at", "produced_by", "video_id", "posted_date"]
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/quality-report.schema.json",
+  "title": "QualityReport",
+  "description": "Deterministic checks run against a finished render and the plan that produced it. A report never claims a video will perform; it states only what was measured and which hard rules held.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "$defs": {
+    "check": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["pass", "warn", "fail"] },
+        "detail": { "type": "string" },
+        "measurement": {}
+      },
+      "required": ["id", "description", "status", "detail"]
+    }
+  },
+  "properties": {
+    "artifact_type": { "const": "quality_report" },
+    "job_id": { "type": "string" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "video_path": { "type": "string" },
+    "status": { "type": "string", "enum": ["pass", "warn", "fail"] },
+    "post_ready": {
+      "type": "boolean",
+      "description": "False whenever any check failed. Warnings do not block posting but are stated."
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "passed": { "type": "integer", "minimum": 0 },
+        "warnings": { "type": "integer", "minimum": 0 },
+        "failures": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["passed", "warnings", "failures"]
+    },
+    "hard_rule_violations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Non-negotiable rules broken by this render. Must be empty for post_ready."
+    },
+    "checks": { "type": "array", "items": { "$ref": "#/$defs/check" }, "minItems": 1 },
+    "source_fingerprints": {
+      "type": "object",
+      "description": "Hashes of the input media, proving the originals were not modified.",
+      "additionalProperties": { "type": "string" }
+    }
+  },
+  "required": [
+    "artifact_type", "id", "created_at", "produced_by",
+    "job_id", "revision", "status", "post_ready", "summary", "checks"
+  ]
+}

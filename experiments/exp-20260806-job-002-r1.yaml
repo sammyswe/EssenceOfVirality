@@ -1,7 +1,9 @@
+artifact_type: production_experiment
 id: exp-20260806-job-002-r1
+created_at: '2026-08-06T11:12:28Z'
+produced_by: workflow:production-pipeline
 job_id: job-002
 revision: 1
-created_at: '2026-08-06T11:01:09Z'
 hypothesis: A funny opening is expected to reduce early_skip_rate in the first two
   seconds, while handing over to Spotify before the transition preserves the viewer's
   understanding of what produced the mix.
@@ -20,4 +22,3 @@ interpretation: ''
 repeat_recommended: unknown
 more_evidence_required: true
 confounders: []
-artifact_kind: production_experiment

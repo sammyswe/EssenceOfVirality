@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/track-research-note.schema.json",
+  "title": "TrackResearchNote",
+  "description": "One sourced piece of context about an artist or track. Every note carries a URL and a publication date, because copy may only make a factual claim that a note supports. Age is recorded so a stale trend cannot be presented as current.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "track_research_note" },
+    "subject": { "type": "string", "minLength": 1, "description": "Artist or track the note is about." },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "recent_release", "tour_announcement", "viral_clip", "meme",
+        "fan_discussion", "lyric_or_theme", "artist_connection",
+        "track_contrast", "tiktok_trend", "upcoming_event", "cultural_context"
+      ]
+    },
+    "summary": { "type": "string", "minLength": 1 },
+    "source_url": { "type": "string", "minLength": 1 },
+    "source_name": { "type": "string" },
+    "published_date": { "$ref": "common.schema.json#/$defs/timestamp" },
+    "recorded_at": { "$ref": "common.schema.json#/$defs/timestamp" },
+    "event_date": {
+      "oneOf": [
+        { "$ref": "common.schema.json#/$defs/timestamp" },
+        { "type": "null" }
+      ]
+    },
+    "caption_angle": { "type": "string" },
+    "hook_angle": { "type": "string" },
+    "usable_in_copy": {
+      "type": "boolean",
+      "description": "False when the note is too old, unsourced or otherwise unsafe to state on screen."
+    },
+    "staleness_note": { "type": "string" },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": [
+    "artifact_type", "id", "created_at", "produced_by",
+    "subject", "kind", "summary", "source_url", "published_date", "usable_in_copy"
+  ]
+}

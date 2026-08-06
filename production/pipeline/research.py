@@ -19,6 +19,7 @@ from typing import Any
 
 import yaml
 
+from . import artifacts
 from .paths import RESEARCH_DIR, rel
 
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -123,7 +124,9 @@ def add_note(
         usable = False
 
     note = ResearchNote(
-        id=f"res-{datetime.now(timezone.utc).strftime('%Y%m%d')}-{_slug(subject, 24)}-{_slug(kind, 16)}",
+        id=artifacts.artifact_id(
+            "res", artifacts.today(), _slug(subject, 24), _slug(kind, 16)
+        ),
         subject=subject.strip(),
         kind=kind,
         summary=summary.strip(),
@@ -143,14 +146,11 @@ def add_note(
 
 
 def save(note: ResearchNote) -> Path:
-    RESEARCH_DIR.mkdir(parents=True, exist_ok=True)
-    path = RESEARCH_DIR / f"{note.id}.yaml"
-    payload = note.as_dict()
-    payload["artifact_kind"] = "track_research_note"
-    path.write_text(
-        yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8"
+    return artifacts.write(
+        RESEARCH_DIR / f"{note.id}.yaml",
+        "track_research_note", note.id, note.as_dict(),
+        created_at=note.recorded_at,
     )
-    return path
 
 
 def load_all() -> list[ResearchNote]:
@@ -158,8 +158,9 @@ def load_all() -> list[ResearchNote]:
         return []
     notes: list[ResearchNote] = []
     for path in sorted(RESEARCH_DIR.glob("res-*.yaml")):
-        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        data.pop("artifact_kind", None)
+        data = artifacts.strip_envelope(
+            yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        )
         for key, value in list(data.items()):
             if isinstance(value, (date, datetime)):
                 data[key] = value.isoformat()

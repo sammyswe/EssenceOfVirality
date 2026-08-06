@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/posting-package.schema.json",
+  "title": "PostingPackage",
+  "description": "Everything needed to post one render: copy, hashtags, thumbnail choice, the decisions behind the edit, and the research that any factual claim rests on.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "posting_package" },
+    "job_id": { "type": "string" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "final_hook": { "type": "string" },
+    "onscreen_text": {
+      "type": "array",
+      "description": "Transcript of every text cue in the video, in order.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string" },
+          "role": { "type": "string" },
+          "start_seconds": { "type": "number", "minimum": 0 },
+          "end_seconds": { "type": "number", "minimum": 0 }
+        },
+        "required": ["text", "role"]
+      }
+    },
+    "caption": { "type": "string" },
+    "hashtags": { "type": "array", "items": { "type": "string", "pattern": "^#[A-Za-z0-9_]+$" } },
+    "hashtag_strategy": {
+      "type": "array",
+      "description": "Which hashtag bands this post drew from, so performance can be attributed to a strategy rather than to individual tags.",
+      "items": { "type": "string", "enum": ["broad", "niche", "artist_specific", "spotify_specific"] }
+    },
+    "thumbnail_frame_seconds": { "type": "number", "minimum": 0 },
+    "thumbnail_path": { "type": ["string", "null"] },
+    "thumbnail_text": { "type": "string" },
+    "call_to_action": { "type": "string" },
+    "pinned_comment": { "type": "string" },
+    "prepared_replies": { "type": "array", "items": { "type": "string" } },
+    "creative_format": { "type": "string" },
+    "editing_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision": { "type": "string" },
+          "rationale": { "type": "string" },
+          "stage": { "type": "string" }
+        },
+        "required": ["decision", "rationale"]
+      }
+    },
+    "retention_hypothesis": { "type": "string" },
+    "research_used": {
+      "type": "array",
+      "description": "Sourced, dated notes backing any factual claim in the copy. Empty means the copy makes no such claim.",
+      "items": { "type": "object" }
+    },
+    "output_file": { "type": "string" },
+    "preview_file": { "type": ["string", "null"] },
+    "render_metadata": { "type": "object" },
+    "quality_status": { "type": "string", "enum": ["pass", "warn", "fail"] },
+    "experiment": { "type": ["object", "null"] },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": [
+    "artifact_type", "id", "created_at", "produced_by",
+    "job_id", "revision", "final_hook", "caption", "hashtags",
+    "creative_format", "output_file", "quality_status"
+  ]
+}

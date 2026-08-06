@@ -16,6 +16,7 @@ from typing import Any, Iterable
 
 import yaml
 
+from . import artifacts
 from .paths import PREFERENCES_APPROVED, PREFERENCES_PROPOSED, rel
 
 # Number of independent, consistent feedback events required to auto-promote
@@ -90,14 +91,12 @@ def _path_for(preference: Preference) -> Path:
 
 
 def _write(preference: Preference) -> Path:
-    path = _path_for(preference)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    payload = preference.as_dict()
-    payload["artifact_kind"] = "creator_preference"
-    path.write_text(
-        yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8"
+    return artifacts.write(
+        _path_for(preference),
+        "creator_preference", preference.id, preference.as_dict(),
+        produced_by=artifacts.CREATOR,
+        created_at=preference.created_at,
     )
-    return path
 
 
 def _load_dir(directory: Path) -> list[Preference]:
@@ -105,8 +104,7 @@ def _load_dir(directory: Path) -> list[Preference]:
         return []
     preferences: list[Preference] = []
     for path in sorted(directory.glob("*.yaml")):
-        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        data.pop("artifact_kind", None)
+        data = artifacts.strip_envelope(yaml.safe_load(path.read_text(encoding="utf-8")) or {})
         for key, value in list(data.items()):
             if isinstance(value, (date, datetime)):
                 data[key] = value.isoformat()
@@ -125,9 +123,11 @@ def load_all(*, include_proposed: bool = False) -> list[Preference]:
 
 
 def make_id(key: str, scope: str, scope_value: str, statement: str) -> str:
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%d")
     scope_part = _slug(scope_value) if scope_value else scope
-    return f"pref-{stamp}-{_slug(key, 24)}-{_slug(scope_part, 16)}-{_slug(statement, 20)}"
+    return artifacts.artifact_id(
+        "pref", artifacts.today(),
+        _slug(key, 24), _slug(scope_part, 16), _slug(statement, 20),
+    )
 
 
 def propose(
@@ -201,8 +201,7 @@ def approve(preference_id: str, *, approved_by: str = "creator") -> Preference:
             raise ValueError(f"{preference_id} is already approved")
         raise FileNotFoundError(f"No proposed preference {preference_id!r}")
 
-    data = yaml.safe_load(source.read_text(encoding="utf-8")) or {}
-    data.pop("artifact_kind", None)
+    data = artifacts.strip_envelope(yaml.safe_load(source.read_text(encoding="utf-8")) or {})
     preference = Preference(**data)
 
     superseded = find(
@@ -216,13 +215,11 @@ def approve(preference_id: str, *, approved_by: str = "creator") -> Preference:
         # Retired rules stay recoverable in the proposed directory.
         (PREFERENCES_APPROVED / f"{superseded.id}.yaml").unlink(missing_ok=True)
         superseded.status = "retired"
-        retired_path = PREFERENCES_PROPOSED / f"{superseded.id}.yaml"
-        retired_path.write_text(
-            yaml.safe_dump(
-                {**superseded.as_dict(), "artifact_kind": "creator_preference"},
-                sort_keys=False, allow_unicode=True,
-            ),
-            encoding="utf-8",
+        artifacts.write(
+            PREFERENCES_PROPOSED / f"{superseded.id}.yaml",
+            "creator_preference", superseded.id, superseded.as_dict(),
+            produced_by=artifacts.CREATOR,
+            created_at=superseded.created_at,
         )
 
     preference.status = "approved"

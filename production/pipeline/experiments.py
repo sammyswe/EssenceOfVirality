@@ -13,6 +13,7 @@ from typing import Any
 
 import yaml
 
+from . import artifacts
 from .paths import EXPERIMENTS_DIR, rel
 
 STATUS_VALUES = {"awaiting_results", "results_recorded", "inconclusive", "abandoned"}
@@ -68,9 +69,10 @@ def create(
     why: str = "",
     format_family: str = "",
 ) -> Experiment:
-    stamp = datetime.now(timezone.utc).strftime("%Y%m%d")
     experiment = Experiment(
-        id=f"exp-{stamp}-{job_id}-r{revision}",
+        id=artifacts.artifact_id(
+            "exp", artifacts.today(), artifacts.stamp(job_id, revision)
+        ),
         job_id=job_id,
         revision=revision,
         created_at=_now(),
@@ -88,22 +90,18 @@ def create(
 
 
 def save(experiment: Experiment) -> Path:
-    EXPERIMENTS_DIR.mkdir(parents=True, exist_ok=True)
-    path = _path(experiment.id)
-    payload = experiment.as_dict()
-    payload["artifact_kind"] = "production_experiment"
-    path.write_text(
-        yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8"
+    return artifacts.write(
+        _path(experiment.id),
+        "production_experiment", experiment.id, experiment.as_dict(),
+        created_at=experiment.created_at,
     )
-    return path
 
 
 def load(experiment_id: str) -> Experiment | None:
     path = _path(experiment_id)
     if not path.is_file():
         return None
-    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    data.pop("artifact_kind", None)
+    data = artifacts.strip_envelope(yaml.safe_load(path.read_text(encoding="utf-8")) or {})
     try:
         return Experiment(**data)
     except TypeError:
@@ -115,8 +113,9 @@ def load_all() -> list[Experiment]:
         return []
     experiments: list[Experiment] = []
     for path in sorted(EXPERIMENTS_DIR.glob("*.yaml")):
-        data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        data.pop("artifact_kind", None)
+        data = artifacts.strip_envelope(
+            yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        )
         try:
             experiments.append(Experiment(**data))
         except TypeError:

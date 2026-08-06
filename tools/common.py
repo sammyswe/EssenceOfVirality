@@ -18,6 +18,9 @@ SCHEMAS_DIR = REPO_ROOT / "schemas"
 SKILLS_DIR = REPO_ROOT / ".cursor" / "skills"
 
 # Directories scanned for YAML artifacts (files bearing an `artifact_type` key).
+# The production directories hold the pipeline's durable memory — feedback,
+# preferences, experiments, post results — and the committed worked examples.
+# Live run output under outputs/ is regenerated per run and is not in git.
 ARTIFACT_DIRS = [
     "research",
     "evidence",
@@ -25,6 +28,10 @@ ARTIFACT_DIRS = [
     "evaluation/regression",
     "analytics",
     "tests/fixtures/artifacts",
+    "feedback/structured",
+    "preferences",
+    "experiments",
+    "examples/approved-outputs",
 ]
 
 # artifact_type -> schema file (mirrors schemas/README.md).
@@ -42,10 +49,20 @@ SCHEMA_REGISTRY = {
     "pull_request_summary": "pull-request-summary.schema.json",
     "analytics_observation": "analytics-observation.schema.json",
     "video_production_manifest": "video-production-manifest.schema.json",
+    # Production pipeline artifacts.
+    "edit_plan": "edit-plan.schema.json",
+    "quality_report": "quality-report.schema.json",
+    "posting_package": "posting-package.schema.json",
+    "creator_feedback": "creator-feedback.schema.json",
+    "creator_preference": "creator-preference.schema.json",
+    "production_experiment": "production-experiment.schema.json",
+    "tiktok_post_result": "tiktok-post-result.schema.json",
+    "track_research_note": "track-research-note.schema.json",
 }
 
 ARTIFACT_ID_RE = re.compile(
-    r"^(src|ext|claim|assess|tech|contra|kcp|scp|eval|obs|exp|prs|vpm|fix)-[a-z0-9][a-z0-9-]*$"
+    r"^(src|ext|claim|assess|tech|contra|kcp|scp|eval|obs|exp|prs|vpm|fix"
+    r"|plan|qr|pkg|fb|pref|post|res)-[a-z0-9][a-z0-9-]*$"
 )
 
 SKILL_BANKS = [

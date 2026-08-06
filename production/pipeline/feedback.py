@@ -18,6 +18,7 @@ from typing import Any, Iterable
 
 import yaml
 
+from . import artifacts
 from . import preferences as prefs
 from .paths import FEEDBACK_RAW, FEEDBACK_STRUCTURED, rel
 
@@ -76,7 +77,7 @@ class FeedbackRecord:
     approval_required: bool
     proposed_preferences: list[str] = field(default_factory=list)
     unmatched_phrases: list[str] = field(default_factory=list)
-    notes: list[str] = field(default_factory=list)
+    interpretation_notes: list[str] = field(default_factory=list)
 
     def as_dict(self) -> dict[str, Any]:
         data = asdict(self)
@@ -305,18 +306,20 @@ def interpret(
     else:
         confidence = scope_confidence if scope_confidence != "low" else "medium"
 
-    record_id = (
-        f"fb-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}-{job_id}-r{revision}"
+    record_id = artifacts.artifact_id(
+        "fb",
+        datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S"),
+        artifacts.stamp(job_id, revision),
     )
 
-    notes: list[str] = []
+    interpretation_notes: list[str] = []
     if unmatched:
-        notes.append(
+        interpretation_notes.append(
             "Some feedback was not understood as a concrete change; it is recorded "
             "verbatim and needs either a rephrase or a manual edit."
         )
     if scope == SCOPE_PREFERENCE:
-        notes.append(
+        interpretation_notes.append(
             "Wording suggests a lasting rule. A preference proposal has been written; "
             "it takes effect only after approval."
         )
@@ -334,7 +337,7 @@ def interpret(
         confidence=confidence,
         approval_required=scope == SCOPE_PREFERENCE or confidence == "low",
         unmatched_phrases=unmatched,
-        notes=notes,
+        interpretation_notes=interpretation_notes,
     )
 
     # Preference proposals: recorded, never applied automatically.
@@ -368,12 +371,13 @@ def save(record: FeedbackRecord, raw_text: str) -> tuple[Path, Path]:
     raw_path = FEEDBACK_RAW / f"{record.id}.txt"
     raw_path.write_text(raw_text.strip() + "\n", encoding="utf-8")
 
-    structured_path = FEEDBACK_STRUCTURED / f"{record.id}.yaml"
     payload = record.as_dict()
-    payload["artifact_kind"] = "creator_feedback"
     payload["raw_file"] = rel(raw_path)
-    structured_path.write_text(
-        yaml.safe_dump(payload, sort_keys=False, allow_unicode=True), encoding="utf-8"
+    structured_path = artifacts.write(
+        FEEDBACK_STRUCTURED / f"{record.id}.yaml",
+        "creator_feedback", record.id, payload,
+        produced_by=artifacts.CREATOR,
+        created_at=record.created_at,
     )
     return raw_path, structured_path
 
@@ -387,7 +391,7 @@ def load_for_job(job_id: str) -> list[FeedbackRecord]:
         data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
         if data.get("job_id") != job_id:
             continue
-        data.pop("artifact_kind", None)
+        data = artifacts.strip_envelope(data)
         data.pop("raw_file", None)
         data["directives"] = [Directive(**item) for item in data.get("directives", [])]
         try:

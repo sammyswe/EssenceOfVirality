@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/production-experiment.schema.json",
+  "title": "ProductionExperiment",
+  "description": "One render's deliberate variation and the metric it was meant to move. Results are entered after posting; nothing is concluded automatically, and a single post never settles a question.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "production_experiment" },
+    "job_id": { "type": "string" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "hypothesis": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stated as an expectation about viewer behaviour, never as a promise about reach."
+    },
+    "variable": { "type": "string", "description": "The one thing that changed." },
+    "control_reference": { "type": "string", "description": "What this is being compared against." },
+    "expected_effect": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["awaiting_results", "results_recorded", "inconclusive", "abandoned"]
+    },
+    "what_changed": { "type": "string" },
+    "why": { "type": "string" },
+    "format_family": { "type": "string" },
+    "video_id": { "type": ["string", "null"] },
+    "results": { "type": "object" },
+    "interpretation": { "type": "string" },
+    "repeat_recommended": { "type": "string", "enum": ["yes", "no", "unknown"] },
+    "more_evidence_required": {
+      "type": "boolean",
+      "description": "Stays true until several posts support the same reading."
+    },
+    "confounders": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Everything else that differed and could explain the result."
+    }
+  },
+  "required": [
+    "artifact_type", "id", "created_at", "produced_by",
+    "job_id", "revision", "hypothesis", "variable", "status"
+  ]
+}

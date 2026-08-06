@@ -1,11 +1,14 @@
+artifact_type: quality_report
+id: qr-job-001-r1
+created_at: '2026-08-06T11:11:49Z'
+produced_by: workflow:production-pipeline
 job_id: job-001
 revision: 1
 video_path: outputs/final/job-001-r1.mp4
-created_at: '2026-08-06T10:51:06Z'
 status: pass
 post_ready: true
 summary:
-  passed: 24
+  passed: 25
   warnings: 0
   failures: 0
 hard_rule_violations: []
@@ -82,8 +85,13 @@ checks:
   description: Spotify keeps at least the minimum share of the frame
   status: pass
   detail: Spotify occupies 100% of the frame (fitted by cover; 0% of the source frame
-    cropped away, all of it outside the must-remain-visible regions)
+    cropped away, none of it from a must-remain-visible region)
   measurement: 1.0
+- id: protected_regions_survive_crop
+  description: The crop keeps the song labels and waveform whole
+  status: pass
+  detail: song labels and waveform sit entirely inside the crop
+  measurement: null
 - id: spotify_visible_at_transition
   description: Nothing covers the Spotify surface at the blend
   status: pass
@@ -136,4 +144,3 @@ checks:
   measurement: null
 language_note: This report describes technical conformance and a retention hypothesis.
   It does not predict distribution or view counts.
-artifact_kind: quality_report

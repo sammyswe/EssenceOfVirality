@@ -1,13 +1,18 @@
-artifact_kind: production_manifest
+artifact_type: video_production_manifest
+id: vpm-job-002-r1
+created_at: '2026-08-06T11:12:29Z'
+produced_by: workflow:production-pipeline
+inputs:
+- exp-20260806-job-002-r1
+schema_maturity: scaffold
 video_id: job-002-r1
 job_id: job-002
 revision: 1
-created_at: '2026-08-06T11:01:09Z'
 source_assets:
-  spotify_recording: jobs/incoming/job-002/spotify-screen-recording.mp4
-  supporting_clips:
-  - jobs/incoming/job-002/hook-clip.mp4
+- jobs/incoming/job-002/spotify-screen-recording.mp4
+- jobs/incoming/job-002/hook-clip.mp4
 pipeline_version: 0.1.0
+openmontage_version: 4eab34c5cfcccaa4f1970554928feccce73ee930
 openmontage:
   available: true
   expected_ref: 4eab34c5cfcccaa4f1970554928feccce73ee930
@@ -23,10 +28,11 @@ backends:
   text: ffmpeg:drawtext
   audio: ffmpeg:loudnorm
   openmontage: available
+format: '9:16'
+resolution: 1080x1920
+duration_seconds: 19.0
 format_family: comedy_hook
 template: comedy-hook
-duration_seconds: 19.0
-format: 1080x1920
 transition:
   seconds: 14.2
   start_seconds: 13.0
@@ -54,6 +60,12 @@ editing_decisions:
 - decision: cutaway clip 'sample hook' 0.00-1.80s
   rationale: full-screen opening; hands over to Spotify before the blend
   stage: retention
+hook:
+  type: onscreen_text
+  text: nobody asked for this pairing
+cta:
+  type: onscreen_text
+  text: rate the transition
 audio:
   source_path: /workspace/jobs/incoming/job-002/spotify-screen-recording.mp4
   normalise: true
