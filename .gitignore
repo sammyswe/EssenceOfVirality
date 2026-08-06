@@ -43,3 +43,7 @@ analytics/raw/
 
 # External clones (OpenMontage is pinned by ref, not vendored)
 integrations/openmontage/clone/
+
+# Pipeline run outputs (keep README only)
+integrations/openmontage/outputs/*/
+!integrations/openmontage/outputs/README.md

@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "title": "Essence of Virality — Spotify Mix",
+  "hook": "",
+  "key_points": [
+    "Spotify mix transition is the payoff",
+    "Original captured audio only",
+    "Vertical TikTok format"
+  ],
+  "tone": "calm",
+  "style": "spotify-mix-tiktok",
+  "target_platform": "tiktok",
+  "target_duration_seconds": 25,
+  "metadata": {
+    "production_mode": "real_capture",
+    "software_shown": ["Spotify"],
+    "recommended_aspect_ratios": ["9:16"],
+    "demo_archetype": "music_transition",
+    "blend_window_seconds": {
+      "start": null,
+      "end": null
+    },
+    "domain_pipeline": "essence-of-virality",
+    "preserve_original_audio": true
+  }
+}

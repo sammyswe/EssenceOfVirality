@@ -1,0 +1,31 @@
+# Style playbook — Spotify mix TikTok edits (materialised to OpenMontage styles/).
+name: spotify-mix-tiktok
+version: "0.1.0"
+description: >
+  Minimal, music-first vertical edits for anonymous Spotify mix screen recordings.
+  No hype overlays; Spotify UI stays legible; audio is never replaced.
+
+visual:
+  palette: neutral_dark
+  typography: system_sans
+  motion: subtle
+  overlay_density: minimal
+
+audio:
+  music_bed: false
+  narration: false
+  preserve_source: true
+  loudness_target_lufs: -14
+
+composition:
+  aspect_ratio: "9:16"
+  profile: tiktok
+  reframe_method: center_crop
+  subtitle_style: optional_word_highlight
+  max_hook_text_words: 8
+
+anti_patterns:
+  - trending_sound_overlay
+  - clickbait_hook_register_mismatch
+  - overlay_during_blend_window
+  - audio_enhancement_beyond_loudness
