@@ -15,7 +15,7 @@ from typing import Any
 
 import yaml
 
-from .pipeline import analytics, experiments, feedback, orchestrator
+from .pipeline import analytics, delivery, experiments, feedback, orchestrator
 from .pipeline import preferences as prefs
 from .pipeline import research
 from .pipeline.jobspec import JobError, load_job, write_job_template
@@ -333,6 +333,34 @@ def cmd_feedback(args: argparse.Namespace) -> int:
     return 1
 
 
+def cmd_deliver(args: argparse.Namespace) -> int:
+    result = delivery.stage(args.video_id)
+    if args.json:
+        print(json.dumps(result.as_dict(), indent=2))
+        return 0 if result.available else 1
+
+    print()
+    if not result.staged:
+        print(f"  {_colour('error', RED)} {result.reason}", file=sys.stderr)
+        return 1
+    for entry in result.staged:
+        target = entry["published_path"] or "(not published)"
+        print(f"  {entry['label']:<10} {entry['source']}")
+        if entry["published_path"]:
+            print(f"             -> {target}")
+    if not result.available:
+        print()
+        print(f"  {_colour('note', YELLOW)} {result.reason}")
+    else:
+        print()
+        print("  Reference these paths from the pull request body; the cloud agent")
+        print("  uploads them and rewrites them to links openable on a phone.")
+    for warning in result.warnings:
+        print(f"  {_colour('warn', YELLOW)} {warning}")
+    print()
+    return 0 if result.available else 1
+
+
 def cmd_status(args: argparse.Namespace) -> int:
     ensure_dirs()
     capabilities = capability_report()
@@ -438,6 +466,13 @@ def build_parser() -> argparse.ArgumentParser:
     approve.add_argument("job")
     approve.set_defaults(func=cmd_approve)
 
+    deliver = subparsers.add_parser(
+        "deliver", help="stage a render where it can be downloaded on a phone"
+    )
+    deliver.add_argument("video_id", help="e.g. job-001-r2")
+    deliver.add_argument("--json", action="store_true")
+    deliver.set_defaults(func=cmd_deliver)
+
     status = subparsers.add_parser("status", help="environment and pipeline state")
     status.add_argument("--json", action="store_true")
     status.set_defaults(func=cmd_status)
@@ -511,7 +546,7 @@ def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     known = {
         "run", "revise", "new", "inspect", "approve", "status", "formats",
-        "prefs", "analytics", "experiments", "research", "feedback",
+        "prefs", "analytics", "experiments", "research", "feedback", "deliver",
         "-h", "--help",
     }
     # `./process-job jobs/incoming/job-001` is the documented shorthand for `run`.
