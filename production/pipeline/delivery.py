@@ -6,7 +6,9 @@ agent can turn them into links.
 
 The mechanism that has actually been verified in this environment is the cloud
 agent's artifact directory: a file placed there and referenced from a pull
-request body is uploaded and rewritten to a URL the creator can open on a phone.
+request body is uploaded, and the path is rewritten to a link into the agent's
+artifact viewer, which opens on a phone for anyone signed in to Cursor. It is a
+link rather than an inline player, so the creator taps through to download.
 When that directory does not exist — a local checkout, a different runner — the
 staging step reports that plainly instead of pretending it worked.
 """
@@ -126,8 +128,9 @@ def stage(video_id: str) -> Delivery:
 def markdown_embed(delivery: Delivery) -> str:
     """Markdown referencing the staged files, for a pull request body.
 
-    The cloud agent rewrites these absolute paths to public URLs when the pull
-    request is created, which is what makes them openable on a phone.
+    The tag form is what triggers the upload. When the pull request is written,
+    the cloud agent replaces each tag with a link into its artifact viewer, so
+    what the creator sees is a tappable download rather than an inline player.
     """
     if not delivery.available:
         return ""
