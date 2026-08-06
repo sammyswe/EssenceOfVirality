@@ -71,6 +71,10 @@ SKILL_BANKS = [
     "research-workflows",
     "meta",
     "experimental",
+    # Operating instructions for the production pipeline's stages. These skills
+    # describe how to run and reason about `production/`; the creative claims
+    # they act on belong to the domain banks, so they carry no evidence refs.
+    "production",
 ]
 
 # Banks whose skills encode domain knowledge and therefore need evidence references.

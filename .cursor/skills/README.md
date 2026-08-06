@@ -10,6 +10,13 @@ Project-authored Agent Skills, auto-discovered by Cursor. Bank layout (ADR 0005,
 | `general-virality/` | Domain skills: platform-agnostic virality production rules | model-invoked, evidence-referenced |
 | `spotify-mix-content/` | Domain skills: niche rules (music centrality, Spotify legibility) | model-invoked, evidence-referenced |
 | `experimental/` | New research-generated candidates awaiting promotion | not routed to production use |
+| `production/` | Operating instructions for the ten stages of `production/` | model-invoked |
+
+`production/` skills describe how to run and reason about the video pipeline —
+what each stage owns, its hard rules, its output contract and its failure modes.
+They carry no `evidence_refs` because the creative claims they act on belong to
+the domain banks; a production skill that starts asserting a domain finding
+should link to the domain skill instead.
 
 Third-party skills live in `.agents/skills/` (lockfile-managed) — never here.
 
