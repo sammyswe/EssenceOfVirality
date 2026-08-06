@@ -73,8 +73,8 @@ config_overrides:
 alternatives it considered:
 
 ```
-  transition     6.00s (spectral_flux, high confidence)
-                 alternatives: 11.50s, 3.20s
+  transition     14.20s (spectral_flux_novelty, high confidence)
+                 alternatives: 12.60s, 15.80s
 ```
 
 Detection keys on spectral flux — a change in timbre. A transition between two

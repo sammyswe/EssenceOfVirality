@@ -143,11 +143,13 @@ config_overrides:
 ```
   job            job-003
   recording      jobs/incoming/job-003/spotify-screen-recording.mp4
-  geometry       1080x1920 (0.562), 24.00s, 30.00 fps
-  crop profile   portrait-phone — source is already 9:16
-  transition     6.00s (spectral_flux, high confidence)
-  tempo          120.0 BPM (medium confidence)
-  loudness       -15.73 LUFS, peak -1.20 dBTP — within tolerance
+  geometry       1080x1920 (0.562), 31.00s, 30.00 fps
+  crop profile   vertical_full — source ratio 0.562 within [0.5, 0.6]
+  transition     14.20s (spectral_flux_novelty, high confidence)
+                 alternatives: 12.60s, 15.80s
+  tempo          99.4 BPM (medium confidence)
+  loudness       -15.73 LUFS, peak -10.19 dBTP — integrated loudness -15.73 LUFS
+                 is 1.73 dB from the -14.0 LUFS target
 ```
 
 This runs no encode and takes a second or two. If the transition time is wrong
