@@ -1,0 +1,64 @@
+name: clean-showcase
+family: clean_showcase
+version: "0.1.0"
+description: >
+  The Spotify interface is the whole frame. Text, a progress cue and a zoom at the
+  transition carry the retention work. The baseline format and the control against
+  which the others are compared.
+
+requires:
+  minimum_supporting_assets: 0
+  maximum_supporting_assets: 0
+
+layout:
+  mode: full
+  spotify_area_fraction: 1.0
+
+pacing:
+  # Seconds of lead-in kept before the transition when the source allows a choice.
+  preferred_lead_in_seconds: 7.0
+  preferred_tail_seconds: 14.0
+
+retention_devices:
+  - first_frame_shows_now_playing
+  - anticipation_text_before_transition
+  - progress_bar
+  - zoom_emphasis_at_transition
+  - closing_question
+
+hook_patterns:
+  - text: "wait for the switch"
+    kind: anticipation
+  - text: "spotify did this on its own"
+    kind: platform_reveal
+    requires_true: "The transition was produced by Spotify's own mixing feature."
+  - text: "these two should not blend"
+    kind: contrast
+    requires_true: "The two tracks are audibly dissimilar."
+  - text: "{first_artist} into {second_artist}"
+    kind: artist_pairing
+    requires_fields: [first_artist, second_artist]
+
+cta_patterns:
+  - text: "rate this transition"
+    intent: comment_rate
+  - text: "which song won?"
+    intent: comment_rate
+  - text: "next pairing?"
+    intent: comment_suggest
+  - text: "save it for your playlist"
+    intent: save
+
+text_styles:
+  hook: sleek
+  cta: question
+
+retention_hypothesis: >
+  Keeping the Spotify surface unobstructed and marking the transition with a single
+  zoom is expected to protect completion_rate by making the payoff legible, with no
+  competing visual to explain.
+
+evidence_refs:
+  - claim-20260803-pref-music-central
+  - claim-20260803-pref-spotify-legibility
+  - claim-20200618-completion-strong-signal

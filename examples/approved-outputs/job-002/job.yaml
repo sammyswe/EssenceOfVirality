@@ -1,0 +1,15 @@
+job_id: job-002
+spotify_recording: spotify-screen-recording.mp4
+additional_assets:
+  - path: hook-clip.mp4
+    role: hook
+    label: sample hook
+tracks:
+  first: {title: Night Drive, artist: Lowbeam, genre: synthwave}
+  second: {title: Paper Lanterns, artist: Ashra Kite, genre: afrobeats}
+creative_direction:
+  preferred_format: auto
+  mood: funny
+render:
+  target_platform: tiktok
+  aspect_ratio: "9:16"

@@ -12,7 +12,7 @@ alwaysApply: false
 - All extension sources must state the upstream schema versions they target; the pin is
   `integrations/openmontage/PINNED_REF` and changes only via `/review-openmontage-integration`
   with the upgrade checklist from ADR 0001.
-- Phase gate: no executable integration work before phase 3. Until then this directory contains
-  documentation and the pin only.
+- Phase 4 pipeline work lives here (`run_pipeline.py`, `materialise.sh`, manifests). Creator chose
+  to start the OpenMontage adapter early (see `docs/guides/openmontage-pipeline.md`).
 - Do not reimplement capabilities OpenMontage provides (reframe, compose, subtitles, export);
   evidence of a genuine gap goes to the ADR 0001 fork-trigger list instead.

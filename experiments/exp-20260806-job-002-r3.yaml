@@ -1,0 +1,24 @@
+artifact_type: production_experiment
+id: exp-20260806-job-002-r3
+created_at: '2026-08-06T11:26:32Z'
+produced_by: workflow:production-pipeline
+job_id: job-002
+revision: 3
+hypothesis: A funny opening is expected to reduce early_skip_rate in the first two
+  seconds, while handing over to Spotify before the transition preserves the viewer's
+  understanding of what produced the mix.
+variable: format_family
+control_reference: clean_showcase
+expected_effect: higher_completion_rate
+status: awaiting_results
+what_changed: format comedy-hook, hook 'nobody asked for this pairing'
+why: 'format comedy-hook: uses the 1 supplied clip(s); comedy mood requested and a
+  hook clip is available; selected ''self_deprecating'' hook from 3 valid candidates;
+  selected call to action with intent ''comment_rate'''
+format_family: comedy_hook
+video_id: null
+results: {}
+interpretation: ''
+repeat_recommended: unknown
+more_evidence_required: true
+confounders: []

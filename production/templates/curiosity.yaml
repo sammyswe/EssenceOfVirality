@@ -1,0 +1,66 @@
+name: curiosity
+family: curiosity
+version: "0.1.0"
+description: >
+  The opening poses a question the transition answers. No supporting footage
+  required — the curiosity gap is built from text timing over the Spotify surface.
+
+requires:
+  minimum_supporting_assets: 0
+  maximum_supporting_assets: 1
+
+layout:
+  mode: full
+  spotify_area_fraction: 1.0
+
+pacing:
+  preferred_lead_in_seconds: 8.0
+  preferred_tail_seconds: 13.0
+
+retention_devices:
+  - unanswered_question_in_first_second
+  - progress_bar
+  - answer_revealed_at_transition
+  - zoom_emphasis_at_transition
+  - closing_question
+
+hook_patterns:
+  - text: "guess the second song"
+    kind: question
+  - text: "what comes after this?"
+    kind: question
+  - text: "you already know track two"
+    kind: familiarity
+    requires_true: "The second track is widely recognisable."
+
+# Shown at the transition, resolving the opening question.
+reveal_patterns:
+  - text: "{second_track}"
+    requires_fields: [second_track]
+  - text: "there it is"
+    kind: generic_resolution
+
+cta_patterns:
+  - text: "did you guess it?"
+    intent: comment_answer
+  - text: "rate this transition"
+    intent: comment_rate
+
+text_styles:
+  hook: sleek
+  reveal: spotify_accent
+  cta: question
+
+constraints:
+  # A curiosity gap that is never closed is a broken promise.
+  reveal_required: true
+  reveal_within_seconds_of_transition: 1.5
+
+retention_hypothesis: >
+  An opening question is expected to reduce early_skip_rate by giving a reason to
+  stay; resolving it exactly at the transition is expected to protect
+  completion_rate. Leaving it unresolved would be a false promise.
+
+evidence_refs:
+  - claim-20260803-hyp-early-skip-promise
+  - claim-20200618-completion-strong-signal

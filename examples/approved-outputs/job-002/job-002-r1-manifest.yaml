@@ -1,0 +1,88 @@
+artifact_type: video_production_manifest
+id: vpm-job-002-r1
+created_at: '2026-08-06T11:12:29Z'
+produced_by: workflow:production-pipeline
+inputs:
+- exp-20260806-job-002-r1
+schema_maturity: scaffold
+video_id: job-002-r1
+job_id: job-002
+revision: 1
+source_assets:
+- jobs/incoming/job-002/spotify-screen-recording.mp4
+- jobs/incoming/job-002/hook-clip.mp4
+pipeline_version: 0.1.0
+openmontage_version: 4eab34c5cfcccaa4f1970554928feccce73ee930
+openmontage:
+  available: true
+  expected_ref: 4eab34c5cfcccaa4f1970554928feccce73ee930
+  actual_ref: 4eab34c5cfcccaa4f1970554928feccce73ee930
+  matches_pin: true
+  note: ''
+backends:
+  probe: openmontage:audio_probe
+  transition: spectral_flux_novelty
+  beats: onset_autocorrelation
+  loudness: ffmpeg:loudnorm
+  composite: ffmpeg:filter_complex
+  text: ffmpeg:drawtext
+  audio: ffmpeg:loudnorm
+  openmontage: available
+format: '9:16'
+resolution: 1080x1920
+duration_seconds: 19.0
+format_family: comedy_hook
+template: comedy-hook
+transition:
+  seconds: 14.2
+  start_seconds: 13.0
+  end_seconds: 16.2
+  method: spectral_flux_novelty
+  confidence: high
+  novelty_score: 0.341
+  alternatives:
+  - 12.6
+  - 15.8
+  notes: []
+crop_profile: vertical_full
+editing_decisions:
+- decision: format_family=comedy_hook
+  rationale: uses the 1 supplied clip(s); comedy mood requested and a hook clip is
+    available
+  stage: creative
+- decision: source window 8.20s-27.20s
+  rationale: keeps the transition at 6.00s of a 19.00s edit, with the cut clear of
+    the blend region
+  stage: retention
+- decision: zoom emphasis at 6.00s
+  rationale: marks the payoff visually without altering the audio
+  stage: retention
+- decision: cutaway clip 'sample hook' 0.00-1.80s
+  rationale: full-screen opening; hands over to Spotify before the blend
+  stage: retention
+hook:
+  type: onscreen_text
+  text: nobody asked for this pairing
+cta:
+  type: onscreen_text
+  text: rate the transition
+audio:
+  source_path: /workspace/jobs/incoming/job-002/spotify-screen-recording.mp4
+  normalise: true
+  target_lufs: -14.0
+  true_peak_db: -1.5
+  measured_lufs: -15.73
+  reason: integrated loudness -15.73 LUFS is 1.73 dB from the -14.0 LUFS target
+quality_status: pass
+artifacts:
+  final: outputs/final/job-002-r1.mp4
+  preview: outputs/previews/job-002-r1-preview.mp4
+  posting_package: outputs/posting-packages/job-002-r1-posting-package.yaml
+  quality_report: outputs/quality-reports/job-002-r1-quality-report.yaml
+  edit_plan: outputs/edit-plans/job-002-r1-edit-plan.yaml
+experiment: exp-20260806-job-002-r1
+retention_hypothesis: A funny opening is expected to reduce early_skip_rate in the
+  first two seconds, while handing over to Spotify before the transition preserves
+  the viewer's understanding of what produced the mix.
+preference_refs: []
+research_refs: []

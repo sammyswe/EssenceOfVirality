@@ -1,0 +1,63 @@
+name: reaction
+family: reaction
+version: "0.1.0"
+description: >
+  Dancing or reaction footage supports the music while Spotify stays dominant. The
+  supporting clip enters after the opening and leaves before the blend.
+
+requires:
+  minimum_supporting_assets: 1
+  maximum_supporting_assets: 2
+  preferred_roles: [overlay, payoff, unassigned]
+
+layout:
+  mode: pip
+  spotify_area_fraction: 1.0
+  pip_scale: 0.38
+  pip_corner: bottom_left
+  pip_margin: 56
+  hide_during_transition: true
+  loop_secondary: true
+  # The inset appears only after the opening has established the Spotify context.
+  inset_start_seconds: 1.8
+
+pacing:
+  preferred_lead_in_seconds: 6.5
+  preferred_tail_seconds: 14.0
+
+retention_devices:
+  - delayed_inset_entry
+  - human_reaction_motion
+  - anticipation_text_before_transition
+  - zoom_emphasis_at_transition
+  - closing_question
+
+hook_patterns:
+  - text: "wait for the switch"
+    kind: anticipation
+  - text: "the second one hits different"
+    kind: anticipation
+
+cta_patterns:
+  - text: "rate this transition"
+    intent: comment_rate
+  - text: "save it for your playlist"
+    intent: save
+
+text_styles:
+  hook: sleek
+  cta: question
+
+constraints:
+  inset_clear_of_protected_regions: true
+  no_supporting_footage_during_transition: true
+  spotify_visible_by_seconds: 0.0
+
+retention_hypothesis: >
+  Delaying the inset until the Spotify context is established is expected to keep
+  the concept legible while adding motion; removing it at the blend is expected to
+  keep the payoff uncontested.
+
+evidence_refs:
+  - claim-20260803-pref-spotify-legibility
+  - claim-20260803-pref-music-central

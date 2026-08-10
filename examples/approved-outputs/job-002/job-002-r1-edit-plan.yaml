@@ -1,0 +1,132 @@
+artifact_type: edit_plan
+id: plan-job-002-r1
+created_at: '2026-08-06T11:12:29Z'
+produced_by: workflow:production-pipeline
+job_id: job-002
+revision: 1
+format_family: comedy_hook
+template_name: comedy-hook
+source_in_seconds: 8.2
+source_out_seconds: 27.2
+duration_seconds: 19.0
+transition_output_seconds: 6.0
+transition_window:
+- 4.8
+- 8.0
+layout_mode: hook_cutaway
+spotify_placement:
+  x: 0
+  y: 0
+  width: 1080
+  height: 1920
+  area_fraction: 1.0
+background: blurred_spotify
+spotify_content_zoom: 0.0
+waveform_end_trim: 0.0
+secondary_clips:
+- path: /workspace/jobs/incoming/job-002/hook-clip.mp4
+  label: sample hook
+  role: hook
+  mode: cutaway
+  placement:
+    x: 0
+    y: 0
+    width: 1080
+    height: 1920
+    area_fraction: 1.0
+  start_seconds: 0.0
+  end_seconds: 1.8
+  source_in: 0.0
+  loop: false
+  rationale: full-screen opening; hands over to Spotify before the blend
+text_cues:
+- id: hook-1
+  text: nobody asked for this pairing
+  role: hook
+  style: bold_outline
+  start_seconds: 0.1
+  end_seconds: 2.7
+  y: 380
+  align: center
+  animation: fade
+  box:
+    x1: 234
+    y1: 380
+    x2: 846
+    y2: 554
+    lines: 2
+  rationale: opening promise; clears the transition window so the payoff is uncontested
+    (sits over artwork, which is permitted but noted)
+- id: cta-2
+  text: rate the transition
+  role: cta
+  style: question
+  start_seconds: 14.5
+  end_seconds: 17.7
+  y: 1043
+  align: center
+  animation: fade
+  box:
+    x1: 223
+    y1: 1043
+    x2: 856
+    y2: 1166
+    lines: 1
+  rationale: appears after the payoff so it never competes with the transition (sits
+    over artwork, which is permitted but noted)
+emphasis:
+  enabled: true
+  at_seconds: 6.0
+  amount: 0.08
+  attack_seconds: 0.35
+  release_seconds: 0.55
+progress_bar:
+  enabled: true
+  height: 10
+  colour: '#1DB954'
+  opacity: 0.85
+  position: bottom
+audio:
+  source_path: /workspace/jobs/incoming/job-002/spotify-screen-recording.mp4
+  normalise: true
+  target_lufs: -14.0
+  true_peak_db: -1.5
+  measured_lufs: -15.73
+  reason: integrated loudness -15.73 LUFS is 1.73 dB from the -14.0 LUFS target
+hook_text: nobody asked for this pairing
+cta_text: rate the transition
+retention_hypothesis: A funny opening is expected to reduce early_skip_rate in the
+  first two seconds, while handing over to Spotify before the transition preserves
+  the viewer's understanding of what produced the mix.
+creative_rationale:
+- 'format comedy-hook: uses the 1 supplied clip(s); comedy mood requested and a hook
+  clip is available'
+- selected 'self_deprecating' hook from 3 valid candidates
+- selected call to action with intent 'comment_rate'
+decisions:
+- decision: format_family=comedy_hook
+  rationale: uses the 1 supplied clip(s); comedy mood requested and a hook clip is
+    available
+  stage: creative
+- decision: source window 8.20s-27.20s
+  rationale: keeps the transition at 6.00s of a 19.00s edit, with the cut clear of
+    the blend region
+  stage: retention
+- decision: zoom emphasis at 6.00s
+  rationale: marks the payoff visually without altering the audio
+  stage: retention
+- decision: cutaway clip 'sample hook' 0.00-1.80s
+  rationale: full-screen opening; hands over to Spotify before the blend
+  stage: retention
+experiment:
+  hypothesis: A funny opening is expected to reduce early_skip_rate in the first two
+    seconds, while handing over to Spotify before the transition preserves the viewer's
+    understanding of what produced the mix.
+  variable: format_family
+  control_reference: clean_showcase
+  expected_effect: higher_completion_rate
+  status: awaiting_results
+research_refs: []
+preference_refs: []
+warnings:
+- cta text moved from y=1280 to y=1043 to clear the song_info, waveform region(s)

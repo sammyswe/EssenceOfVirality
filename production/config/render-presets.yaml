@@ -1,0 +1,45 @@
+# Render presets. `tiktok_final` is the posting target; the others are for review.
+
+default_preset: tiktok_final
+
+presets:
+  tiktok_final:
+    description: Post-ready TikTok export.
+    width: 1080
+    height: 1920
+    fps: 30
+    codec: libx264
+    crf: 20
+    preset: medium
+    pixel_format: yuv420p
+    audio_codec: aac
+    audio_bitrate: "192k"
+    faststart: true
+    # Maps to the OpenMontage media profile of the same name.
+    openmontage_profile: tiktok
+
+  preview_fast:
+    description: Low-resolution proxy for quick phone review; not for posting.
+    width: 540
+    height: 960
+    fps: 30
+    codec: libx264
+    crf: 30
+    preset: veryfast
+    pixel_format: yuv420p
+    audio_codec: aac
+    audio_bitrate: "128k"
+    faststart: true
+
+  archive_high:
+    description: Higher-bitrate master kept locally when disk allows.
+    width: 1080
+    height: 1920
+    fps: 30
+    codec: libx264
+    crf: 16
+    preset: slow
+    pixel_format: yuv420p
+    audio_codec: aac
+    audio_bitrate: "256k"
+    faststart: true

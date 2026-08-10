@@ -1,0 +1,23 @@
+artifact_type: production_experiment
+id: exp-20260806-job-001-r2
+created_at: '2026-08-06T11:13:18Z'
+produced_by: workflow:production-pipeline
+job_id: job-001
+revision: 2
+hypothesis: Keeping the Spotify surface unobstructed and marking the transition with
+  a single zoom is expected to protect completion_rate by making the payoff legible,
+  with no competing visual to explain.
+variable: format_family
+control_reference: clean_showcase
+expected_effect: higher_completion_rate
+status: awaiting_results
+what_changed: format clean-showcase, hook 'Lowbeam into Ashra Kite'
+why: 'format clean-showcase: works from the Spotify recording alone; selected ''artist_pairing''
+  hook from 2 valid candidates; selected call to action with intent ''comment_suggest'''
+format_family: clean_showcase
+video_id: null
+results: {}
+interpretation: ''
+repeat_recommended: unknown
+more_evidence_required: true
+confounders: []

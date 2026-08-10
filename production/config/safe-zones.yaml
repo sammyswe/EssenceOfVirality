@@ -1,0 +1,56 @@
+# TikTok interface safe zones for a 1080x1920 canvas.
+# Values are pixels measured from the top-left of the frame.
+#
+# Source: measured against the TikTok mobile player chrome. These are conservative
+# working values, not an official specification — revise them from real screenshots
+# when the creator supplies them (docs/guides/new-job.md).
+
+canvas:
+  width: 1080
+  height: 1920
+
+reserved:
+  # TikTok's own top chrome (following/for-you tabs, search icon).
+  top: 220
+  # Caption text, username, music ticker.
+  bottom: 420
+  # Left margin used by the caption block.
+  left: 48
+  # Right action rail (like/comment/share/avatar column): icons sit roughly
+  # between x=940 and the right edge.
+  right: 140
+
+# Region where overlay text may be placed.
+#
+# The band is symmetric about the canvas centre (540) because the renderer
+# centres text with FFmpeg's own `x=(w-text_w)/2`. Keeping it symmetric means a
+# cue that fits the band cannot drift into the action rail on one side.
+text_area:
+  x_min: 140
+  x_max: 940
+  y_min: 260
+  y_max: 1420
+
+# Preferred anchor points for each text role.
+anchors:
+  hook:
+    y: 380
+    align: center
+  secondary:
+    y: 520
+    align: center
+  cta:
+    y: 1280
+    align: center
+  label:
+    y: 300
+    align: center
+
+# The Spotify recording must keep this region visible and unobstructed:
+# no overlay text may intersect it once the inspector has located the
+# now-playing block. Expressed as a fraction of the Spotify sub-frame.
+spotify_protected_region:
+  x_min_fraction: 0.0
+  x_max_fraction: 1.0
+  y_min_fraction: 0.30
+  y_max_fraction: 0.92

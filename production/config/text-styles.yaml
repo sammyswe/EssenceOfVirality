@@ -1,0 +1,96 @@
+# Reusable on-screen text styles.
+#
+# Every style must stay inside production/config/safe-zones.yaml. The renderer
+# rejects a style whose rendered box leaves the text area.
+
+default_style: sleek
+
+fonts:
+  # Resolved at render time; the first readable path wins.
+  sans_bold:
+    - /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf
+    - /usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf
+    - /System/Library/Fonts/Helvetica.ttc
+  sans_regular:
+    - /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf
+    - /usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf
+
+styles:
+  sleek:
+    description: Smooth modern default — white text, soft dark plate, generous padding.
+    font: sans_bold
+    font_size: 62
+    colour: "#FFFFFF"
+    box: true
+    box_colour: "#000000"
+    box_opacity: 0.42
+    box_border: 34
+    border_width: 0
+    shadow: {x: 0, y: 3, colour: "#00000099"}
+    line_spacing: 14
+    max_chars_per_line: 22
+
+  spotify_accent:
+    description: Spotify-green keyline; used for labels that name the platform.
+    font: sans_bold
+    font_size: 54
+    colour: "#1DB954"
+    box: true
+    box_colour: "#0B0B0B"
+    box_opacity: 0.55
+    box_border: 28
+    border_width: 0
+    shadow: {x: 0, y: 2, colour: "#00000099"}
+    line_spacing: 12
+    max_chars_per_line: 24
+
+  bold_outline:
+    description: High-contrast outline, no plate — for busy backgrounds.
+    font: sans_bold
+    font_size: 66
+    colour: "#FFFFFF"
+    box: false
+    border_width: 6
+    border_colour: "#000000"
+    shadow: {x: 0, y: 4, colour: "#000000CC"}
+    line_spacing: 14
+    max_chars_per_line: 20
+
+  question:
+    description: Slightly smaller, plated, used for comment-prompt overlays.
+    font: sans_bold
+    font_size: 52
+    colour: "#FFFFFF"
+    box: true
+    box_colour: "#101010"
+    box_opacity: 0.5
+    box_border: 30
+    border_width: 0
+    shadow: {x: 0, y: 2, colour: "#00000099"}
+    line_spacing: 12
+    max_chars_per_line: 26
+
+  caption_small:
+    description: Low-emphasis supporting line.
+    font: sans_regular
+    font_size: 42
+    colour: "#EDEDED"
+    box: true
+    box_colour: "#000000"
+    box_opacity: 0.38
+    box_border: 22
+    border_width: 0
+    shadow: {x: 0, y: 2, colour: "#00000099"}
+    line_spacing: 10
+    max_chars_per_line: 32
+
+# Timing behaviours a text cue may request.
+animations:
+  static:
+    description: Appears and disappears at fixed times.
+  fade:
+    description: Short opacity ramp in and out.
+    fade_seconds: 0.25
+  pop:
+    description: Brief scale overshoot on entry (approximated by a fade plus offset).
+    fade_seconds: 0.15

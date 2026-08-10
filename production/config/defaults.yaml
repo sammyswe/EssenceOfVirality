@@ -1,0 +1,103 @@
+# Default pipeline settings. Job files override these per-job.
+# Hard rules live in code (production/pipeline/rules.py) and cannot be overridden here.
+
+render:
+  width: 1080
+  height: 1920
+  fps: 30
+  codec: libx264
+  crf: 20
+  preset: medium
+  pixel_format: yuv420p
+  audio_codec: aac
+  audio_bitrate: "192k"
+  faststart: true
+
+duration:
+  minimum_seconds: 15
+  maximum_seconds: 45
+  target_seconds: 26
+  # How much of the second track to keep after the transition, when trimming is needed.
+  post_transition_seconds: 15
+  # Maximum lead-in kept before the transition when the source is long.
+  max_pre_transition_seconds: 12
+  # Signed adjustment applied to whatever lead-in the format template asks for.
+  # Feedback such as "the opening is too slow" makes this negative.
+  lead_in_adjustment_seconds: 0.0
+
+audio:
+  # The Spotify recording is the only permitted music source (hard rule).
+  loudness_normalise: true
+  loudness_target_lufs: -14.0
+  loudness_true_peak_db: -1.5
+  loudness_range: 11
+  # Refuse to normalise if measurement shows the source is already within this window.
+  normalise_skip_tolerance_lufs: 1.0
+
+transition:
+  # Detection window as a fraction of duration; the transition is searched inside it.
+  search_start_fraction: 0.10
+  search_end_fraction: 0.92
+  # Analysis resolution.
+  hop_seconds: 0.10
+  # Emphasis applied at the transition moment.
+  emphasis:
+    enabled: true
+    zoom_amount: 0.08
+    zoom_attack_seconds: 0.35
+    zoom_release_seconds: 0.55
+
+layout:
+  # Fraction of frame height given to the Spotify recording in split layouts.
+  split_spotify_fraction: 0.62
+  pip_scale: 0.34
+  pip_margin: 48
+  pip_corner: top_right
+  # Spotify must never occupy less than this fraction of the frame area (hard rule floor).
+  min_spotify_area_fraction: 0.45
+  # How far to crop the capture towards the song labels and waveform, making them
+  # read larger on screen. 0 keeps the whole frame; 1 crops as tight as those regions
+  # allow. Raised by "make the waveform larger" feedback. The album artwork is
+  # trimmed before the labels or waveform are.
+  spotify_content_zoom: 0.0
+  # Opt-in ceiling breaker for the zoom above. The waveform spans nearly the full
+  # frame width, so enlarging it beyond roughly 1.05x means cutting its ends. This
+  # is the fraction of frame width sacrificed from each side to allow that. Leave at
+  # 0 unless you have decided the waveform ends are worth losing.
+  waveform_end_trim: 0.0
+
+progress_bar:
+  enabled: true
+  height: 10
+  colour: "#1DB954"
+  opacity: 0.85
+  position: bottom
+
+hook:
+  max_words: 8
+  display_start_seconds: 0.10
+  display_seconds: 2.6
+
+cta:
+  enabled: true
+  # Seconds before the end that the call to action appears.
+  lead_seconds: 4.5
+  display_seconds: 3.2
+
+quality:
+  min_duration_seconds: 14.0
+  max_duration_seconds: 46.0
+  required_width: 1080
+  required_height: 1920
+  max_black_frame_fraction: 0.04
+  max_true_peak_db: -0.5
+  # Frames sampled for static/black frame detection.
+  sample_count: 12
+
+research:
+  enabled: false
+  max_sources: 6
+
+experiment:
+  # Attach an experiment record to every render by default.
+  auto_attach: true

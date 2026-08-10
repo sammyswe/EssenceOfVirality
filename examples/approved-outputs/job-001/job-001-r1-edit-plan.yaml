@@ -1,0 +1,131 @@
+artifact_type: edit_plan
+id: plan-job-001-r1
+created_at: '2026-08-06T11:11:51Z'
+produced_by: workflow:production-pipeline
+job_id: job-001
+revision: 1
+format_family: clean_showcase
+template_name: clean-showcase
+source_in_seconds: 7.2
+source_out_seconds: 28.2
+duration_seconds: 21.0
+transition_output_seconds: 7.0
+transition_window:
+- 5.8
+- 9.0
+layout_mode: full
+spotify_placement:
+  x: 0
+  y: 0
+  width: 1080
+  height: 1920
+  area_fraction: 1.0
+background: blurred_spotify
+spotify_content_zoom: 0.0
+waveform_end_trim: 0.0
+secondary_clips: []
+text_cues:
+- id: hook-1
+  text: Lowbeam into Ashra Kite
+  role: hook
+  style: sleek
+  start_seconds: 0.1
+  end_seconds: 2.7
+  y: 380
+  align: center
+  animation: fade
+  box:
+    x1: 182
+    y1: 380
+    x2: 897
+    y2: 612
+    lines: 2
+  rationale: opening promise; clears the transition window so the payoff is uncontested
+    (sits over artwork, which is permitted but noted)
+- id: cta-2
+  text: next pairing?
+  role: cta
+  style: question
+  start_seconds: 16.5
+  end_seconds: 19.7
+  y: 1043
+  align: center
+  animation: fade
+  box:
+    x1: 314
+    y1: 1043
+    x2: 766
+    y2: 1166
+    lines: 1
+  rationale: appears after the payoff so it never competes with the transition (sits
+    over artwork, which is permitted but noted)
+emphasis:
+  enabled: true
+  at_seconds: 7.0
+  amount: 0.08
+  attack_seconds: 0.35
+  release_seconds: 0.55
+progress_bar:
+  enabled: true
+  height: 10
+  colour: '#1DB954'
+  opacity: 0.85
+  position: bottom
+audio:
+  source_path: /workspace/jobs/incoming/job-001/spotify-screen-recording.mp4
+  normalise: true
+  target_lufs: -14.0
+  true_peak_db: -1.5
+  measured_lufs: -15.73
+  reason: integrated loudness -15.73 LUFS is 1.73 dB from the -14.0 LUFS target
+hook_text: Lowbeam into Ashra Kite
+cta_text: next pairing?
+retention_hypothesis: Keeping the Spotify surface unobstructed and marking the transition
+  with a single zoom is expected to protect completion_rate by making the payoff legible,
+  with no competing visual to explain.
+creative_rationale:
+- 'format clean-showcase: works from the Spotify recording alone'
+- selected 'artist_pairing' hook from 2 valid candidates
+- selected call to action with intent 'comment_suggest'
+decisions:
+- decision: format_family=clean_showcase
+  rationale: works from the Spotify recording alone
+  stage: creative
+- decision: source window 7.20s-28.20s
+  rationale: keeps the transition at 7.00s of a 21.00s edit, with the cut clear of
+    the blend region
+  stage: retention
+- decision: zoom emphasis at 7.00s
+  rationale: marks the payoff visually without altering the audio
+  stage: retention
+- decision: rejected format ai-scene
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format comedy-hook
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format picture-in-picture
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format reaction
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format split-screen
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format unexpected-combination
+  rationale: hook asserts the tracks clash, but no track metadata confirms a contrast
+    — would risk a false claim
+  stage: creative
+experiment:
+  hypothesis: Keeping the Spotify surface unobstructed and marking the transition
+    with a single zoom is expected to protect completion_rate by making the payoff
+    legible, with no competing visual to explain.
+  variable: format_family
+  control_reference: clean_showcase
+  expected_effect: higher_completion_rate
+  status: awaiting_results
+research_refs: []
+preference_refs: []
+warnings:
+- cta text moved from y=1280 to y=1043 to clear the song_info, waveform region(s)

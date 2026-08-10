@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/edit-plan.schema.json",
+  "title": "EditPlan",
+  "description": "The complete, executable description of one render. Written by the creative and retention stages, consumed by the renderer and the quality checker. The renderer must derive every frame from this file, so a plan is enough to explain a video without opening it.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "$defs": {
+    "placement": {
+      "type": "object",
+      "description": "A rectangle on the 1080x1920 output canvas.",
+      "properties": {
+        "x": { "type": "integer" },
+        "y": { "type": "integer" },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "area_fraction": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "required": ["x", "y", "width", "height"]
+    },
+    "textCue": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "text": { "type": "string" },
+        "role": { "type": "string", "enum": ["hook", "context", "anticipation", "payoff", "cta", "progress"] },
+        "style": { "type": "string" },
+        "start_seconds": { "type": "number", "minimum": 0 },
+        "end_seconds": { "type": "number", "minimum": 0 },
+        "y": { "type": "integer" },
+        "align": { "type": "string" },
+        "animation": { "type": "string" },
+        "rationale": { "type": "string" }
+      },
+      "required": ["id", "text", "role", "start_seconds", "end_seconds"]
+    },
+    "secondaryClip": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string" },
+        "label": { "type": "string" },
+        "role": { "type": "string" },
+        "mode": { "type": "string", "enum": ["cutaway", "band", "inset"] },
+        "placement": { "$ref": "#/$defs/placement" },
+        "start_seconds": { "type": "number", "minimum": 0 },
+        "end_seconds": { "type": "number", "minimum": 0 },
+        "source_in": { "type": "number", "minimum": 0 },
+        "loop": { "type": "boolean" },
+        "rationale": { "type": "string" }
+      },
+      "required": ["path", "mode", "start_seconds", "end_seconds"]
+    }
+  },
+  "properties": {
+    "artifact_type": { "const": "edit_plan" },
+    "job_id": { "type": "string" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "format_family": { "type": "string" },
+    "template_name": { "type": "string" },
+    "source_in_seconds": { "type": "number", "minimum": 0 },
+    "source_out_seconds": { "type": "number", "minimum": 0 },
+    "duration_seconds": { "type": "number", "exclusiveMinimum": 0 },
+    "transition_output_seconds": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Where the mix's transition lands in the output timeline. One per video."
+    },
+    "transition_window": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "Range around the blend that no supporting clip may cover."
+    },
+    "layout_mode": { "type": "string", "enum": ["full", "split", "pip", "hook_cutaway"] },
+    "spotify_placement": { "$ref": "#/$defs/placement" },
+    "background": { "type": "string" },
+    "spotify_content_zoom": {
+      "type": "number", "minimum": 0, "maximum": 1,
+      "description": "How far the capture is cropped towards its song labels and waveform."
+    },
+    "waveform_end_trim": {
+      "type": "number", "minimum": 0, "maximum": 0.25,
+      "description": "Opt-in: fraction of frame width sacrificed from each side of the waveform to allow a larger crop."
+    },
+    "secondary_clips": { "type": "array", "items": { "$ref": "#/$defs/secondaryClip" } },
+    "text_cues": { "type": "array", "items": { "$ref": "#/$defs/textCue" } },
+    "emphasis": { "type": ["object", "null"] },
+    "progress_bar": { "type": ["object", "null"] },
+    "audio": {
+      "type": ["object", "null"],
+      "description": "Audio comes from the Spotify recording only; the plan records whether loudness normalisation is applied and why."
+    },
+    "hook_text": { "type": "string" },
+    "cta_text": { "type": "string" },
+    "retention_hypothesis": {
+      "type": "string",
+      "description": "What the format is expected to do for viewer behaviour. A hypothesis, never a promise."
+    },
+    "creative_rationale": { "type": "array", "items": { "type": "string" } },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision": { "type": "string" },
+          "rationale": { "type": "string" },
+          "stage": { "type": "string" }
+        },
+        "required": ["decision", "rationale"]
+      }
+    },
+    "experiment": { "type": ["object", "null"] },
+    "research_refs": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
+    "preference_refs": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  },
+  "required": [
+    "artifact_type", "id", "created_at", "produced_by",
+    "job_id", "revision", "format_family", "template_name",
+    "duration_seconds", "transition_output_seconds",
+    "layout_mode", "spotify_placement"
+  ]
+}

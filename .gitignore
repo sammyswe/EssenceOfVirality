@@ -43,3 +43,20 @@ analytics/raw/
 
 # External clones (OpenMontage is pinned by ref, not vendored)
 integrations/openmontage/clone/
+
+# Pipeline run outputs (keep README only)
+integrations/openmontage/outputs/*/
+!integrations/openmontage/outputs/README.md
+
+# Production working state. Job folders hold the creator's media and renders are
+# regenerated from them, so neither belongs in history. Demonstration artifacts
+# worth keeping live in examples/approved-outputs/.
+jobs/*/*/
+outputs/**
+!outputs/**/
+!outputs/**/.gitkeep
+examples/inputs/*/
+production/**/__pycache__/
+
+# Thumbnails are extracted from renders on every run
+*-thumbnail.jpg

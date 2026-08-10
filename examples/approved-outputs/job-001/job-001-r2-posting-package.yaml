@@ -1,0 +1,131 @@
+artifact_type: posting_package
+id: pkg-job-001-r2
+created_at: '2026-08-06T11:13:18Z'
+produced_by: workflow:production-pipeline
+job_id: job-001
+revision: 2
+final_hook: Lowbeam into Ashra Kite
+onscreen_text:
+- text: Lowbeam into Ashra Kite
+  role: hook
+  start_seconds: 0.1
+  end_seconds: 2.7
+- text: next pairing?
+  role: cta
+  start_seconds: 14.5
+  end_seconds: 17.7
+caption: 'Night Drive into Paper Lanterns — made in Spotify.
+
+  next pairing?'
+hashtags:
+- '#lowbeam'
+- '#ashrakite'
+- '#spotify'
+- '#spotifymix'
+- '#spotifyplaylist'
+- '#spotifytransition'
+- '#mixing'
+- '#transition'
+hashtag_strategy:
+- artist_specific
+- spotify_specific
+- niche
+- broad
+thumbnail_frame_seconds: 4.4
+thumbnail_path: outputs/posting-packages/job-001-r2-thumbnail.jpg
+thumbnail_text: Lowbeam into Ashra Kite
+call_to_action: next pairing?
+pinned_comment: Night Drive into Paper Lanterns. Made with Spotify's own mix feature
+  — next pairing?
+prepared_replies:
+- Spotify's own mix feature did the blend — I picked the pairing and the timing.
+- Drop a pairing and I'll try it in the next one.
+- Track two is Paper Lanterns.
+creative_format: clean-showcase
+editing_decisions:
+- decision: format_family=clean_showcase
+  rationale: works from the Spotify recording alone
+  stage: creative
+- decision: source window 9.20s-28.20s
+  rationale: keeps the transition at 5.00s of a 19.00s edit, with the cut clear of
+    the blend region
+  stage: retention
+- decision: rejected format ai-scene
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format comedy-hook
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format picture-in-picture
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format reaction
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format split-screen
+  rationale: needs 1 supporting clip(s), 0 available
+  stage: creative
+- decision: rejected format unexpected-combination
+  rationale: hook asserts the tracks clash, but no track metadata confirms a contrast
+    — would risk a false claim
+  stage: creative
+- decision: 'revision: increase_spotify_area'
+  rationale: split band 0.62 -> 0.70, content zoom 0.00 -> 0.40 (triggered by 'make
+    the waveform larger')
+  stage: revision
+- decision: 'revision: shorten_lead_in'
+  rationale: lead-in cap 12.0s -> 10.0s and template lead-in adjusted by -2.0s (triggered
+    by 'opening is too slow')
+  stage: revision
+- decision: 'revision: disable_zoom'
+  rationale: zoom emphasis disabled (triggered by 'remove the final zoom')
+  stage: revision
+retention_hypothesis: Keeping the Spotify surface unobstructed and marking the transition
+  with a single zoom is expected to protect completion_rate by making the payoff legible,
+  with no competing visual to explain.
+research_used: []
+output_file: outputs/final/job-001-r2.mp4
+preview_file: outputs/previews/job-001-r2-preview.mp4
+render_metadata:
+  output_path: /workspace/outputs/final/job-001-r2.mp4
+  preview_path: /workspace/outputs/previews/job-001-r2-preview.mp4
+  duration_seconds: 19.0
+  width: 1080
+  height: 1920
+  audio_inputs:
+  - /workspace/jobs/review/job-001/spotify-screen-recording.mp4
+  backends:
+    composite: ffmpeg:filter_complex
+    text: ffmpeg:drawtext
+    audio: ffmpeg:loudnorm
+    openmontage: available
+  notes:
+  - content zoom 40% makes the song labels and waveform read 1.02x larger (1062x1888)
+    so the 1080x1920 placement is filled
+  - 'enlargement is capped at 1.04x: the widest protected region spans 92% of the
+    frame width, so cropping further would cut its ends. Set layout.waveform_end_trim
+    to accept that cut.'
+  - 'loudness normalised: integrated loudness -15.73 LUFS is 1.73 dB from the -14.0
+    LUFS target'
+  transition_detection:
+    seconds: 14.2
+    start_seconds: 13.0
+    end_seconds: 16.2
+    method: spectral_flux_novelty
+    confidence: high
+    novelty_score: 0.341
+    alternatives:
+    - 12.6
+    - 15.8
+    notes: []
+  crop_profile: vertical_full
+quality_status: pass
+experiment:
+  hypothesis: Keeping the Spotify surface unobstructed and marking the transition
+    with a single zoom is expected to protect completion_rate by making the payoff
+    legible, with no competing visual to explain.
+  variable: format_family
+  control_reference: clean_showcase
+  expected_effect: higher_completion_rate
+  status: awaiting_results
+warnings: []

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/creator-preference.schema.json",
+  "title": "CreatorPreference",
+  "description": "A lasting creative rule inferred from creator feedback. A proposal changes nothing; only an approved preference affects future renders, and a superseded one stays recoverable.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "properties": {
+    "artifact_type": { "const": "creator_preference" },
+    "key": {
+      "type": "string",
+      "description": "The pipeline setting this preference governs. Unknown keys are rejected at write time."
+    },
+    "value": {},
+    "scope": { "type": "string", "enum": ["global", "format", "artist", "asset", "one_off"] },
+    "scope_value": { "type": "string" },
+    "statement": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The rule in the creator's own words."
+    },
+    "status": { "type": "string", "enum": ["proposed", "approved", "retired"] },
+    "confidence": { "$ref": "common.schema.json#/$defs/confidence" },
+    "updated_at": { "$ref": "common.schema.json#/$defs/timestamp" },
+    "evidence": {
+      "type": "array",
+      "description": "Each feedback event supporting this rule. Repeated, consistent support is what makes a proposal promotable without an explicit instruction.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref": { "$ref": "common.schema.json#/$defs/artifactId" },
+          "job_id": { "type": "string" },
+          "revision": { "type": "integer", "minimum": 0 },
+          "quote": { "type": "string" },
+          "recorded_at": { "$ref": "common.schema.json#/$defs/timestamp" }
+        },
+        "required": ["ref", "quote"]
+      }
+    },
+    "supersedes": {
+      "oneOf": [
+        { "$ref": "common.schema.json#/$defs/artifactId" },
+        { "type": "null" }
+      ]
+    },
+    "approved_by": { "type": ["string", "null"] },
+    "approved_at": { "type": ["string", "null"] },
+    "retired_reason": { "type": "string" }
+  },
+  "required": [
+    "artifact_type", "id", "created_at", "produced_by",
+    "key", "scope", "statement", "status", "confidence"
+  ]
+}

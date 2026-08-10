@@ -1,27 +1,44 @@
 # integrations/openmontage/
 
-The adapter + extension package for OpenMontage (ADR 0001). **Phase-one footprint: this README
-and the pinned ref only.** No OpenMontage code is vendored here — it is AGPL-3.0 and stays at a
-repository/process boundary.
+Adapter + extension package for OpenMontage (ADR 0001). OpenMontage code stays in a pinned
+external clone (AGPL boundary); this directory owns our pipeline sources and runner.
 
-## What will live here (phase 3)
+## Layout
 
-| Item | Purpose |
+| Path | Purpose |
 |---|---|
-| `PINNED_REF` | The exact upstream commit our extensions are authored against |
-| `manifests/` | TikTok/Spotify-mix pipeline manifest sources (OpenMontage manifest format) |
-| `stage-skills/` | Custom stage-director skill sources |
-| `tools/` | Minimal `BaseTool` wrapper sources, if the sanctioned toolset needs extension |
-| `materialise` script | Installs the above into the pinned clone's `projects/<name>/` scope |
-| `evaluation-adapters/` | Mapping OpenMontage `final_review` output into our evaluation reports |
+| `PINNED_REF` | Exact upstream commit (`4eab34c5…` at time of writing) |
+| `manifests/` | Pipeline config + brief template for `essence-of-virality` |
+| `stage-skills/` | Project-scoped skill sources (materialised into clone) |
+| `playbooks/` | `spotify-mix-tiktok` style playbook |
+| `materialise.sh` | Copies extensions → `clone/projects/essence-of-virality/` |
+| `run_pipeline.py` | Deterministic Spotify mix → TikTok runner (ffmpeg path) |
+| `inputs/` | Drop screen recordings here (gitignored media) |
+| `outputs/` | Run artifacts (local only) |
+| `clone/` | **Gitignored** — pin with `PINNED_REF` |
+
+## Quick start
+
+```bash
+python3 integrations/openmontage/run_pipeline.py --input-dir integrations/openmontage/inputs/
+```
+
+Full guide: [`docs/guides/openmontage-pipeline.md`](../../docs/guides/openmontage-pipeline.md).
+
+## OpenMontage capabilities we consume
+
+- Pipeline: `screen-demo` (real_capture mode)
+- Profile: `tiktok` (1080×1920)
+- Tools: `auto_reframe`, `video_trimmer`, `video_compose`, `export_bundle`
+- Audit: checkpoint protocol + `final_review` (agent path)
+
+## Domain skills
+
+Materialised references point at `.cursor/skills/general-virality/` and
+`.cursor/skills/spotify-mix-content/`. See `manifests/essence-of-virality.yaml`.
 
 ## Rules
 
-- The clone lives **outside git** (`clone/` is gitignored) at `OPENMONTAGE_CLONE_PATH`.
-- Sync direction is strictly **ours → clone**. Nothing is copied back from the clone into this
-  repository (AGPL boundary).
-- Upgrading the pin is a deliberate PR driven by `/review-openmontage-integration`, which diffs
-  the upstream schemas and meta-skills we depend on (ADR 0001 upgrade strategy).
-- Who writes here: the skill architect and evaluation agent (via PRs), phase 3 onward.
-- Extension points, capability mapping and fork triggers:
-  `docs/architecture/openmontage-integration.md`.
+- Sync direction: **ours → clone** only (`.cursor/rules/openmontage.mdc`).
+- Upgrades: `/review-openmontage-integration` + deliberate `PINNED_REF` change.
+- Extension points: `docs/architecture/openmontage-integration.md`.

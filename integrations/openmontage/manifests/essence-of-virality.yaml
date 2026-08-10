@@ -1,0 +1,96 @@
+# Essence-of-virality pipeline config (our repo — materialised into the pinned OpenMontage clone).
+# Targets upstream pipeline: screen-demo @ PINNED_REF (4eab34c5).
+# Schema reference: OpenMontage pipeline_defs/screen-demo.yaml
+
+name: essence-of-virality
+version: "0.1.0"
+description: >
+  Spotify mix screen recording → TikTok-ready vertical edit (1080×1920).
+  Uses OpenMontage screen-demo (real_capture mode) with project-scoped domain skills
+  from this repository. Music is the product: preserve captured audio, no trending Sounds.
+
+upstream:
+  pipeline: screen-demo
+  pipeline_version: "2.1"
+  openmontage_pin: 4eab34c5cfcccaa4f1970554928feccce73ee930
+  media_profile: tiktok
+
+production_mode: real_capture
+
+constraints:
+  duration_seconds:
+    min: 10
+    max: 40
+    preferred: 25
+  format: "9:16"
+  resolution: "1080x1920"
+  audio:
+    preserve_original: true
+    no_trending_sound: true
+    permitted_processing:
+      - loudness_normalise_to_target
+      - trim_silence_outside_music
+  visual:
+    spotify_ui_legible: true
+    overlays_max_during_blend: 0
+    hook_text_max_words: 8
+
+domain_skills:
+  general_virality:
+    - analyse-first-frame@0.1.0
+    - evaluate-hook-clarity@0.1.0
+  spotify_mix_content:
+    - preserve-spotify-mix-audio@0.1.0
+    - evaluate-transition-payoff@0.1.0
+
+stages:
+  # Maps to screen-demo stages; project skills supplement upstream directors.
+  - name: idea
+    upstream_skill: pipelines/screen-demo/idea-director
+    project_skill: spotify-mix-idea-director
+    human_gate: true
+  - name: script
+    upstream_skill: pipelines/screen-demo/script-director
+    project_skill: spotify-mix-script-director
+    human_gate: true
+  - name: scene_plan
+    upstream_skill: pipelines/screen-demo/scene-director
+    project_skill: spotify-mix-scene-director
+    human_gate: true
+  - name: assets
+    upstream_skill: pipelines/screen-demo/asset-director
+    project_skill: spotify-mix-asset-director
+    human_gate: true
+  - name: edit
+    upstream_skill: pipelines/screen-demo/edit-director
+    project_skill: spotify-mix-edit-director
+    human_gate: false
+  - name: compose
+    upstream_skill: pipelines/screen-demo/compose-director
+    project_skill: spotify-mix-compose-director
+    required_tools:
+      - auto_reframe
+      - video_compose
+      - video_trimmer
+    produces:
+      - render_report
+      - final_review
+    human_gate: false
+  - name: publish
+    upstream_skill: pipelines/screen-demo/publish-director
+    project_skill: spotify-mix-publish-director
+    required_tools:
+      - export_bundle
+    human_gate: true
+
+deterministic_runner:
+  # Fast path via integrations/openmontage/run_pipeline.py (no agent loop).
+  steps:
+    - probe_source
+    - preserve_spotify_mix_audio_check
+    - trim_optional
+    - auto_reframe_portrait
+    - encode_tiktok_profile
+    - analyse_first_frame
+    - evaluate_transition_payoff
+    - write_video_production_manifest

@@ -1,0 +1,90 @@
+# Crop profiles for Spotify screen recordings.
+#
+# STATUS: provisional. No real creator recordings have been supplied yet, so these
+# profiles are derived from the general geometry of the Spotify mobile now-playing
+# screen rather than measured examples. `production/pipeline/inspector.py` measures
+# each recording and picks the closest profile; `scripts/derive_crop_profile.py`
+# regenerates a profile from a real recording.
+#
+# Fractions are of the source frame (0.0-1.0), origin top-left.
+
+default_profile: vertical_full
+
+# Which named regions text may never cover, and which it should merely avoid.
+# The creator rule is "do not hide important song names or waveforms with
+# captions" — artwork is the mix's visual identity but text over it is normal
+# for this niche, so it is a soft preference rather than a hard block.
+region_enforcement:
+  hard:
+    - song_info
+    - waveform
+  soft:
+    - artwork
+
+profiles:
+  vertical_full:
+    description: >
+      Phone screen recording already in 9:16. No cropping: the whole capture is the
+      Spotify surface. Safest default because it cannot cut off song information.
+    match:
+      aspect_ratio_min: 0.50
+      aspect_ratio_max: 0.60
+    crop:
+      x: 0.0
+      y: 0.0
+      width: 1.0
+      height: 1.0
+    # Regions that must stay visible in the output.
+    must_remain_visible:
+      artwork:   {x: 0.08, y: 0.14, width: 0.84, height: 0.46}
+      song_info: {x: 0.06, y: 0.62, width: 0.88, height: 0.10}
+      waveform:  {x: 0.04, y: 0.72, width: 0.92, height: 0.12}
+
+  vertical_trimmed_chrome:
+    description: >
+      Phone recording that includes OS status bar and gesture bar. Trims a small band
+      from top and bottom, keeping artwork, song labels and waveform intact.
+    match:
+      aspect_ratio_min: 0.44
+      aspect_ratio_max: 0.50
+    crop:
+      x: 0.0
+      y: 0.035
+      width: 1.0
+      height: 0.93
+    must_remain_visible:
+      artwork:   {x: 0.08, y: 0.12, width: 0.84, height: 0.46}
+      song_info: {x: 0.06, y: 0.62, width: 0.88, height: 0.10}
+      waveform:  {x: 0.04, y: 0.72, width: 0.92, height: 0.12}
+
+  desktop_landscape:
+    description: >
+      Landscape desktop capture. Centre-cropped to 9:16, which risks cutting side
+      panels — the inspector warns when this profile is selected.
+    match:
+      aspect_ratio_min: 1.20
+      aspect_ratio_max: 2.40
+    crop:
+      x: 0.28
+      y: 0.0
+      width: 0.44
+      height: 1.0
+    must_remain_visible:
+      song_info: {x: 0.05, y: 0.70, width: 0.90, height: 0.12}
+    warning: >
+      Landscape sources lose horizontal information when cropped to 9:16. Record on
+      a phone in portrait where possible (docs/guides/new-job.md).
+
+  square_capture:
+    description: Square or near-square capture; padded rather than cropped.
+    match:
+      aspect_ratio_min: 0.85
+      aspect_ratio_max: 1.20
+    crop:
+      x: 0.0
+      y: 0.0
+      width: 1.0
+      height: 1.0
+    fit: pad
+    must_remain_visible:
+      song_info: {x: 0.05, y: 0.60, width: 0.90, height: 0.14}
