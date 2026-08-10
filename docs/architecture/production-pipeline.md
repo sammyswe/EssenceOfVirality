@@ -50,7 +50,8 @@ flowchart TD
 
     subgraph execution [Execution]
       REND["render<br/>one ffmpeg filter_complex"]
-      QUAL["quality<br/>25 deterministic checks"]
+      QUAL["quality<br/>technical conformance"]
+      CMIN["creative_minimum<br/>inputs / plan honesty"]
       POST["posting<br/>caption, hashtags, thumbnail,<br/>pinned comment, replies"]
     end
 
@@ -58,6 +59,7 @@ flowchart TD
       MP4["final MP4 + preview"]
       PKG["posting package"]
       QR["quality report"]
+      CM["creative-minimum report"]
       VPM["production manifest"]
     end
 
@@ -70,11 +72,13 @@ flowchart TD
     PREF --> CREA
     RSCH --> CREA
     CREA --> PLAN --> REND --> QUAL
+    PLAN --> CMIN
     PLAN --> POST
     REND --> MP4
     POST --> PKG
     QUAL --> QR
-    REND & QUAL & POST --> VPM
+    CMIN --> CM
+    REND & QUAL & CMIN & POST --> VPM
     MP4 -.creator watches.-> FB
     FB --> REV --> CREA
     FB -.proposes.-> PREF
@@ -85,7 +89,8 @@ flowchart TD
 
 Each box is one module under `production/pipeline/`. The orchestrator
 (`orchestrator.py`) is the only module that knows the order; the stages know
-only their own inputs and outputs.
+only their own inputs and outputs. `post_ready` requires both technical
+conformance and creative minimum; neither gate claims For You performance.
 
 ## Why the EditPlan exists
 
@@ -162,13 +167,18 @@ renderer.
 
 ```
 jobs/incoming/<id>/  →  jobs/review/<id>/  →  jobs/approved/<id>/
+                     ↘  stays in place with status needs_creative_input
                      ↘  jobs/failed/<id>/
 ```
 
-A folder moves to `review` when a render passes its quality checks, to `failed`
-when inspection or rendering could not proceed. `./process-job approve <id>`
-moves it on. Renders are written to `outputs/` keyed by job and revision, so an
-approved job keeps every revision it went through.
+A folder moves to `review` only when a render is **technically valid** and passes
+**creative minimum** (track metadata or waiver, non-fallback format or forced/
+waived, non-generic hook or waiver). Technical conformance alone is a draft —
+`post_ready` stays false and the job is left in place with status
+`needs_creative_input` and a creative-minimum report listing what to add.
+Inspection or render failures move to `failed`. `./process-job approve <id>`
+moves a review job on. Renders are written to `outputs/` keyed by job and
+revision, so an approved job keeps every revision it went through.
 
 The creator's media stays inside the job folder throughout and is never moved
 out from under them, never renamed, and never written to.

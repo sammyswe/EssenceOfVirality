@@ -118,6 +118,10 @@ DEFAULT_JOB: dict[str, Any] = {
         "must_include": [],
         "avoid": [],
         "notes": "",
+        # Creative-minimum waivers (explicit opt-outs). Default false.
+        "waive_track_metadata": False,
+        "waive_empty_asset_fallback": False,
+        "waive_generic_hook": False,
     },
     "render": {
         "target_platform": "tiktok",
@@ -323,6 +327,11 @@ def write_job_template(job_dir: Path, job_id: str, spotify_filename: str) -> Pat
             "must_include": [],
             "avoid": [],
             "notes": "",
+            # Creative-minimum waivers — leave false unless you intentionally ship
+            # without tracks / with the recording-only fallback format.
+            "waive_track_metadata": False,
+            "waive_empty_asset_fallback": False,
+            "waive_generic_hook": False,
         },
         "render": {
             "target_platform": "tiktok",

@@ -52,6 +52,7 @@ SCHEMA_REGISTRY = {
     # Production pipeline artifacts.
     "edit_plan": "edit-plan.schema.json",
     "quality_report": "quality-report.schema.json",
+    "creative_minimum_report": "creative-minimum-report.schema.json",
     "posting_package": "posting-package.schema.json",
     "creator_feedback": "creator-feedback.schema.json",
     "creator_preference": "creator-preference.schema.json",
@@ -62,7 +63,7 @@ SCHEMA_REGISTRY = {
 
 ARTIFACT_ID_RE = re.compile(
     r"^(src|ext|claim|assess|tech|contra|kcp|scp|eval|obs|exp|prs|vpm|fix"
-    r"|plan|qr|pkg|fb|pref|post|res)-[a-z0-9][a-z0-9-]*$"
+    r"|plan|qr|cm|pkg|fb|pref|post|res)-[a-z0-9][a-z0-9-]*$"
 )
 
 SKILL_BANKS = [

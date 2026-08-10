@@ -162,6 +162,9 @@ class EditPlan:
     research_refs: list[str] = field(default_factory=list)
     preference_refs: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    # True when auto-select collapsed into a zero-asset format because higher-value
+    # families lacked clips or metadata — not when the job forced that format.
+    empty_asset_fallback: bool = False
 
     def add_decision(self, decision: str, rationale: str, stage: str = "creative") -> None:
         self.decisions.append({"decision": decision, "rationale": rationale, "stage": stage})
@@ -198,6 +201,7 @@ class EditPlan:
             "research_refs": self.research_refs,
             "preference_refs": self.preference_refs,
             "warnings": self.warnings,
+            "empty_asset_fallback": self.empty_asset_fallback,
         }
 
     def segments_for_rule_check(self) -> list[dict[str, Any]]:

@@ -6,7 +6,7 @@
   "$defs": {
     "artifactId": {
       "type": "string",
-      "pattern": "^(src|ext|claim|assess|tech|contra|kcp|scp|eval|obs|exp|prs|vpm|fix|plan|qr|pkg|fb|pref|post|res)-[a-z0-9][a-z0-9-]*$",
+      "pattern": "^(src|ext|claim|assess|tech|contra|kcp|scp|eval|obs|exp|prs|vpm|fix|plan|qr|cm|pkg|fb|pref|post|res)-[a-z0-9][a-z0-9-]*$",
       "description": "Stable ID: type prefix + date/slug, lowercase kebab-case."
     },
     "timestamp": {

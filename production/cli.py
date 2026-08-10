@@ -43,7 +43,11 @@ def _colour(text: str, code: str) -> str:
 
 def _print_result(result: orchestrator.JobResult) -> None:
     status_colours = {
-        "review": GREEN, "planned": GREEN, "quality_failed": YELLOW, "failed": RED,
+        "review": GREEN,
+        "planned": GREEN,
+        "needs_creative_input": YELLOW,
+        "quality_failed": YELLOW,
+        "failed": RED,
     }
     print()
     print(f"  {result.job_id} revision {result.revision}: "
@@ -52,6 +56,8 @@ def _print_result(result: orchestrator.JobResult) -> None:
     if result.plan is not None:
         plan = result.plan
         print(f"  format         {plan.template_name} ({plan.format_family})")
+        if plan.empty_asset_fallback:
+            print(f"                 {_colour('empty-asset fallback', YELLOW)}")
         print(f"  duration       {plan.duration_seconds:.2f}s, "
               f"transition at {plan.transition_output_seconds:.2f}s")
         if plan.hook_text:
@@ -62,13 +68,21 @@ def _print_result(result: orchestrator.JobResult) -> None:
     if result.quality_report is not None:
         report = result.quality_report
         summary = report.as_dict()["summary"]
-        print(f"  quality        {report.status} "
+        print(f"  technical      {report.status} "
               f"({summary['passed']} passed, {summary['warnings']} warnings, "
-              f"{summary['failures']} failures)")
+              f"{summary['failures']} failures); "
+              f"technically_valid={report.technically_valid}")
         for check in report.failures:
             print(f"                 {_colour('FAIL', RED)} {check.id}: {check.detail}")
         for check in report.warnings:
             print(f"                 {_colour('warn', YELLOW)} {check.id}: {check.detail}")
+
+    if result.creative_minimum is not None:
+        cm = result.creative_minimum
+        print(f"  creative min   {cm.status} "
+              f"(post_ready={result.quality_report.post_ready if result.quality_report else False})")
+        for check in cm.failures:
+            print(f"                 {_colour('FAIL', RED)} {check.id}: {check.detail}")
 
     print()
     for label, path in (
@@ -76,6 +90,7 @@ def _print_result(result: orchestrator.JobResult) -> None:
         ("preview", result.preview_path),
         ("package", result.package_path),
         ("quality", result.quality_path),
+        ("creative", result.creative_minimum_path),
         ("plan", result.plan_path),
         ("manifest", result.manifest_path),
     ):

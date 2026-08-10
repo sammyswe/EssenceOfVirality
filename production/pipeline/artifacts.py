@@ -23,7 +23,7 @@ import yaml
 PIPELINE = "workflow:production-pipeline"
 CREATOR = "creator"
 
-ID_RE = re.compile(r"^(plan|qr|pkg|vpm|fb|pref|exp|post|res)-[a-z0-9][a-z0-9-]*$")
+ID_RE = re.compile(r"^(plan|qr|cm|pkg|vpm|fb|pref|exp|post|res)-[a-z0-9][a-z0-9-]*$")
 
 
 def now() -> str:

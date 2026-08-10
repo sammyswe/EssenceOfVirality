@@ -8,6 +8,14 @@ than semver releases while the project is pre-production.
 
 ### Added
 
+- Creative-minimum gate (`production/pipeline/creative_gate.py`) split from
+  technical quality: track metadata (or waiver), non-fallback format (or
+  force/waiver), hook specificity. `post_ready` requires both gates.
+  Orchestrator returns `needs_creative_input` and leaves the job in place when
+  technical checks pass but creative minimum fails. See
+  `docs/investigations/pipeline-run-job-new-test-r1-review.md`.
+- Schema `creative-minimum-report.schema.json`; quality report gains
+  `technically_valid` and embedded `creative_minimum`.
 - Research batch 2026-08-03 (5 creator-supplied sources): Klug et al. 2021 (WebSci),
   Lynch 2025 (UConn thesis), UW News 2024 (data-donation studies), Herman 2023 (IASDR),
   Zhou 2024 (IJCSIT, assessed low-credibility) — 17 claims, 17 assessments, 2 niche
@@ -24,6 +32,8 @@ than semver releases while the project is pre-production.
 
 ### Fixed
 
+- Retention hypothesis no longer cites zoom-marked payoff when emphasis is
+  disabled (preference or config).
 - Invalid `content_kinds` value in one extraction report caught by schema validation during
   the batch (corrected to `quoted_third_party`).
 

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://essenceofvirality.local/schemas/creative-minimum-report.schema.json",
+  "title": "CreativeMinimumReport",
+  "description": "Product gate on creative inputs and plan honesty for a Spotify-mix render. Separate from technical quality. Does not predict distribution, ranking, or engagement.",
+  "allOf": [{ "$ref": "common.schema.json#/$defs/envelope" }],
+  "type": "object",
+  "$defs": {
+    "check": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["pass", "fail"] },
+        "detail": { "type": "string" },
+        "creator_action": { "type": "string" }
+      },
+      "required": ["id", "description", "status", "detail"]
+    }
+  },
+  "properties": {
+    "artifact_type": { "const": "creative_minimum_report" },
+    "job_id": { "type": "string" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "status": { "type": "string", "enum": ["pass", "fail"] },
+    "passed": { "type": "boolean" },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "passed": { "type": "integer", "minimum": 0 },
+        "failures": { "type": "integer", "minimum": 0 }
+      },
+      "required": ["passed", "failures"]
+    },
+    "checks": { "type": "array", "items": { "$ref": "#/$defs/check" }, "minItems": 1 },
+    "creator_actions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Concrete fixes the creator can make before the job is review-ready."
+    },
+    "language_note": { "type": "string" }
+  },
+  "required": [
+    "artifact_type", "id", "created_at", "produced_by",
+    "job_id", "revision", "status", "passed", "summary", "checks"
+  ]
+}
