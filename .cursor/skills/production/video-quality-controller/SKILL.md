@@ -2,7 +2,7 @@
 name: video-quality-controller
 description: Run the deterministic checks that decide whether a render is post-ready, covering geometry, audio integrity, safe zones, Spotify visibility and source-file integrity. Use after every render, when a check fails and the cause is unclear, or when adding a new check.
 metadata:
-  version: 0.1.0
+  version: 0.2.0
   maturity: experimental
   confidence: medium
   evidence_basis: []
@@ -13,12 +13,15 @@ metadata:
 
 Stage 7. The last thing between a render and the creator's phone.
 Implementation: `production/pipeline/quality.py`, hard rules in
-`production/pipeline/rules.py`.
+`production/pipeline/rules.py`, creative minimum in
+`production/pipeline/creative_gate.py`.
 
 ## Purpose
 
 Measure the finished file against the plan and the hard rules, and say plainly
-whether it can be posted.
+whether it is *technically* uploadable. Separately, the creative-minimum gate
+says whether the job has enough creative input to be treated as review-ready.
+`post_ready` requires both. Neither gate predicts feed performance.
 
 ## When to invoke
 
@@ -51,8 +54,12 @@ Required: the rendered file, the `EditPlan`, the `InputReport`, the
 7. Text: every cue inside the safe area; none over a hard protected region; none
    below the readable size.
 8. Sources: hash each input again and compare. A changed hash is a hard failure.
-9. Done when every check has a status and a detail, and the report states
-   `post_ready` with the hard-rule violations listed.
+9. Done when every technical check has a status and a detail.
+10. Creative minimum (`creative_gate.evaluate`) runs next: track metadata or
+    waiver, format not empty-asset fallback unless forced/waived, hook not a
+    blank-input generic unless waived or explicit. Attach the outcome to the
+    quality report. `post_ready` is true only when `technically_valid` and
+    creative minimum both pass.
 
 ## Hard rules
 
@@ -63,6 +70,8 @@ Required: the rendered file, the `EditPlan`, the `InputReport`, the
   check is a warning that says so.
 - Never describe a render as likely to perform. The vocabulary is retention
   hypothesis, creative rationale, expected advantage, experiment, confidence.
+- Never treat technical pass alone as feed-ready. That is `technically_valid`,
+  not `post_ready`.
 
 The single deliberate exception: when `layout.waveform_end_trim` is set, a crop
 into the waveform's ends warns instead of failing, naming the setting that
@@ -81,9 +90,12 @@ allowed it. The creator opted in explicitly; the report still says what happened
 ## Output
 
 `QualityReport` (`schemas/quality-report.schema.json`): `status`,
-`post_ready`, `summary`, `hard_rule_violations`, `checks`,
-`source_fingerprints`. Each check carries `id`, `description`, `status`,
-`detail` and an optional `measurement`.
+`technically_valid`, `post_ready`, `summary`, `hard_rule_violations`, `checks`,
+`creative_minimum`, `source_fingerprints`. Each check carries `id`,
+`description`, `status`, `detail` and an optional `measurement`.
+
+`CreativeMinimumReport` (`schemas/creative-minimum-report.schema.json`):
+`status`, `passed`, `checks`, `creator_actions`.
 
 ## Failure conditions
 
@@ -95,16 +107,23 @@ allowed it. The creator opted in explicitly; the report still says what happened
 | Text over a hard region | Hard-rule violation naming the cue and the region |
 | Spotify below the minimum share | Hard-rule violation naming the fraction and the floor |
 | A measurement cannot be taken | Warn, stating what could not be measured and why |
+| Creative minimum failed | `technically_valid` may still be true; `post_ready` false; orchestrator returns `needs_creative_input` |
 
 ## Example
 
 A passing report: 25 checks, no warnings, no failures. Loudness -13.77 LUFS,
 true peak -8.04 dBTP, black 0.0% of the video, Spotify occupying 100% of the
-frame, song labels and waveform entirely inside the crop.
+frame, song labels and waveform entirely inside the crop. Creative minimum
+passes with named tracks and a non-fallback format — only then is `post_ready`
+true.
 
 A failing one: `song_info_unobstructed` fails naming the CTA cue and the region
 it covers. The fix is in the plan's text placement, not in the renderer, and the
 detail says so.
+
+A creative-minimum failure: technical 25/25, but blank track metadata and
+empty-asset `clean-showcase` fallback. Status `needs_creative_input`; job stays
+out of `jobs/review/`.
 
 ## Anti-patterns
 
@@ -114,12 +133,15 @@ detail says so.
   threshold was close or comfortable.
 - Adding a subjective check. If it cannot be measured the same way twice, it
   belongs to a review skill, not to this stage.
+- Calling a job review-ready because FFmpeg succeeded. That is broken-file
+  prevention, not feed fitness.
 
 ## Quality checklist
 
 - [ ] Every check has a status and a detail.
 - [ ] Hard-rule violations are listed separately from warnings.
-- [ ] `post_ready` is false whenever any check failed.
+- [ ] `technically_valid` is false whenever any technical check failed.
+- [ ] `post_ready` is false unless creative minimum also passed.
 - [ ] Source fingerprints were compared, not just recorded.
 
 ## Related skills

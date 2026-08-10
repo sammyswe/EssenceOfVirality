@@ -22,6 +22,7 @@ from .. import __version__
 from . import (
     artifacts,
     creative,
+    creative_gate,
     experiments,
     feedback as feedback_module,
     inspector,
@@ -68,9 +69,11 @@ class JobResult:
     plan_path: Path | None = None
     package_path: Path | None = None
     quality_path: Path | None = None
+    creative_minimum_path: Path | None = None
     manifest_path: Path | None = None
     plan: EditPlan | None = None
     quality_report: quality.QualityReport | None = None
+    creative_minimum: creative_gate.CreativeMinimumReport | None = None
     package: posting.PostingPackage | None = None
     experiment_id: str | None = None
     messages: list[str] = field(default_factory=list)
@@ -86,10 +89,16 @@ class JobResult:
             "edit_plan": rel(self.plan_path) if self.plan_path else None,
             "posting_package": rel(self.package_path) if self.package_path else None,
             "quality_report": rel(self.quality_path) if self.quality_path else None,
+            "creative_minimum_report": (
+                rel(self.creative_minimum_path) if self.creative_minimum_path else None
+            ),
             "manifest": rel(self.manifest_path) if self.manifest_path else None,
             "experiment": self.experiment_id,
             "messages": self.messages,
             "warnings": self.warnings,
+            "post_ready": (
+                self.quality_report.post_ready if self.quality_report is not None else False
+            ),
         }
 
 
@@ -153,6 +162,17 @@ def _write_quality(report: quality.QualityReport) -> Path:
     )
 
 
+def _write_creative_minimum(report: creative_gate.CreativeMinimumReport) -> Path:
+    stamp = artifacts.stamp(report.job_id, report.revision)
+    return artifacts.write(
+        OUTPUTS_QUALITY / f"{stamp}-creative-minimum.yaml",
+        "creative_minimum_report",
+        artifacts.artifact_id("cm", stamp),
+        report.as_dict(),
+        created_at=report.created_at,
+    )
+
+
 def _write_manifest(
     job: JobSpec,
     plan: EditPlan,
@@ -196,11 +216,19 @@ def _write_manifest(
         "cta": {"type": "onscreen_text", "text": plan.cta_text},
         "audio": plan.audio.as_dict() if plan.audio else None,
         "quality_status": quality_report.status,
+        "technically_valid": quality_report.technically_valid,
+        "post_ready": quality_report.post_ready,
+        "creative_minimum_status": (
+            (quality_report.creative_minimum or {}).get("status")
+        ),
         "artifacts": {
             "final": rel(render_result.output_path),
             "preview": rel(render_result.preview_path) if render_result.preview_path else None,
             "posting_package": rel(package_path),
             "quality_report": rel(OUTPUTS_QUALITY / f"{stamp}-quality-report.yaml"),
+            "creative_minimum_report": rel(
+                OUTPUTS_QUALITY / f"{stamp}-creative-minimum.yaml"
+            ),
             "edit_plan": rel(OUTPUTS_PLANS / f"{stamp}-edit-plan.yaml"),
         },
         "experiment": experiment_id,
@@ -339,8 +367,12 @@ def process(
         plan, input_report, render_result,
         config=job.config, source_fingerprints=fingerprints,
     )
+    creative_report = creative_gate.evaluate(job, plan)
+    quality_report.creative_minimum = creative_report.as_dict()
     result.quality_report = quality_report
+    result.creative_minimum = creative_report
     result.quality_path = _write_quality(quality_report)
+    result.creative_minimum_path = _write_creative_minimum(creative_report)
 
     experiment_id: str | None = None
     if plan.experiment is not None:
@@ -375,11 +407,27 @@ def process(
         result.package_path, experiment_id,
     )
 
-    if quality_report.status == quality.FAIL:
+    if not quality_report.technically_valid:
         result.status = "quality_failed"
         result.messages.append(
-            "quality checks failed; the render is not post-ready. See "
+            "technical quality checks failed; the render is not uploadable. See "
             f"{rel(result.quality_path)}"
+        )
+        return result
+
+    if not creative_report.passed:
+        result.status = "needs_creative_input"
+        result.messages.append(
+            "technical checks passed, but creative minimum failed — this is a "
+            "valid draft file, not a review-ready / feed candidate. See "
+            f"{rel(result.creative_minimum_path)}"
+        )
+        for action in creative_report.creator_actions:
+            result.messages.append(f"add: {action}")
+        result.messages.append(
+            "job left in place (not moved to jobs/review/). Fill tracks, add a "
+            "supporting clip, force preferred_format, or set an explicit waiver "
+            "in creative_direction, then re-run."
         )
         return result
 

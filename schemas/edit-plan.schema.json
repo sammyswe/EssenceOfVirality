@@ -113,7 +113,11 @@
     "experiment": { "type": ["object", "null"] },
     "research_refs": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
     "preference_refs": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/artifactId" } },
-    "warnings": { "type": "array", "items": { "type": "string" } }
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "empty_asset_fallback": {
+      "type": "boolean",
+      "description": "True when auto-select collapsed into a zero-asset format because higher-value families lacked clips or metadata."
+    }
   },
   "required": [
     "artifact_type", "id", "created_at", "produced_by",

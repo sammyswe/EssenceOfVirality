@@ -19,6 +19,7 @@ field; `tools/validate_artifacts.py` maps that field to a schema via the registr
 | `pull_request_summary` | `pull-request-summary.schema.json` | `prs-` | `research/sources/<id>/` |
 | `analytics_observation` | `analytics-observation.schema.json` | `obs-` | `analytics/` (scaffold) |
 | `video_production_manifest` | `video-production-manifest.schema.json` | `vpm-` | phase 3+ (scaffold) |
+| `creative_minimum_report` | `creative-minimum-report.schema.json` | `cm-` | `outputs/quality-reports/` (live) |
 
 `common.schema.json` holds the shared envelope (`artifact_type`, `id`, `created_at`,
 `produced_by`, `inputs`, `version`, `human_review`, `derived_artifacts`) and shared enums

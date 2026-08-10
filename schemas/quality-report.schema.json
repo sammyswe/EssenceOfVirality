@@ -24,9 +24,13 @@
     "revision": { "type": "integer", "minimum": 1 },
     "video_path": { "type": "string" },
     "status": { "type": "string", "enum": ["pass", "warn", "fail"] },
+    "technically_valid": {
+      "type": "boolean",
+      "description": "True when technical conformance checks pass or only warn. Orthogonal to creative minimum and to feed fitness."
+    },
     "post_ready": {
       "type": "boolean",
-      "description": "False whenever any check failed. Warnings do not block posting but are stated."
+      "description": "True only when technically_valid and creative_minimum.passed are both true. Technical pass alone is a draft, not a feed candidate."
     },
     "summary": {
       "type": "object",
@@ -40,14 +44,19 @@
     "hard_rule_violations": {
       "type": "array",
       "items": { "type": "string" },
-      "description": "Non-negotiable rules broken by this render. Must be empty for post_ready."
+      "description": "Non-negotiable rules broken by this render. Must be empty for technically_valid."
     },
     "checks": { "type": "array", "items": { "$ref": "#/$defs/check" }, "minItems": 1 },
+    "creative_minimum": {
+      "type": ["object", "null"],
+      "description": "Embedded creative-minimum gate outcome. post_ready requires passed=true."
+    },
     "source_fingerprints": {
       "type": "object",
       "description": "Hashes of the input media, proving the originals were not modified.",
       "additionalProperties": { "type": "string" }
-    }
+    },
+    "language_note": { "type": "string" }
   },
   "required": [
     "artifact_type", "id", "created_at", "produced_by",

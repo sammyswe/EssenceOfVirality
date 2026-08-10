@@ -15,6 +15,7 @@ import hashlib
 from dataclasses import dataclass
 from typing import Any
 
+from . import creative_gate
 from . import preferences as prefs
 from . import textrender
 from .editplan import (
@@ -46,6 +47,7 @@ class FormatChoice:
     score: float
     reasons: list[str]
     rejected: list[dict[str, str]]
+    empty_asset_fallback: bool = False
 
 
 def _usable_assets(report: InputReport) -> list[Any]:
@@ -87,6 +89,7 @@ def choose_format(
             score=1.0,
             reasons=[f"format requested in job.yaml: {requested}"],
             rejected=[],
+            empty_asset_fallback=False,
         )
 
     mood = job.mood.lower()
@@ -159,6 +162,26 @@ def choose_format(
     score, name, template, reasons = scored[0]
     if not reasons:
         reasons.append("highest-scoring family for the available inputs")
+
+    # Recording-only / blank-input collapse: a zero-asset family won only because
+    # clip- or metadata-gated families were rejected. That is a fallback, not a
+    # deliberate format experiment.
+    rejected_for_missing_inputs = any(
+        "supporting clip" in entry["reason"] or "track metadata" in entry["reason"]
+        for entry in rejected
+    )
+    selected_needs = int((template.get("requires") or {}).get("minimum_supporting_assets", 0))
+    empty_asset_fallback = (
+        asset_count == 0
+        and selected_needs == 0
+        and rejected_for_missing_inputs
+    )
+    if empty_asset_fallback:
+        reasons.append(
+            "empty-asset fallback: higher-value families were rejected for missing "
+            "clips or track metadata"
+        )
+
     return FormatChoice(
         name=name,
         family=str(template.get("family", name)),
@@ -166,6 +189,7 @@ def choose_format(
         score=score,
         reasons=reasons,
         rejected=rejected,
+        empty_asset_fallback=empty_asset_fallback,
     )
 
 
@@ -415,10 +439,21 @@ def choose_hook(
             "anticipation cue, which is true of every mix video",
         )
 
+    # Prefer hooks that name tracks/artists when the job supplied that evidence.
+    specific = [
+        (text, kind) for text, kind in candidates
+        if creative_gate.hook_references_tracks(text, job.tracks)
+    ]
+    pool = specific or candidates
+
     seed = f"{job.job_id}:{template.get('name')}:hook"
-    chosen_text = _stable_choice([text for text, _ in candidates], seed)
-    kind = next(kind for text, kind in candidates if text == chosen_text)
-    return chosen_text, f"selected {kind!r} hook from {len(candidates)} valid candidates"
+    chosen_text = _stable_choice([text for text, _ in pool], seed)
+    kind = next(kind for text, kind in pool if text == chosen_text)
+    scope = "track-specific" if specific else "valid"
+    return (
+        chosen_text,
+        f"selected {kind!r} hook from {len(pool)} {scope} candidate(s)",
+    )
 
 
 def choose_cta(job: JobSpec, template: dict[str, Any]) -> tuple[str, str]:
@@ -750,6 +785,7 @@ def build_plan(
             score=1.0,
             reasons=["format forced by revision feedback"],
             rejected=[],
+            empty_asset_fallback=False,
         )
         resolved = prefs.resolve(format_family=choice.family, artists=artists)
     else:
@@ -809,11 +845,24 @@ def build_plan(
     )
 
     experiment = None
+    retention_hypothesis = creative_gate.compose_retention_hypothesis(
+        str(template.get("retention_hypothesis", "")).strip(),
+        emphasis_enabled=emphasis.enabled,
+    )
     if config["experiment"]["auto_attach"]:
+        # Empty-asset fallback is not a useful format experiment — still record a
+        # hypothesis about the actual devices in the plan, but label the variable
+        # honestly when the format was forced by missing inputs.
+        experiment_hypothesis = retention_hypothesis or (
+            f"The {choice.family} format holds attention through the transition."
+        )
         experiment = ExperimentPlan(
-            hypothesis=str(template.get("retention_hypothesis", "")).strip()
-            or f"The {choice.family} format holds attention through the transition.",
-            variable="format_family",
+            hypothesis=experiment_hypothesis,
+            variable=(
+                "empty_asset_fallback"
+                if choice.empty_asset_fallback
+                else "format_family"
+            ),
             control_reference="clean_showcase",
             expected_effect="higher_completion_rate",
         )
@@ -840,11 +889,12 @@ def build_plan(
         audio=audio,
         hook_text=hook_text,
         cta_text=cta_text,
-        retention_hypothesis=str(template.get("retention_hypothesis", "")).strip(),
+        retention_hypothesis=retention_hypothesis,
         research_refs=list(research_refs or []),
         preference_refs=resolved.refs(),
         warnings=[*timing.notes, *secondary_warnings, *text_warnings],
         experiment=experiment,
+        empty_asset_fallback=choice.empty_asset_fallback,
     )
 
     plan.creative_rationale = [

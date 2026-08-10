@@ -2,7 +2,7 @@
 name: mobile-job-orchestrator
 description: Run a job folder end to end from a phone-driven cloud agent, return the render and its package, and drive the revision cycle. Use when the creator asks to process a mix, revise a render, approve a job, or when a job is stuck in a lifecycle state.
 metadata:
-  version: 0.1.0
+  version: 0.2.0
   maturity: experimental
   confidence: medium
   evidence_basis: []
@@ -99,6 +99,7 @@ collected along the way.
 | Inspection blocked | Move to `jobs/failed/`, report the problems |
 | Render failed | Move to `jobs/failed/`, report with the filter graph |
 | Quality failed | Leave in place, write the report, return `quality_failed` |
+| Creative minimum failed | Leave in place, write creative-minimum report, return `needs_creative_input`; do not move to `jobs/review/` |
 | Revising a job with no earlier render | Error; run the job first |
 
 ## Phone workflow
@@ -123,6 +124,7 @@ applied and which preference proposals are waiting.
 ## Anti-patterns
 
 - Moving a job to review because the render finished. Finished is not passed.
+  Technical pass without creative minimum is `needs_creative_input`, not review.
 - Deleting a failed revision to keep the output directory tidy. The failure is
   the evidence for the fix.
 - Reporting a path the creator cannot reach from a phone. A path inside the

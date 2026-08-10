@@ -52,6 +52,9 @@ class QualityReport:
     created_at: str
     checks: list[Check] = field(default_factory=list)
     hard_rule_violations: list[str] = field(default_factory=list)
+    # Attached by the orchestrator after creative_gate.evaluate. None means the
+    # creative gate has not run yet — post_ready stays false until it does.
+    creative_minimum: dict[str, Any] | None = None
 
     @property
     def failures(self) -> list[Check]:
@@ -70,8 +73,23 @@ class QualityReport:
         return PASS
 
     @property
-    def post_ready(self) -> bool:
+    def technically_valid(self) -> bool:
+        """Broken-file / conformance gate only. Orthogonal to feed fitness."""
         return self.status in {PASS, WARN}
+
+    @property
+    def creative_minimum_passed(self) -> bool:
+        if self.creative_minimum is None:
+            return False
+        return bool(self.creative_minimum.get("passed"))
+
+    @property
+    def post_ready(self) -> bool:
+        """True only when the file is technically valid *and* creative-minimum passes.
+
+        A technical pass alone is a valid draft, not a feed-ready review candidate.
+        """
+        return self.technically_valid and self.creative_minimum_passed
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -80,6 +98,7 @@ class QualityReport:
             "video_path": self.video_path,
             "created_at": self.created_at,
             "status": self.status,
+            "technically_valid": self.technically_valid,
             "post_ready": self.post_ready,
             "summary": {
                 "passed": len([c for c in self.checks if c.status == PASS]),
@@ -88,10 +107,12 @@ class QualityReport:
             },
             "hard_rule_violations": self.hard_rule_violations,
             "checks": [check.as_dict() for check in self.checks],
+            "creative_minimum": self.creative_minimum,
             # Deliberate wording: this is a hypothesis about attention, not a promise.
             "language_note": (
-                "This report describes technical conformance and a retention "
-                "hypothesis. It does not predict distribution or view counts."
+                "This report separates technical conformance (technically_valid) from "
+                "creative minimum (inputs/plan honesty). post_ready requires both. "
+                "Neither predicts distribution or view counts."
             ),
         }
 
