@@ -87,13 +87,17 @@ words:
   dropped rather than allowed to cover song info or the waveform.
 - Groups that fall under the opaque hook overlay are skipped.
 
-**Emoji caveat (honest limitation).** FFmpeg's drawtext cannot render colour
-emoji with the fonts this pipeline ships; they would come out as boxes. The
-lyric renderer strips them with a warning. Matching the reference videos' emoji
-density in burned-in captions needs an emoji-capable text backend — the
-OpenMontage Remotion caption path is the designated upgrade (see
-`docs/investigations/openmontage-prompt-gallery-review.md`). Until then, put
-emoji in the TikTok caption text (posting package), which renders them natively.
+**Emoji caveat (interim limitation, not the target).** FFmpeg's drawtext cannot
+render colour emoji with the fonts this pipeline ships; they would come out as
+boxes, so the lyric renderer strips them with a warning. This is an interim
+state only. **The creator has decided the paid path, not the free/zero-key one,
+is this production line's target**: whatever provider connections the
+emoji-capable OpenMontage Remotion caption backend needs will be supplied, and
+matching the reference videos' emoji density in burned-in captions is required
+work, not an optional extra (see
+`docs/investigations/openmontage-prompt-gallery-review.md`). Until that backend
+is wired in, put emoji in the TikTok caption text (posting package), which
+renders them natively.
 
 ### Call to action
 
