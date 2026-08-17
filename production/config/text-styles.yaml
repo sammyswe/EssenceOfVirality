@@ -70,6 +70,56 @@ styles:
     line_spacing: 12
     max_chars_per_line: 26
 
+  cta_green:
+    description: Bright Spotify-green call to action, outlined for busy backgrounds.
+    font: sans_bold
+    font_size: 56
+    colour: "#1ED760"
+    box: false
+    border_width: 5
+    border_colour: "#000000"
+    shadow: {x: 0, y: 3, colour: "#000000CC"}
+    line_spacing: 12
+    max_chars_per_line: 24
+
+  # Karaoke lyric captions: heavy, outlined, no plate, colour-rotated per group
+  # so successive word groups read as animated even though each cue is static.
+  karaoke_white:
+    description: Lyric caption base — white, heavy outline.
+    font: sans_bold
+    font_size: 72
+    colour: "#FFFFFF"
+    box: false
+    border_width: 7
+    border_colour: "#000000"
+    shadow: {x: 0, y: 4, colour: "#000000CC"}
+    line_spacing: 12
+    max_chars_per_line: 16
+
+  karaoke_cyan:
+    description: Lyric caption accent — cyan pop.
+    font: sans_bold
+    font_size: 72
+    colour: "#4DD8FF"
+    box: false
+    border_width: 7
+    border_colour: "#000000"
+    shadow: {x: 0, y: 4, colour: "#000000CC"}
+    line_spacing: 12
+    max_chars_per_line: 16
+
+  karaoke_pink:
+    description: Lyric caption accent — magenta/pink pop.
+    font: sans_bold
+    font_size: 72
+    colour: "#FF4FA3"
+    box: false
+    border_width: 7
+    border_colour: "#000000"
+    shadow: {x: 0, y: 4, colour: "#000000CC"}
+    line_spacing: 12
+    max_chars_per_line: 16
+
   caption_small:
     description: Low-emphasis supporting line.
     font: sans_regular

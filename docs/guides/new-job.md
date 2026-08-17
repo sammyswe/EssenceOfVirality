@@ -36,6 +36,11 @@ Only the recording and `job.yaml` are required. A job with nothing but a
 Spotify capture is a completely normal job and produces a clean showcase or
 curiosity edit.
 
+For the creator's two-artifact format — a supplied AI hook clip overlaid on the
+untrimmed mix with word-timed lyric captions — see
+[`hook-overlay-recipe.md`](hook-overlay-recipe.md). That recipe also introduces
+an optional `lyrics.yaml` in the job folder.
+
 ## job.yaml
 
 The generated template:

@@ -84,9 +84,23 @@ cta:
   lead_seconds: 4.5
   display_seconds: 3.2
 
+lyrics:
+  # Word-timed lyric captions ("karaoke"). "auto" renders them when the job
+  # folder contains a lyrics.yaml whose creator has set verified: true; an
+  # unverified sheet is skipped with a warning — wrong lyrics never ship.
+  mode: auto
+  # A group closes at this many words or when the vocal pauses longer than
+  # gap_break_seconds.
+  gap_break_seconds: 0.6
+  # How long a caption lingers after its last word, capped by the next group.
+  hold_seconds: 0.25
+
 quality:
   min_duration_seconds: 14.0
-  max_duration_seconds: 46.0
+  # Templates with pacing.use_full_recording render the whole capture, so the
+  # window admits recordings up to a minute; trimming templates still cap
+  # themselves at duration.maximum_seconds.
+  max_duration_seconds: 61.0
   required_width: 1080
   required_height: 1920
   max_black_frame_fraction: 0.04

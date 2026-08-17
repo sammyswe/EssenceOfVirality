@@ -401,11 +401,26 @@ def build_filter_graph(
         inputs.append(input_args)
 
         label = f"sec{index}"
-        chains.append(
+        clip_chain = (
             f"[{index}:v]scale={width}:{height}:force_original_aspect_ratio=increase,"
             f"crop={width}:{height},setsar=1,fps=30,"
-            f"setpts=PTS-STARTPTS+{clip.start_seconds:.3f}/TB[{label}]"
+            f"setpts=PTS-STARTPTS+{clip.start_seconds:.3f}/TB"
         )
+        fade_out = max(0.0, float(clip.fade_out_seconds or 0.0))
+        if fade_out > 0:
+            visible = clip.end_seconds - clip.start_seconds
+            fade_out = min(fade_out, max(visible / 3.0, 0.0))
+        if fade_out > 0:
+            fade_start = clip.end_seconds - fade_out
+            clip_chain += (
+                f",format=yuva420p,fade=t=out:st={fade_start:.3f}:"
+                f"d={fade_out:.3f}:alpha=1"
+            )
+            notes.append(
+                f"{clip.label!r} dissolves out over {fade_out:.2f}s ending at "
+                f"{clip.end_seconds:.2f}s"
+            )
+        chains.append(f"{clip_chain}[{label}]")
         next_stage = f"stage{index}"
         chains.append(
             f"[{stage}][{label}]overlay=x={clip_placement.x}:y={clip_placement.y}:"
