@@ -15,7 +15,7 @@ from typing import Any
 
 import yaml
 
-from .pipeline import analytics, delivery, experiments, feedback, orchestrator
+from .pipeline import analytics, copybank, delivery, dropbox_sync, experiments, feedback, orchestrator
 from .pipeline import preferences as prefs
 from .pipeline import research
 from .pipeline.jobspec import JobError, load_job, write_job_template
@@ -361,6 +361,118 @@ def cmd_deliver(args: argparse.Namespace) -> int:
     return 0 if result.available else 1
 
 
+def cmd_copy(args: argparse.Namespace) -> int:
+    if args.copy_command == "list":
+        if args.json:
+            print(json.dumps(copybank.load_bank(), indent=2, default=str))
+            return 0
+        print()
+        for section in copybank.SECTIONS:
+            rows = copybank.entries(section)
+            if args.section and section != args.section:
+                continue
+            if args.status:
+                rows = [row for row in rows if row.get("status") == args.status]
+            if not rows:
+                continue
+            print(f"  {section}")
+            for row in rows:
+                text = str(row.get("text") or row.get("template") or "")
+                extra = str(row.get("intent") or row.get("kind") or "")
+                extra = f" [{extra}]" if extra else ""
+                print(f"    {row['id']:<10} {row['status']:<8}{extra} {text!r}")
+            print()
+        summary = copybank.summary()["sections"]
+        active_total = sum(
+            counts["by_status"].get("testing", 0) + counts["by_status"].get("proven", 0)
+            for counts in summary.values()
+        )
+        print(f"  {active_total} entr{'y' if active_total == 1 else 'ies'} active "
+              "(testing or proven); drafts never render")
+        print()
+        return 0
+
+    transitions = {"approve": "testing", "promote": "proven", "retire": "retired"}
+    status = transitions[args.copy_command]
+    entry = copybank.set_status(args.entry_id, status, note=args.note or "")
+    text = str(entry.get("text") or entry.get("template") or "")
+    print(f"  {entry['id']} -> {status}: {text!r}")
+    if status == "testing":
+        print("  now in rotation for future renders")
+    elif status == "retired":
+        print("  out of rotation; the entry and its notes stay on record")
+    return 0
+
+
+def cmd_dropbox(args: argparse.Namespace) -> int:
+    if args.dropbox_command == "status":
+        payload = dropbox_sync.status()
+        if args.json:
+            print(json.dumps(payload, indent=2))
+            return 0 if payload.get("reachable") else 1
+        print()
+        if not payload.get("configured"):
+            print(f"  {_colour('not configured', YELLOW)}: {payload['reason']}")
+        elif not payload.get("reachable"):
+            print(f"  {_colour('unreachable', RED)}: {payload['reason']}")
+        else:
+            print(f"  account       {payload['account']}")
+            print(f"  drop mixes in {payload['incoming']}")
+            print(f"  renders go to {payload['renders']}")
+        print()
+        return 0 if payload.get("reachable") else 1
+
+    if args.dropbox_command == "pull":
+        result = dropbox_sync.pull()
+        if args.json and not args.run:
+            print(json.dumps(result.as_dict(), indent=2))
+            return 0
+        print()
+        for job in result.created:
+            print(f"  imported {job.job_id}: recording {job.recording}"
+                  + (f", assets {', '.join(job.assets)}" if job.assets else ""))
+        for line in result.skipped:
+            print(f"  {_colour('skip', YELLOW)} {line}")
+        for line in result.messages:
+            print(f"  {DIM}- {line}{RESET}" if sys.stdout.isatty() else f"  - {line}")
+        print()
+
+        if not args.run:
+            if result.created:
+                print("  Next: ./process-job newest   (or: dropbox pull --run)")
+                print()
+            return 0
+
+        exit_code = 0
+        for job in result.created:
+            processed = orchestrator.process(orchestrator.find_job(job.job_id))
+            _print_result(processed)
+            if processed.status not in {"review", "planned"}:
+                exit_code = 1
+                continue
+            video_id = f"{processed.job_id}-r{processed.revision}"
+            pushed = dropbox_sync.push(video_id, delivery.render_paths(video_id))
+            for entry in pushed.uploaded:
+                print(f"  {entry['label']:<10} {entry['link'] or entry['dropbox_path']}")
+            print()
+        return exit_code
+
+    if args.dropbox_command == "push":
+        files = delivery.render_paths(args.video_id)
+        result = dropbox_sync.push(args.video_id, files)
+        if args.json:
+            print(json.dumps(result.as_dict(), indent=2))
+            return 0
+        print()
+        for entry in result.uploaded:
+            print(f"  {entry['label']:<10} {entry['link'] or entry['dropbox_path']}")
+        for line in result.messages:
+            print(f"  {DIM}- {line}{RESET}" if sys.stdout.isatty() else f"  - {line}")
+        print()
+        return 0
+    return 1
+
+
 def cmd_status(args: argparse.Namespace) -> int:
     ensure_dirs()
     capabilities = capability_report()
@@ -473,6 +585,41 @@ def build_parser() -> argparse.ArgumentParser:
     deliver.add_argument("--json", action="store_true")
     deliver.set_defaults(func=cmd_deliver)
 
+    copy_parser = subparsers.add_parser("copy", help="the CTA/caption testing bank")
+    copy_subs = copy_parser.add_subparsers(dest="copy_command", required=True)
+    copy_list = copy_subs.add_parser("list", help="show bank entries and statuses")
+    copy_list.add_argument("--section", choices=copybank.SECTIONS)
+    copy_list.add_argument("--status", choices=copybank.STATUSES)
+    copy_list.add_argument("--json", action="store_true")
+    for verb, description in (
+        ("approve", "draft -> testing: allow the entry into rotation"),
+        ("promote", "testing -> proven: mark repeatedly strong wording"),
+        ("retire", "pull an entry from rotation, keeping the record"),
+    ):
+        sub = copy_subs.add_parser(verb, help=description)
+        sub.add_argument("entry_id")
+        sub.add_argument("--note", default="", help="why, recorded on the entry")
+    copy_parser.set_defaults(func=cmd_copy)
+
+    dropbox_parser = subparsers.add_parser(
+        "dropbox", help="phone file channel: pull mixes in, push renders out"
+    )
+    dropbox_subs = dropbox_parser.add_subparsers(dest="dropbox_command", required=True)
+    dropbox_status = dropbox_subs.add_parser("status", help="is the channel configured?")
+    dropbox_status.add_argument("--json", action="store_true")
+    dropbox_pull = dropbox_subs.add_parser(
+        "pull", help="import new recordings from <base>/incoming into job folders"
+    )
+    dropbox_pull.add_argument("--run", action="store_true",
+                              help="process each imported job and push its render back")
+    dropbox_pull.add_argument("--json", action="store_true")
+    dropbox_push = dropbox_subs.add_parser(
+        "push", help="upload a render to <base>/renders/<video-id>/ with share links"
+    )
+    dropbox_push.add_argument("video_id", help="e.g. job-001-r2")
+    dropbox_push.add_argument("--json", action="store_true")
+    dropbox_parser.set_defaults(func=cmd_dropbox)
+
     status = subparsers.add_parser("status", help="environment and pipeline state")
     status.add_argument("--json", action="store_true")
     status.set_defaults(func=cmd_status)
@@ -547,6 +694,7 @@ def main(argv: list[str] | None = None) -> int:
     known = {
         "run", "revise", "new", "inspect", "approve", "status", "formats",
         "prefs", "analytics", "experiments", "research", "feedback", "deliver",
+        "copy", "dropbox",
         "-h", "--help",
     }
     # `./process-job jobs/incoming/job-001` is the documented shorthand for `run`.
@@ -563,7 +711,10 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         return int(args.func(args))
-    except (JobError, orchestrator.PipelineError, MediaError) as exc:
+    except (
+        JobError, orchestrator.PipelineError, MediaError,
+        copybank.CopyBankError, dropbox_sync.DropboxError,
+    ) as exc:
         print(f"\n  {_colour('error', RED)} {exc}\n", file=sys.stderr)
         return 1
     except FileNotFoundError as exc:

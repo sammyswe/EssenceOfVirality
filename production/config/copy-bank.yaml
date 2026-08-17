@@ -1,0 +1,256 @@
+version: "0.1.0"
+
+about: >
+  The copy testing bank: every hook, call to action, caption and pinned comment
+  the pipeline may use, each with a lifecycle status. The pipeline only draws
+  from entries whose status is "testing" or "proven"; "draft" entries are
+  proposals awaiting the creator's review (the grilling sessions) and "retired"
+  entries are kept for the record with the reason they were pulled. Statuses
+  change via `./process-job copy approve|promote|retire <id>` — the file is
+  rewritten by the tool, so commentary belongs in `notes` fields, not YAML
+  comments. On-screen text (hooks, CTAs) is rendered through drawtext, which
+  cannot draw colour emoji — keep those entries emoji-free. Captions and pinned
+  comments are posted as text on TikTok, so emoji are fine there and should
+  match the creator's reference density. Milestone promises ("playlist link at
+  N followers") are commitments: they stay draft until the creator states the
+  promise is real, and they are retired the moment it is fulfilled or dropped.
+
+statuses:
+  draft: proposed, never rendered; awaiting creator review
+  testing: approved for rotation; performance still unknown
+  proven: repeatedly associated with strong posts (creator's judgement + analytics)
+  retired: pulled from rotation; notes say why
+
+hooks:
+  # Text-claim hooks displayed over the Higgsfield overlay. Rendered on screen:
+  # no emoji. Entries mirrored from production/templates/hook-overlay.yaml are
+  # already live, so they enter at "testing".
+  - id: hook-001
+    text: "spotify mixes should not sound this good"
+    kind: quality_claim
+    status: testing
+    notes: mirrored from hook-overlay template; live since the recipe shipped
+  - id: hook-002
+    text: "wait for the switch"
+    kind: anticipation
+    status: testing
+    notes: mirrored from hook-overlay template; also the fallback when no other hook qualifies
+  - id: hook-003
+    text: "POV your spotify playlist mixes itself"
+    kind: scenario
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: hook-004
+    text: "{first_artist} into {second_artist}"
+    kind: artist_pairing
+    requires_fields: [first_artist, second_artist]
+    status: testing
+    notes: mirrored from hook-overlay template; needs both artists in job.yaml tracks
+  - id: hook-005
+    text: "this is why your queue needs a mix"
+    kind: quality_claim
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: hook-006
+    text: "no edits. just spotify."
+    kind: honesty_claim
+    status: draft
+    notes: >
+      True by construction — the pipeline never touches the mix audio. Leans on
+      the honesty of the format as the surprise.
+  - id: hook-007
+    text: "bet you can't hear where song one ends"
+    kind: challenge
+    status: draft
+    notes: >
+      Challenge framing; only honest when the blend is genuinely seamless, so it
+      should be reserved for jobs where the creator says the transition is clean.
+  - id: hook-008
+    text: "the mix feature does not miss"
+    kind: quality_claim
+    status: draft
+    notes: subjective quality claim, same family as hook-001.
+  - id: hook-009
+    text: "house fans, this one's for the pre-drinks"
+    kind: audience_call
+    status: draft
+    notes: names the audience and the moment; scenario anchoring.
+  - id: hook-010
+    text: "your gym playlist is missing this"
+    kind: audience_call
+    status: draft
+    notes: second scenario anchor; gym vs pre-drinks is testable.
+  - id: hook-011
+    text: "day {day_number} of blending songs on spotify"
+    kind: series
+    requires_fields: [day_number]
+    status: draft
+    notes: >
+      Series framing rewards return viewers and fits the two-posts-a-day cadence,
+      but it is a treadmill: once started, gaps are visible. Needs the creator's
+      explicit commitment before approval.
+  - id: hook-012
+    text: "you're not ready for this switch"
+    kind: anticipation
+    status: draft
+    notes: >
+      FLAG for grilling: promises the viewer a reaction they have not had, which
+      the copywriter skill treats as an anti-pattern ("you won't believe...").
+      Included so the boundary gets ruled on explicitly rather than by omission.
+  - id: hook-013
+    text: "DJs hate how easy this is"
+    kind: parody
+    status: draft
+    notes: >
+      FLAG for grilling: meme framing, but it asserts a third-party reaction
+      nobody measured. Only usable if the creator reads it as obvious parody
+      under the fiction-signal rule; otherwise it should be retired unused.
+
+ctas:
+  # On-screen calls to action. Rendered through drawtext: no emoji. slots lists
+  # where the CTA works (build = before the transition, post_payoff = just
+  # after, closing = final seconds); empty means any slot.
+  - id: cta-001
+    text: "share this with the number 1 house fan you know"
+    intent: share
+    slots: [post_payoff, closing]
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: cta-002
+    text: "save it for your playlist"
+    intent: save
+    slots: [post_payoff, closing]
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: cta-003
+    text: "want this mix on your speaker? follow for the playlist"
+    intent: follow
+    slots: [closing]
+    status: testing
+    notes: >
+      Mirrored from hook-overlay template. Carries a soft promise that the
+      playlist is reachable via the profile — the creator confirmed the intent
+      that viewers can add mixes to their own Spotify.
+  - id: cta-004
+    text: "rate this transition"
+    intent: comment_rate
+    slots: [post_payoff, closing]
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: cta-005
+    text: "which song won?"
+    intent: comment_rate
+    slots: [post_payoff, closing]
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: cta-006
+    text: "send this to whoever controls the aux"
+    intent: share
+    slots: [post_payoff, closing]
+    status: draft
+    notes: share ask anchored to a person the viewer can picture.
+  - id: cta-007
+    text: "save this for the pre-drinks"
+    intent: save
+    slots: [post_payoff, closing]
+    status: draft
+    notes: save ask anchored to a moment; pairs with hook-009.
+  - id: cta-008
+    text: "rate the switch out of 10"
+    intent: comment_rate
+    slots: [post_payoff]
+    status: draft
+    notes: numeric asks lower the effort of commenting.
+  - id: cta-009
+    text: "song one or song two - pick a side"
+    intent: comment_debate
+    slots: [post_payoff, closing]
+    status: draft
+    notes: debate framing; only honest when both tracks get real screen time.
+  - id: cta-010
+    text: "guess the second song before the switch"
+    intent: comment_guess
+    slots: [build]
+    status: draft
+    notes: >
+      The only CTA designed for the build slot: it gives the wait a game. Needs
+      the second track to be hidden on screen until the transition, which the
+      Spotify surface may contradict — grilling question.
+  - id: cta-011
+    text: "drop a pairing and I'll blend it next"
+    intent: comment_request
+    slots: [closing]
+    status: draft
+    notes: >
+      Commitment: it promises future output uses suggestions. Fine at two posts
+      a day, but only if the creator actually wants requests steering the queue.
+  - id: cta-012
+    text: "follow - a new mix every day"
+    intent: follow
+    slots: [closing]
+    status: draft
+    notes: >
+      Commitment: states a posting cadence. Stays draft until the cadence is
+      real and survivable; retire immediately if the cadence drops.
+  - id: cta-013
+    text: "playlist link at 1000 followers"
+    intent: follow_milestone
+    slots: [closing]
+    status: draft
+    notes: >
+      Milestone promise. Hard-gated: the creator must state the number and the
+      commitment before this leaves draft, and it is retired when fulfilled.
+
+captions:
+  # Posted text, not rendered - emoji allowed, matched to the creator's
+  # reference density. "{pairing}" becomes "First Track into Second Track" when
+  # both titles are in job.yaml; entries whose placeholders cannot be filled
+  # are skipped for that job.
+  - id: cap-001
+    template: "{pairing} — made in Spotify."
+    status: testing
+    notes: the pipeline's current default caption shape; live today.
+  - id: cap-002
+    template: "{pairing} 🎧 made in spotify, audio untouched"
+    status: draft
+    notes: honesty angle in the caption itself.
+  - id: cap-003
+    template: "the mix feature does not miss 🔥 {pairing}"
+    status: draft
+    notes: caption sibling of hook-008.
+  - id: cap-004
+    template: "this pairing should not work… {pairing} 🫠"
+    status: draft
+    notes: >
+      Curiosity angle. Only honest when the pairing is genuinely unlikely -
+      needs a per-job judgement, not blind rotation. Grilling question.
+  - id: cap-005
+    template: "POV: your queue blends itself. {pairing}"
+    status: draft
+    notes: caption sibling of hook-003; tests whether POV framing works in text.
+  - id: cap-006
+    template: "day {day_number} of spotify blends. today: {pairing} 🎛️"
+    status: draft
+    notes: series caption; same commitment caveat as hook-011.
+  - id: cap-007
+    template: "no edits to the audio. that's just spotify 🤝 {pairing}"
+    status: draft
+    notes: honesty angle, warmer register than cap-002.
+
+pinned_comments:
+  # Posted text - emoji allowed. The pipeline's generated pinned comment
+  # (track names + the ask) remains the fallback when none of these are active.
+  - id: pin-001
+    template: "what should I blend next? 👀"
+    status: draft
+    notes: turns the comment section into a request queue; pairs with cta-011.
+  - id: pin-002
+    template: "the second song is in the caption — rate the switch"
+    status: draft
+    notes: answers the most common question before it is asked.
+  - id: pin-003
+    template: "if this hits 100 saves I'm making a part 2"
+    status: draft
+    notes: >
+      Milestone commitment, same gating as cta-013: draft until the creator
+      owns the promise, retired once resolved.

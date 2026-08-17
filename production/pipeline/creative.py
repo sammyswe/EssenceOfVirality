@@ -15,6 +15,7 @@ import hashlib
 from dataclasses import dataclass
 from typing import Any
 
+from . import copybank
 from . import lyrics as lyrics_module
 from . import preferences as prefs
 from . import textrender
@@ -407,8 +408,8 @@ def choose_hook(
     if override:
         return override, "hook supplied in job.yaml"
 
-    candidates: list[tuple[str, str]] = []
-    for pattern in template.get("hook_patterns") or []:
+    candidates: list[tuple[str, str, str]] = []
+    for pattern in _merged_patterns(template.get("hook_patterns"), "hooks"):
         text = str(pattern.get("text", "")).strip()
         if not text:
             continue
@@ -429,7 +430,11 @@ def choose_hook(
             # The claim cannot be verified from the job, so it is not used.
             continue
 
-        candidates.append((text, str(pattern.get("kind", "unspecified"))))
+        candidates.append((
+            text,
+            str(pattern.get("kind", "unspecified")),
+            str(pattern.get("id", "") or ""),
+        ))
 
     if not candidates:
         return (
@@ -439,26 +444,67 @@ def choose_hook(
         )
 
     seed = f"{job.job_id}:{template.get('name')}:hook"
-    chosen_text = _stable_choice([text for text, _ in candidates], seed)
-    kind = next(kind for text, kind in candidates if text == chosen_text)
-    return chosen_text, f"selected {kind!r} hook from {len(candidates)} valid candidates"
+    chosen_text = _stable_choice([text for text, _, _ in candidates], seed)
+    kind, entry_id = next(
+        (kind, entry_id) for text, kind, entry_id in candidates if text == chosen_text
+    )
+    rationale = f"selected {kind!r} hook from {len(candidates)} valid candidates"
+    if entry_id:
+        rationale += f" (copy bank {entry_id})"
+    return chosen_text, rationale
 
 
-def choose_cta(job: JobSpec, template: dict[str, Any]) -> tuple[str, str]:
+def _merged_patterns(
+    template_patterns: list[dict[str, Any]] | None, section: str
+) -> list[dict[str, Any]]:
+    """Template patterns plus active copy-bank entries, deduplicated by text.
+
+    Template entries mirrored into the bank keep their bank id through the
+    dedupe, so attribution still works for wording that lives in both places.
+    """
+    patterns = [dict(entry) for entry in template_patterns or []]
+    by_text = {str(entry.get("text", "")).strip(): entry for entry in patterns}
+    for entry in copybank.active(section):
+        text = str(entry.get("text", "")).strip()
+        if not text:
+            continue
+        if text in by_text:
+            by_text[text].setdefault("id", entry.get("id"))
+        else:
+            entry = dict(entry)
+            patterns.append(entry)
+            by_text[text] = entry
+    return patterns
+
+
+def choose_cta(job: JobSpec, template: dict[str, Any]) -> tuple[str, str, list[str]]:
+    """Pick the call to action. Returns (text, rationale, allowed_slots).
+
+    ``allowed_slots`` is the bank entry's slot affinity — empty means the CTA
+    works anywhere and the template's rotation decides alone.
+    """
     override = (job.creative_direction.get("cta") or "").strip()
     if override:
-        return override, "call to action supplied in job.yaml"
-    patterns = template.get("cta_patterns") or []
+        return override, "call to action supplied in job.yaml", []
+    patterns = _merged_patterns(template.get("cta_patterns"), "ctas")
     if not patterns:
-        return "rate this transition", "template defined no call to action; used the default"
+        return (
+            "rate this transition",
+            "template defined no call to action; used the default",
+            [],
+        )
     texts = [str(entry.get("text", "")).strip() for entry in patterns if entry.get("text")]
     seed = f"{job.job_id}:{template.get('name')}:cta"
     chosen = _stable_choice(texts, seed)
-    intent = next(
-        (str(entry.get("intent", "")) for entry in patterns if entry.get("text") == chosen),
-        "",
+    entry = next(
+        (entry for entry in patterns if str(entry.get("text", "")).strip() == chosen),
+        {},
     )
-    return chosen, f"selected call to action with intent {intent!r}"
+    rationale = f"selected call to action with intent {str(entry.get('intent', ''))!r}"
+    if entry.get("id"):
+        rationale += f" (copy bank {entry['id']})"
+    slots = [str(slot) for slot in entry.get("slots") or []]
+    return chosen, rationale, slots
 
 
 def _build_text_cues(
@@ -471,6 +517,7 @@ def _build_text_cues(
     resolved: prefs.ResolvedPreferences,
     secondary: list[SecondaryClip] | None = None,
     revision: int = 1,
+    cta_slot_affinity: list[str] | None = None,
 ) -> tuple[list[TextCue], list[str]]:
     config = job.config
     styles = template.get("text_styles") or {}
@@ -609,6 +656,11 @@ def _build_text_cues(
         display = float(config["cta"]["display_seconds"])
         lead = float(config["cta"]["lead_seconds"])
         slots = [str(slot) for slot in template.get("cta_slots") or []]
+        # A CTA whose wording only makes sense in certain slots ("guess the
+        # second song" belongs before the transition) narrows the rotation.
+        affinity = [str(slot) for slot in cta_slot_affinity or []]
+        if affinity:
+            slots = [slot for slot in slots if slot in affinity] or affinity
 
         slot = "closing"
         slot_rationale = "appears after the payoff so it never competes with the transition"
@@ -923,14 +975,14 @@ def build_plan(
     })
 
     hook_text, hook_rationale = choose_hook(job, report, template)
-    cta_text, cta_rationale = choose_cta(job, template)
+    cta_text, cta_rationale, cta_slot_affinity = choose_cta(job, template)
 
     secondary, secondary_warnings = _plan_secondary(
         job, report, template, timing, resolved, protected
     )
     cues, text_warnings = _build_text_cues(
         job, template, timing, hook_text, cta_text, protected, resolved,
-        secondary=secondary, revision=revision,
+        secondary=secondary, revision=revision, cta_slot_affinity=cta_slot_affinity,
     )
 
     emphasis_cfg = config["transition"]["emphasis"]
