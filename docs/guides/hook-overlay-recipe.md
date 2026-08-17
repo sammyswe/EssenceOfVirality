@@ -115,6 +115,11 @@ Milestone promises ("playlist link at 100 followers") are commitments, not
 template text — supply them per job via `creative_direction.cta` when the
 promise is real.
 
+Hook and CTA wording beyond the template's baseline lives in the copy testing
+bank (`production/config/copy-bank.yaml`, see
+[`copy-bank.md`](copy-bank.md)): approved entries merge into the rotation,
+drafts never render, and each render records which bank entry it used.
+
 ## What the creator still owns
 
 1. Generating hook clips (a reusable bank; rotate them as experiments).

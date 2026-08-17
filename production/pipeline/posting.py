@@ -17,7 +17,8 @@ from typing import Any
 
 import yaml
 
-from . import artifacts, rules
+from . import artifacts, copybank, rules
+from .creative import _stable_choice
 from .editplan import EditPlan
 from .inspector import InputReport
 from .om import write_export_bundle
@@ -118,6 +119,23 @@ def _track_phrase(job_tracks: dict[str, Any]) -> str:
     return ""
 
 
+def _render_copy_template(template: str, phrase: str) -> str | None:
+    """Fill a bank caption/pinned template, or None when it cannot be filled.
+
+    The only placeholder the package can always resolve is ``{pairing}``; an
+    entry with any other unfilled placeholder (``{day_number}`` needs a value
+    only the creator knows) is skipped for this job rather than posted broken.
+    """
+    rendered = template
+    if "{pairing}" in rendered:
+        if not phrase:
+            return None
+        rendered = rendered.replace("{pairing}", phrase)
+    if "{" in rendered and "}" in rendered:
+        return None
+    return rendered.strip() or None
+
+
 def build_caption(
     plan: EditPlan,
     job_tracks: dict[str, Any],
@@ -127,7 +145,17 @@ def build_caption(
     phrase = _track_phrase(job_tracks)
     lines: list[str] = []
 
-    if phrase:
+    # Active copy-bank captions rotate deterministically per job and revision;
+    # when none is usable the built-in shape below still applies.
+    candidates = [
+        rendered
+        for entry in copybank.active("captions")
+        if (rendered := _render_copy_template(str(entry.get("template", "")), phrase))
+    ]
+    if candidates:
+        seed = f"{plan.job_id}:r{plan.revision}:caption"
+        lines.append(_stable_choice(candidates, seed))
+    elif phrase:
         lines.append(f"{phrase} — made in Spotify.")
     else:
         lines.append("Made in Spotify, one transition, no edits to the audio.")
@@ -159,6 +187,13 @@ def choose_thumbnail(plan: EditPlan) -> tuple[float, str]:
 
 def build_pinned_comment(plan: EditPlan, job_tracks: dict[str, Any]) -> str:
     phrase = _track_phrase(job_tracks)
+    candidates = [
+        rendered
+        for entry in copybank.active("pinned_comments")
+        if (rendered := _render_copy_template(str(entry.get("template", "")), phrase))
+    ]
+    if candidates:
+        return _stable_choice(candidates, f"{plan.job_id}:r{plan.revision}:pinned")
     if phrase:
         return f"{phrase}. Made with Spotify's own mix feature — {plan.cta_text or 'thoughts?'}"
     return plan.cta_text or "Which pairing should I try next?"
