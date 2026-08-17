@@ -63,7 +63,7 @@ def artifact_dir() -> Path | None:
     return candidate
 
 
-def _render_paths(video_id: str) -> list[tuple[str, Path]]:
+def render_paths(video_id: str) -> list[tuple[str, Path]]:
     """The files worth putting in front of the creator, largest value first."""
     candidates = [
         ("preview", OUTPUTS_PREVIEWS / f"{video_id}-preview.mp4"),
@@ -81,7 +81,7 @@ def stage(video_id: str) -> Delivery:
     """
     delivery = Delivery(video_id=video_id, destination=None)
 
-    files = _render_paths(video_id)
+    files = render_paths(video_id)
     if not files:
         delivery.reason = (
             f"no render found for {video_id}. Expected "
