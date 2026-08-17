@@ -45,6 +45,12 @@ anchors:
   label:
     y: 300
     align: center
+  # Karaoke lyric captions sit in the lower-middle band, clear of the song
+  # labels and waveform; the placement search moves them if a crop profile's
+  # protected regions say otherwise.
+  lyric:
+    y: 1020
+    align: center
 
 # The Spotify recording must keep this region visible and unobstructed:
 # no overlay text may intersect it once the inspector has located the

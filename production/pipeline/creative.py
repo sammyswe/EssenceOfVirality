@@ -15,6 +15,7 @@ import hashlib
 from dataclasses import dataclass
 from typing import Any
 
+from . import lyrics as lyrics_module
 from . import preferences as prefs
 from . import textrender
 from .editplan import (
@@ -215,6 +216,28 @@ def plan_timing(
     window_end = float(transition.get("end_seconds", min(source_duration, transition_at + 2.0)))
 
     pacing = template.get("pacing") or {}
+
+    # Recipe templates render the whole capture: no trimming on either side.
+    if pacing.get("use_full_recording"):
+        notes = [
+            "template renders the full recording: no material trimmed from either side"
+        ]
+        maximum = float(duration_cfg["maximum_seconds"])
+        if source_duration > maximum:
+            notes.append(
+                f"recording is {source_duration:.1f}s, past the usual "
+                f"{maximum:.0f}s trim point; kept whole because the template "
+                "forbids cutting the supplied videos"
+            )
+        return Timing(
+            source_in=0.0,
+            source_out=source_duration,
+            duration=source_duration,
+            transition_output=transition_at,
+            transition_window=(window_start, window_end),
+            notes=notes,
+        )
+
     want_lead = float(pacing.get("preferred_lead_in_seconds",
                                  duration_cfg["max_pre_transition_seconds"]))
     want_tail = float(pacing.get("preferred_tail_seconds",
@@ -447,6 +470,7 @@ def _build_text_cues(
     protected: list[Any],
     resolved: prefs.ResolvedPreferences,
     secondary: list[SecondaryClip] | None = None,
+    revision: int = 1,
 ) -> tuple[list[TextCue], list[str]]:
     config = job.config
     styles = template.get("text_styles") or {}
@@ -575,26 +599,129 @@ def _build_text_cues(
             "closes the curiosity gap opened by the hook, at the moment it is answered",
         )
 
+    hook_overlay_end = max(
+        (clip.end_seconds for clip in secondary or []
+         if clip.role == "hook" and clip.mode == "cutaway"),
+        default=0.0,
+    )
+
     if config["cta"]["enabled"] and cta_text:
+        display = float(config["cta"]["display_seconds"])
         lead = float(config["cta"]["lead_seconds"])
-        cta_start = max(timing.transition_window[1] + 0.6, timing.duration - lead)
-        cta_end = min(cta_start + float(config["cta"]["display_seconds"]), timing.duration)
-        if cta_end - cta_start >= 1.0:
-            add(
-                "cta", cta_text, str(styles.get("cta", "question")), cta_start, cta_end,
-                "appears after the payoff so it never competes with the transition",
+        slots = [str(slot) for slot in template.get("cta_slots") or []]
+
+        slot = "closing"
+        slot_rationale = "appears after the payoff so it never competes with the transition"
+        if slots:
+            # Rotate the placement across revisions so successive posts test
+            # different CTA timings; the chosen slot is recorded on the plan.
+            slot = _stable_choice(slots, f"{job.job_id}:r{revision}:cta_slot")
+            slot_rationale = (
+                f"cta slot {slot!r} chosen from {slots} for this revision; "
+                "rotation makes CTA timing an experiment variable"
             )
+
+        if slot == "build":
+            cta_start = max(hook_overlay_end + 0.4, 0.4)
+            cta_end = min(
+                cta_start + display, max(timing.transition_window[0] - 0.4, cta_start)
+            )
+        elif slot == "post_payoff":
+            cta_start = timing.transition_window[1] + 0.6
+            cta_end = min(cta_start + display, timing.duration)
+        else:
+            cta_start = max(timing.transition_window[1] + 0.6, timing.duration - lead)
+            cta_end = min(cta_start + display, timing.duration)
+
+        if cta_end - cta_start >= 1.0:
+            add("cta", cta_text, str(styles.get("cta", "question")),
+                cta_start, cta_end, slot_rationale)
         else:
             warnings.append(
-                "no room for a call to action after the transition; the edit ends too "
-                "soon after the blend"
+                f"no room for a call to action in the {slot!r} slot; the window is "
+                "shorter than a second"
             )
+
+    # Word-timed lyric captions, from the job's verified lyrics sheet.
+    if (template.get("constraints") or {}).get("karaoke_lyrics"):
+        lyric_warnings = _add_lyric_cues(
+            job, template, timing, hook_overlay_end, add,
+        )
+        warnings.extend(lyric_warnings)
 
     if "hook_text" in resolved.banned_devices:
         cues = [cue for cue in cues if cue.role != "hook"]
         warnings.append("hook text removed by an approved creator preference")
 
     return cues, warnings
+
+
+def _add_lyric_cues(
+    job: JobSpec,
+    template: dict[str, Any],
+    timing: Timing,
+    hook_overlay_end: float,
+    add: Any,
+) -> list[str]:
+    """Load the job's lyric sheet and emit one cue per word group.
+
+    Never invents lyrics: no sheet means no captions, and an unverified sheet is
+    skipped with a warning rather than rendered.
+    """
+    warnings: list[str] = []
+    lyrics_cfg = job.config.get("lyrics") or {}
+    if str(lyrics_cfg.get("mode", "auto")) == "off":
+        return warnings
+
+    try:
+        sheet = lyrics_module.load_sheet(job.job_dir)
+    except lyrics_module.LyricsError as exc:
+        return [f"lyrics.yaml unusable, karaoke captions skipped: {exc}"]
+    if sheet is None:
+        return [
+            "template asks for karaoke lyrics but the job has no lyrics.yaml; "
+            "rendered without lyric captions"
+        ]
+    if not sheet.verified:
+        return [
+            "lyrics.yaml is present but verified is not true; karaoke captions "
+            "skipped — confirm the words and timings against the recording, then "
+            "set verified: true"
+        ]
+
+    rotation = [
+        str(name) for name in
+        (template.get("text_styles") or {}).get("lyric_rotation")
+        or ["karaoke_white", "karaoke_cyan", "karaoke_pink"]
+    ]
+    groups, group_warnings = lyrics_module.build_groups(
+        sheet,
+        source_in=timing.source_in,
+        output_duration=timing.duration,
+        gap_break_seconds=float(lyrics_cfg.get("gap_break_seconds", 0.6)),
+        hold_seconds=float(lyrics_cfg.get("hold_seconds", 0.25)),
+        style_count=len(rotation),
+    )
+    warnings.extend(group_warnings)
+
+    skipped_under_hook = 0
+    for group in groups:
+        # The hook overlay is opaque and full-frame; a lyric behind it is wasted
+        # and a lyric over it competes with the hook text.
+        if group.start_seconds < hook_overlay_end - 0.05:
+            skipped_under_hook += 1
+            continue
+        add(
+            "lyric", group.text, rotation[group.style_index % len(rotation)],
+            group.start_seconds, group.end_seconds,
+            "word-timed lyric caption from the creator-verified sheet",
+        )
+    if skipped_under_hook:
+        warnings.append(
+            f"{skipped_under_hook} lyric caption(s) fell under the hook overlay "
+            "and were skipped"
+        )
+    return warnings
 
 
 def _plan_secondary(
@@ -634,6 +761,30 @@ def _plan_secondary(
                 f"hook cutaway shortened to {length:.1f}s so the Spotify surface "
                 "appears early enough to explain the video"
             )
+
+        # Land the handover on a beat, so the reveal reads as part of the music
+        # rather than an editing accident. Only nearby beats are considered: the
+        # snap must never push the hook past its ceilings.
+        if layout.get("snap_hook_end_to_beat") and report.beats:
+            beat_times = [
+                float(value) for value in (report.beats.get("beat_times") or [])
+            ]
+            candidates = [
+                beat for beat in beat_times
+                if abs(beat - length) <= 0.6
+                and 0.8 <= beat <= min(limit, visible_by, hook_asset.duration_seconds)
+            ]
+            if candidates:
+                snapped = min(candidates, key=lambda beat: abs(beat - length))
+                if abs(snapped - length) > 0.01:
+                    warnings.append(
+                        f"hook handover snapped from {length:.2f}s to the beat at "
+                        f"{snapped:.2f}s"
+                    )
+                length = snapped
+
+        fade_out = max(0.0, float(layout.get("hook_fade_out_seconds", 0.0)))
+
         if length < 0.8:
             warnings.append(
                 "no room for a hook cutaway before the transition; falling back to the "
@@ -649,7 +800,12 @@ def _plan_secondary(
                 start_seconds=0.0,
                 end_seconds=round(length, 3),
                 loop=False,
-                rationale="full-screen opening; hands over to Spotify before the blend",
+                fade_out_seconds=fade_out,
+                rationale=(
+                    "full-screen muted opening over the already-playing mix; "
+                    "hands over to Spotify before the blend"
+                    + (", dissolving out rather than hard-cutting" if fade_out else "")
+                ),
             ))
 
         payoff_seconds = float(layout.get("payoff_cutaway_seconds", 0.0))
@@ -774,7 +930,7 @@ def build_plan(
     )
     cues, text_warnings = _build_text_cues(
         job, template, timing, hook_text, cta_text, protected, resolved,
-        secondary=secondary,
+        secondary=secondary, revision=revision,
     )
 
     emphasis_cfg = config["transition"]["emphasis"]
@@ -872,6 +1028,21 @@ def build_plan(
         plan.add_decision(
             f"{clip.mode} clip {clip.label!r} {clip.start_seconds:.2f}-{clip.end_seconds:.2f}s",
             clip.rationale,
+            stage="retention",
+        )
+    lyric_cues = [cue for cue in cues if cue.role == "lyric"]
+    if lyric_cues:
+        plan.add_decision(
+            f"{len(lyric_cues)} word-timed lyric caption(s)",
+            "rendered from the job's creator-verified lyrics.yaml; colour rotation "
+            "gives the eye a beat-synchronised anchor",
+            stage="retention",
+        )
+    cta_cue = next((cue for cue in cues if cue.role == "cta"), None)
+    if cta_cue and template.get("cta_slots"):
+        plan.add_decision(
+            f"cta at {cta_cue.start_seconds:.2f}s",
+            cta_cue.rationale,
             stage="retention",
         )
     for entry in choice.rejected:

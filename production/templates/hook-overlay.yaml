@@ -1,0 +1,105 @@
+name: hook-overlay
+family: hook_overlay
+version: "0.1.0"
+description: >
+  The creator's two-artifact recipe: a supplied AI-generated hook clip (Higgsfield)
+  opens the video as a muted full-frame overlay while the mix audio plays from the
+  first frame, then hands over to the untrimmed Spotify capture. Word-timed lyric
+  captions and a rotated call to action carry retention. Neither supplied video is
+  cut; the output is as long as the recording.
+
+requires:
+  minimum_supporting_assets: 1
+  maximum_supporting_assets: 2
+  preferred_roles: [hook, payoff]
+
+layout:
+  mode: hook_cutaway
+  hook_seconds: 4.0
+  maximum_hook_seconds: 4.5
+  # The hook is an overlay on top of the already-playing mix, not a scene the
+  # video must recover from, so it may sit closer to the transition than the
+  # ai-scene family allows.
+  minimum_margin_before_transition_seconds: 0.5
+  # Stitching: the overlay ends on a beat and dissolves out rather than
+  # hard-cutting, so the handover reads as designed rather than spliced.
+  hook_fade_out_seconds: 0.30
+  snap_hook_end_to_beat: true
+  spotify_area_fraction: 1.0
+
+pacing:
+  # Recipe rule: no cutting of the supplied videos. The full recording renders.
+  use_full_recording: true
+
+retention_devices:
+  - surprising_opening
+  - mix_audio_from_first_frame
+  - word_timed_lyric_captions
+  - anticipation_text_before_transition
+  - zoom_emphasis_at_transition
+  - rotated_cta_slot
+
+hook_patterns:
+  # Text-claim hooks displayed over the supplied clip. Subjective quality claims
+  # only — nothing that asserts an unverifiable fact. The creator reviews the
+  # wording before posting (posting is manual).
+  - text: "spotify mixes should not sound this good"
+    kind: quality_claim
+  - text: "wait for the switch"
+    kind: anticipation
+  - text: "POV your spotify playlist mixes itself"
+    kind: scenario
+  - text: "{first_artist} into {second_artist}"
+    kind: artist_pairing
+    requires_fields: [first_artist, second_artist]
+  - text: "this is why your queue needs a mix"
+    kind: quality_claim
+
+cta_patterns:
+  # Only always-true CTAs live here. Milestone promises ("playlist link at 100
+  # followers") are commitments, not templates — supply those per job via
+  # creative_direction.cta once the promise is real.
+  - text: "share this with the number 1 house fan you know"
+    intent: share
+  - text: "save it for your playlist"
+    intent: save
+  - text: "want this mix on your speaker? follow for the playlist"
+    intent: follow
+  - text: "rate this transition"
+    intent: comment_rate
+  - text: "which song won?"
+    intent: comment_rate
+
+# Where the CTA lands, rotated per revision so successive posts test different
+# placements: during the build-up (a captive audience waiting for the drop),
+# just after the payoff, or in the closing seconds.
+cta_slots: [build, post_payoff, closing]
+
+text_styles:
+  hook: bold_outline
+  cta: cta_green
+  lyric_rotation: [karaoke_white, karaoke_cyan, karaoke_pink]
+
+constraints:
+  spotify_visible_by_seconds: 4.6
+  no_supporting_footage_during_transition: true
+  karaoke_lyrics: true
+  # The hook clip is an obviously stylised AI scene, and the honesty rules of the
+  # ai-scene family apply to it unchanged: fabricated reality is not permitted.
+  requires_fiction_signal: true
+  fiction_signal_options:
+    - visibly_stylised_or_impossible_scene
+    - parody_framing
+
+retention_hypothesis: >
+  Playing the mix audio from the first frame under a stylised hook overlay is
+  expected to reduce early_skip_rate (the sound and the promise arrive together),
+  and word-timed lyric captions over an otherwise static capture are expected to
+  give the eye a beat-synchronised anchor, protecting completion_rate through the
+  transition.
+
+evidence_refs:
+  - claim-20260803-hyp-early-skip-promise
+  - claim-20200618-completion-strong-signal
+  - claim-20260803-pref-music-central
+  - claim-20260803-pref-spotify-legibility

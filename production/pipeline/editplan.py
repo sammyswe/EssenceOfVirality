@@ -62,6 +62,9 @@ class SecondaryClip:
     end_seconds: float
     source_in: float = 0.0
     loop: bool = False
+    # Alpha dissolve applied to the clip's final seconds so the handover to the
+    # surface underneath reads as designed rather than spliced. 0 = hard cut.
+    fade_out_seconds: float = 0.0
     rationale: str = ""
 
     def as_dict(self) -> dict[str, Any]:
@@ -75,6 +78,7 @@ class SecondaryClip:
             "end_seconds": round(self.end_seconds, 3),
             "source_in": round(self.source_in, 3),
             "loop": self.loop,
+            "fade_out_seconds": round(self.fade_out_seconds, 3),
             "rationale": self.rationale,
         }
 
