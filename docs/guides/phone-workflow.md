@@ -66,6 +66,51 @@ close to posting.
 | `<id>.mp4` | ~3–4 MB | the file you post |
 | `<id>-thumbnail.jpg` | ~55 KB | checking the cover frame |
 
+## The Dropbox loop
+
+The artifact links above live inside a Cursor session. Dropbox gives the loop
+a channel that outlives the agent and works entirely from the Dropbox app on
+the phone. Once configured, the whole exchange is two folders:
+
+1. **Upload**: drop the screen recording (and the hook clip, together in one
+   subfolder if both belong to one job) into `<base>/incoming/` from the
+   Dropbox app. The base folder is `/spotify-mix-videos` unless
+   `DROPBOX_BASE_FOLDER` says otherwise.
+2. Tell the agent to process it. It runs `./process-job dropbox pull --run`,
+   which imports each upload into a job folder, processes it, and uploads the
+   preview, final and thumbnail to `<base>/renders/<video-id>/` with shared
+   links printed for each file.
+3. **Download**: open the link (or the folder in the Dropbox app) and save
+   the final to the camera roll for posting.
+
+Imported uploads are moved to `<base>/imported/` inside Dropbox — never
+deleted — so a second pull cannot import the same mix twice. A loose video
+file becomes one job named after the file; a subfolder becomes one job
+containing all of its files, with the Spotify recording picked by filename
+hint (`spotify`, `mix`, `screen-recording`) and otherwise by size, so name
+the capture accordingly when uploading a hook clip alongside it.
+
+### One-time setup
+
+Create a Dropbox app (App Console → scoped access, with `files.content.write`,
+`files.content.read` and `sharing.write` permissions), authorise it once to
+obtain a refresh token, then store the credentials as Cloud Agent secrets in
+the Cursor Dashboard (Cloud Agents → Secrets):
+
+| Secret | Value |
+| --- | --- |
+| `DROPBOX_APP_KEY` | the app's key |
+| `DROPBOX_APP_SECRET` | the app's secret (optional but recommended) |
+| `DROPBOX_REFRESH_TOKEN` | from the one-time OAuth authorisation |
+| `DROPBOX_BASE_FOLDER` | optional; defaults to `/spotify-mix-videos` |
+
+A short-lived `DROPBOX_ACCESS_TOKEN` also works for a single session, but it
+expires within hours; the refresh token is the durable setup. Secrets are
+injected as environment variables into new cloud agent runs and never enter
+git. `./process-job dropbox status` confirms the channel is reachable and
+prints the folder paths; on first pull the folder structure is created
+automatically.
+
 ## Fallbacks
 
 If the artifact link does not work for you, in rough order of effort:
@@ -73,9 +118,9 @@ If the artifact link does not work for you, in rough order of effort:
 1. **Ask the agent to re-stage and re-link.** Cheapest fix and usually enough.
 2. **Run it locally instead.** The pipeline is deterministic; the same job
    folder gives the same render on a laptop. See [`setup.md`](setup.md).
-3. **Push the render to object storage you control** and have the agent print
-   the URL. Nothing in the pipeline depends on this, and no such integration is
-   built — it is a hook you would add.
+3. **Push the render to Dropbox** with `./process-job dropbox push <video-id>`
+   — see [the Dropbox loop](#the-dropbox-loop) above. This is the fallback
+   that also survives the agent session ending.
 
 A GitHub release asset would also work, but it means a binary in a public
 repository, which the content-handling policy rules out for unpublished media.
