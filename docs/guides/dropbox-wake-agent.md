@@ -138,9 +138,13 @@ Checked from a cloud agent with your secrets loaded:
 | `/spotify-mix-videos/incoming` | Empty (ready for a test drop) |
 | Automations branch | Creator set to `cursor/copy-bank-dropbox-cf50` |
 
-**Smoke test (your next step):** drop any short video into
+**Smoke test (optional):** drop any short video into
 `/spotify-mix-videos/incoming/`, then watch
 [cursor.com/agents](https://cursor.com/agents) for a new run (schedule: within
 one interval; webhook: ~1 minute). Renders land under
 `/spotify-mix-videos/renders/`. If the agent says incoming was empty, the
 wake worked but Dropbox had not synced yet — wait and re-check.
+
+Wake environment setup is complete without that smoke test: secrets, mailbox,
+pipeline, Automations + PR branch are in place. Run the drop whenever you want
+to confirm end-to-end.
