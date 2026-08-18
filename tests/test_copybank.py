@@ -147,3 +147,110 @@ def test_config_from_env():
     assert dropbox_sync.DropboxConfig.from_env({"DROPBOX_REFRESH_TOKEN": "r"}) is None
     # An access token alone is enough for one session.
     assert dropbox_sync.DropboxConfig.from_env({"DROPBOX_ACCESS_TOKEN": "t"}) is not None
+
+
+# ---------------------------------------------------------------- grilling rulings
+
+def test_grilling_retirements_are_enforced():
+    retired = {
+        entry["id"]
+        for section in copybank.SECTIONS
+        for entry in copybank.entries(section)
+        if entry["status"] == "retired"
+    }
+    assert {
+        "hook-003", "hook-013", "cta-010", "cta-011", "cap-005",
+    } <= retired
+
+
+def test_grilling_approvals_are_active():
+    active_ids = {
+        entry["id"]
+        for section in copybank.SECTIONS
+        for entry in copybank.active(section)
+    }
+    for entry_id in (
+        "hook-006", "hook-009", "hook-012",
+        "cta-006", "cta-007", "cta-008", "cta-009", "cta-012", "cta-013",
+        "cap-003", "cap-007", "pin-003",
+    ):
+        assert entry_id in active_ids, entry_id
+    assert copybank.find("cta-012")[1]["text"] == "follow for the next mix"
+
+
+def test_false_mixes_itself_wording_is_gone_from_active_pool():
+    for section in ("hooks", "captions"):
+        for entry in copybank.active(section):
+            blob = str(entry.get("text") or entry.get("template") or "").lower()
+            assert "mixes itself" not in blob
+            assert "blends itself" not in blob
+
+
+def test_intent_weights_prefer_comment_over_follow():
+    weights = copybank.intent_weights()
+    assert weights["comment_rate"] > weights["follow"]
+    assert weights["save"] > weights["follow_milestone"]
+
+
+# ---------------------------------------------------------------- hook profiles
+
+def test_template_profile_is_ignored():
+    from production.pipeline import hookprofiles
+    assert all(not p.id.startswith("_") for p in hookprofiles.load_all())
+
+
+def test_hook_profile_requires_three_captions_and_description(tmp_path):
+    from production.pipeline import hookprofiles
+
+    path = tmp_path / "hook-01.yaml"
+    path.write_text(textwrap.dedent("""
+        id: hook-01
+        status: testing
+        asset_stems: [hook-01]
+        description: ""
+        captions:
+          - {id: a, template: "one {pairing}"}
+    """), encoding="utf-8")
+    with pytest.raises(hookprofiles.HookProfileError):
+        hookprofiles.load_profile(path)
+
+    path.write_text(textwrap.dedent("""
+        id: hook-01
+        status: testing
+        asset_stems: [hook-01]
+        description: "DJ on decks in a Spotify-green room."
+        captions:
+          - {id: a, template: "one {pairing}"}
+          - {id: b, template: "two {pairing}"}
+          - {id: c, template: "three {pairing}"}
+    """), encoding="utf-8")
+    profile = hookprofiles.load_profile(path)
+    assert len(profile.captions) == 3
+    assert profile.active
+
+
+def test_hook_profile_matches_stem(tmp_path):
+    from production.pipeline import hookprofiles
+
+    path = tmp_path / "hook-01-decks.yaml"
+    path.write_text(textwrap.dedent("""
+        id: hook-01-decks
+        status: testing
+        asset_stems: [hook-01-decks-spotify-green]
+        description: "Recognisable DJ on decks."
+        overlay_hook_ids: [hook-006]
+        cta_ids: [cta-006]
+        captions:
+          - {id: a, template: "cap a {pairing}", status: testing}
+          - {id: b, template: "cap b {pairing}", status: testing}
+          - {id: c, template: "cap c {pairing}", status: testing}
+    """), encoding="utf-8")
+    matched = hookprofiles.match_for_asset(
+        filename="hook-01-decks-spotify-green.mp4",
+        directory=tmp_path,
+    )
+    assert matched is not None
+    assert matched.id == "hook-01-decks"
+    assert hookprofiles.match_for_asset(
+        filename="other-clip.mp4", directory=tmp_path
+    ) is None

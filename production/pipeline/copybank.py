@@ -125,6 +125,13 @@ def set_status(
     return target
 
 
+def intent_weights(path: Path | None = None) -> dict[str, int]:
+    """CTA intent → relative weight for growth-phase rotation."""
+    bank = load_bank(path)
+    raw = bank.get("cta_intent_weights") or {}
+    return {str(key): max(0, int(value)) for key, value in raw.items()}
+
+
 def summary(path: Path | None = None) -> dict[str, Any]:
     bank = load_bank(path)
     result: dict[str, Any] = {"path": str(path or BANK_PATH), "sections": {}}

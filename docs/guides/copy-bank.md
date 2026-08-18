@@ -64,3 +64,16 @@ package holds the exact caption and CTA text, and `copybank.find_by_text`
 maps wording back to its bank id, so entries can be promoted or retired on
 evidence rather than memory. One post proves nothing — promotion needs
 repetition.
+
+## Hook-specific copy
+
+When a Higgsfield clip has a profile under `production/config/hook-profiles/`,
+that profile's overlay hooks, CTA allow-list, and **three captions** override
+the global rotation for jobs that use the clip. See
+[`hook-profiles.md`](hook-profiles.md).
+
+## Growth-phase CTA weighting
+
+`cta_intent_weights` in the bank file biases rotation toward comment and save
+asks (follow roughly one post in four). Zero-weight intents never enter the
+pool even if still listed as `testing`.

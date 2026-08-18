@@ -42,13 +42,12 @@ retention_devices:
 hook_patterns:
   # Text-claim hooks displayed over the supplied clip. Subjective quality claims
   # only — nothing that asserts an unverifiable fact. The creator reviews the
-  # wording before posting (posting is manual).
+  # wording before posting (posting is manual). "Mixes itself" framing is
+  # retired — the creator carefully makes these mixes (copy bank hook-003).
   - text: "spotify mixes should not sound this good"
     kind: quality_claim
   - text: "wait for the switch"
     kind: anticipation
-  - text: "POV your spotify playlist mixes itself"
-    kind: scenario
   - text: "{first_artist} into {second_artist}"
     kind: artist_pairing
     requires_fields: [first_artist, second_artist]

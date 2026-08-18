@@ -17,7 +17,7 @@ from typing import Any
 
 import yaml
 
-from . import artifacts, copybank, rules
+from . import artifacts, copybank, hookprofiles, rules
 from .creative import _stable_choice
 from .editplan import EditPlan
 from .inspector import InputReport
@@ -145,13 +145,25 @@ def build_caption(
     phrase = _track_phrase(job_tracks)
     lines: list[str] = []
 
-    # Active copy-bank captions rotate deterministically per job and revision;
-    # when none is usable the built-in shape below still applies.
-    candidates = [
+    # Hook profiles carry a fixed trio of captions for that clip; when the plan
+    # matched one, rotate among those three before falling back to the global bank.
+    profile_candidates: list[str] = []
+    if plan.hook_profile_id:
+        for profile in hookprofiles.active_profiles():
+            if profile.id != plan.hook_profile_id:
+                continue
+            for caption in profile.active_captions():
+                rendered = _render_copy_template(caption.template, phrase)
+                if rendered:
+                    profile_candidates.append(rendered)
+            break
+
+    bank_candidates = [
         rendered
         for entry in copybank.active("captions")
         if (rendered := _render_copy_template(str(entry.get("template", "")), phrase))
     ]
+    candidates = profile_candidates or bank_candidates
     if candidates:
         seed = f"{plan.job_id}:r{plan.revision}:caption"
         lines.append(_stable_choice(candidates, seed))

@@ -16,6 +16,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from . import copybank
+from . import hookprofiles
 from . import lyrics as lyrics_module
 from . import preferences as prefs
 from . import textrender
@@ -58,6 +59,34 @@ def _stable_choice(options: list[str], seed: str) -> str:
     """Deterministic rotation so repeated jobs do not reuse the same wording."""
     digest = hashlib.sha256(seed.encode("utf-8")).digest()
     return options[digest[0] % len(options)]
+
+
+def _weighted_stable_choice(
+    entries: list[dict[str, Any]],
+    seed: str,
+    *,
+    text_key: str = "text",
+    intent_key: str = "intent",
+) -> str:
+    """Stable choice with intent weights from the copy bank (grilling Q1)."""
+    weights = copybank.intent_weights()
+    expanded: list[str] = []
+    for entry in entries:
+        text = str(entry.get(text_key, "")).strip()
+        if not text:
+            continue
+        intent = str(entry.get(intent_key, "") or "")
+        weight = weights.get(intent, 2)
+        if weight <= 0:
+            continue
+        expanded.extend([text] * weight)
+    if not expanded:
+        texts = [str(entry.get(text_key, "")).strip() for entry in entries]
+        texts = [text for text in texts if text]
+        if not texts:
+            raise CreativeError("no wording candidates left after weighting")
+        return _stable_choice(texts, seed)
+    return _stable_choice(expanded, seed)
 
 
 def choose_format(
@@ -397,19 +426,34 @@ def _fill_template(text: str, job: JobSpec) -> str | None:
 
 
 def choose_hook(
-    job: JobSpec, report: InputReport, template: dict[str, Any]
+    job: JobSpec,
+    report: InputReport,
+    template: dict[str, Any],
+    profile: hookprofiles.HookProfile | None = None,
 ) -> tuple[str, str]:
     """Pick a hook whose claim the video can actually keep.
 
     Returns (text, rationale). Patterns requiring track fields or an asserted
-    truth are skipped unless the job supplies the evidence.
+    truth are skipped unless the job supplies the evidence. When a hook
+    profile matches the job's clip, only that profile's overlay wording is
+    considered.
     """
     override = (job.creative_direction.get("hook") or "").strip()
     if override:
         return override, "hook supplied in job.yaml"
 
+    patterns = _merged_patterns(template.get("hook_patterns"), "hooks")
+    if profile is not None:
+        narrowed = _profile_hook_patterns(profile, patterns)
+        if narrowed:
+            patterns = narrowed
+        else:
+            # Profile matched but its overlay ids/texts are empty or inactive —
+            # fall through to the global bank rather than inventing wording.
+            pass
+
     candidates: list[tuple[str, str, str]] = []
-    for pattern in _merged_patterns(template.get("hook_patterns"), "hooks"):
+    for pattern in patterns:
         text = str(pattern.get("text", "")).strip()
         if not text:
             continue
@@ -451,7 +495,37 @@ def choose_hook(
     rationale = f"selected {kind!r} hook from {len(candidates)} valid candidates"
     if entry_id:
         rationale += f" (copy bank {entry_id})"
+    if profile is not None:
+        rationale += f" [hook profile {profile.id}]"
     return chosen_text, rationale
+
+
+def _profile_hook_patterns(
+    profile: hookprofiles.HookProfile, patterns: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Resolve a profile's overlay wording into pattern dicts."""
+    by_id = {
+        str(entry.get("id")): entry
+        for entry in patterns
+        if entry.get("id")
+    }
+    resolved: list[dict[str, Any]] = []
+    for hook_id in profile.overlay_hook_ids:
+        entry = by_id.get(hook_id)
+        if entry is None:
+            # Profile may reference a bank id that is still draft — skip it.
+            try:
+                _, bank_entry = copybank.find(hook_id)
+            except copybank.CopyBankError:
+                continue
+            if str(bank_entry.get("status")) not in copybank.ACTIVE_STATUSES:
+                continue
+            resolved.append(dict(bank_entry))
+            continue
+        resolved.append(entry)
+    for text in profile.overlay_texts:
+        resolved.append({"text": text, "kind": "profile", "id": profile.id})
+    return resolved
 
 
 def _merged_patterns(
@@ -477,25 +551,37 @@ def _merged_patterns(
     return patterns
 
 
-def choose_cta(job: JobSpec, template: dict[str, Any]) -> tuple[str, str, list[str]]:
+def choose_cta(
+    job: JobSpec,
+    template: dict[str, Any],
+    profile: hookprofiles.HookProfile | None = None,
+) -> tuple[str, str, list[str]]:
     """Pick the call to action. Returns (text, rationale, allowed_slots).
 
     ``allowed_slots`` is the bank entry's slot affinity — empty means the CTA
-    works anywhere and the template's rotation decides alone.
+    works anywhere and the template's rotation decides alone. Intent weights
+    from the copy bank bias toward comment/save during the growth phase.
     """
     override = (job.creative_direction.get("cta") or "").strip()
     if override:
         return override, "call to action supplied in job.yaml", []
     patterns = _merged_patterns(template.get("cta_patterns"), "ctas")
+    if profile is not None and profile.cta_ids:
+        allowed = set(profile.cta_ids)
+        narrowed = [
+            entry for entry in patterns
+            if str(entry.get("id", "")) in allowed
+        ]
+        if narrowed:
+            patterns = narrowed
     if not patterns:
         return (
             "rate this transition",
             "template defined no call to action; used the default",
             [],
         )
-    texts = [str(entry.get("text", "")).strip() for entry in patterns if entry.get("text")]
     seed = f"{job.job_id}:{template.get('name')}:cta"
-    chosen = _stable_choice(texts, seed)
+    chosen = _weighted_stable_choice(patterns, seed)
     entry = next(
         (entry for entry in patterns if str(entry.get("text", "")).strip() == chosen),
         {},
@@ -503,6 +589,8 @@ def choose_cta(job: JobSpec, template: dict[str, Any]) -> tuple[str, str, list[s
     rationale = f"selected call to action with intent {str(entry.get('intent', ''))!r}"
     if entry.get("id"):
         rationale += f" (copy bank {entry['id']})"
+    if profile is not None:
+        rationale += f" [hook profile {profile.id}]"
     slots = [str(slot) for slot in entry.get("slots") or []]
     return chosen, rationale, slots
 
@@ -974,8 +1062,9 @@ def build_plan(
         "width": placement.width, "height": placement.height,
     })
 
-    hook_text, hook_rationale = choose_hook(job, report, template)
-    cta_text, cta_rationale, cta_slot_affinity = choose_cta(job, template)
+    profile = hookprofiles.match_from_assets(report.assets)
+    hook_text, hook_rationale = choose_hook(job, report, template, profile)
+    cta_text, cta_rationale, cta_slot_affinity = choose_cta(job, template, profile)
 
     secondary, secondary_warnings = _plan_secondary(
         job, report, template, timing, resolved, protected
@@ -1048,6 +1137,7 @@ def build_plan(
         audio=audio,
         hook_text=hook_text,
         cta_text=cta_text,
+        hook_profile_id=profile.id if profile is not None else "",
         retention_hypothesis=str(template.get("retention_hypothesis", "")).strip(),
         research_refs=list(research_refs or []),
         preference_refs=resolved.refs(),
@@ -1060,6 +1150,12 @@ def build_plan(
         hook_rationale,
         cta_rationale,
     ]
+    if profile is not None:
+        plan.add_decision(
+            f"hook_profile={profile.id}",
+            f"matched asset stems {profile.asset_stems}; "
+            f"on-screen description drives this clip's copy trio",
+        )
     plan.add_decision(
         f"format_family={choice.family}",
         "; ".join(choice.reasons),

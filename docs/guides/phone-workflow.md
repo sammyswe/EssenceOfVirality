@@ -92,24 +92,13 @@ the capture accordingly when uploading a hook clip alongside it.
 
 ### One-time setup
 
-Create a Dropbox app (App Console → scoped access, with `files.content.write`,
-`files.content.read` and `sharing.write` permissions), authorise it once to
-obtain a refresh token, then store the credentials as Cloud Agent secrets in
-the Cursor Dashboard (Cloud Agents → Secrets):
-
-| Secret | Value |
-| --- | --- |
-| `DROPBOX_APP_KEY` | the app's key |
-| `DROPBOX_APP_SECRET` | the app's secret (optional but recommended) |
-| `DROPBOX_REFRESH_TOKEN` | from the one-time OAuth authorisation |
-| `DROPBOX_BASE_FOLDER` | optional; defaults to `/spotify-mix-videos` |
-
-A short-lived `DROPBOX_ACCESS_TOKEN` also works for a single session, but it
-expires within hours; the refresh token is the durable setup. Secrets are
-injected as environment variables into new cloud agent runs and never enter
-git. `./process-job dropbox status` confirms the channel is reachable and
-prints the folder paths; on first pull the folder structure is created
-automatically.
+Full walkthrough: [`dropbox-setup.md`](dropbox-setup.md). Short version:
+create a Dropbox app, obtain a refresh token once, then store
+`DROPBOX_APP_KEY`, `DROPBOX_APP_SECRET`, and `DROPBOX_REFRESH_TOKEN` as Cloud
+Agent secrets in the Cursor Dashboard. Optional: `DROPBOX_BASE_FOLDER`
+(defaults to `/spotify-mix-videos`). Secrets are injected into new cloud agent
+runs and never enter git. `./process-job dropbox status` confirms the channel
+is reachable; on first pull the folder structure is created automatically.
 
 ## Fallbacks
 

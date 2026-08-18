@@ -15,7 +15,7 @@ from typing import Any
 
 import yaml
 
-from .pipeline import analytics, copybank, delivery, dropbox_sync, experiments, feedback, orchestrator
+from .pipeline import analytics, copybank, delivery, dropbox_sync, experiments, feedback, hookprofiles, orchestrator
 from .pipeline import preferences as prefs
 from .pipeline import research
 from .pipeline.jobspec import JobError, load_job, write_job_template
@@ -389,6 +389,15 @@ def cmd_copy(args: argparse.Namespace) -> int:
         )
         print(f"  {active_total} entr{'y' if active_total == 1 else 'ies'} active "
               "(testing or proven); drafts never render")
+        profiles = hookprofiles.summary()
+        if profiles["total"]:
+            print()
+            print(f"  hook profiles ({profiles['total']})")
+            for row in profiles["profiles"]:
+                print(f"    {row['id']:<28} {row['status']:<8} stems={row['stems']}")
+        else:
+            print()
+            print("  hook profiles: none yet — drop clips in Dropbox, then analyse")
         print()
         return 0
 
