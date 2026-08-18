@@ -254,3 +254,31 @@ def test_hook_profile_matches_stem(tmp_path):
     assert hookprofiles.match_for_asset(
         filename="other-clip.mp4", directory=tmp_path
     ) is None
+
+
+def test_hook_profile_inline_ctas_and_overlay_texts(tmp_path):
+    from production.pipeline import hookprofiles
+
+    path = tmp_path / "hook-06-earthquake-bassquake.yaml"
+    path.write_text(textwrap.dedent("""
+        id: hook-06-earthquake-bassquake
+        status: testing
+        asset_stems: [hook-06-earthquake-bassquake]
+        description: "Glasses vibrate from the bassquake."
+        overlay_texts:
+          - "this bass just caused an earthquake"
+          - "watch the glasses — the room is shaking"
+          - "bassquake. stay for the switch"
+        ctas:
+          - {id: a, text: "rate the shake out of 10", intent: comment_rate}
+          - {id: b, text: "send this to whoever needs their speaker to move", intent: share}
+          - {id: c, text: "save this for when the room needs a bassquake", intent: save}
+        captions:
+          - {id: a, template: "one {pairing}"}
+          - {id: b, template: "two {pairing}"}
+          - {id: c, template: "three {pairing}"}
+    """), encoding="utf-8")
+    profile = hookprofiles.load_profile(path)
+    assert len(profile.overlay_texts) == 3
+    assert len(profile.cta_texts) == 3
+    assert profile.cta_texts[0].intent == "comment_rate"

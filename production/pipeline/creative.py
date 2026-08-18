@@ -566,14 +566,26 @@ def choose_cta(
     if override:
         return override, "call to action supplied in job.yaml", []
     patterns = _merged_patterns(template.get("cta_patterns"), "ctas")
-    if profile is not None and profile.cta_ids:
-        allowed = set(profile.cta_ids)
-        narrowed = [
-            entry for entry in patterns
-            if str(entry.get("id", "")) in allowed
-        ]
-        if narrowed:
-            patterns = narrowed
+    if profile is not None:
+        if profile.cta_texts:
+            patterns = [
+                {
+                    "id": entry.id,
+                    "text": entry.text,
+                    "intent": entry.intent,
+                    "slots": entry.slots,
+                }
+                for entry in profile.cta_texts
+                if entry.text
+            ]
+        elif profile.cta_ids:
+            allowed = set(profile.cta_ids)
+            narrowed = [
+                entry for entry in patterns
+                if str(entry.get("id", "")) in allowed
+            ]
+            if narrowed:
+                patterns = narrowed
     if not patterns:
         return (
             "rate this transition",

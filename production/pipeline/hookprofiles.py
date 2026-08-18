@@ -42,6 +42,14 @@ class HookCaption:
 
 
 @dataclass
+class HookCta:
+    text: str
+    intent: str = ""
+    slots: list[str] = field(default_factory=list)
+    id: str = ""
+
+
+@dataclass
 class HookProfile:
     id: str
     path: Path
@@ -51,6 +59,7 @@ class HookProfile:
     overlay_hook_ids: list[str] = field(default_factory=list)
     overlay_texts: list[str] = field(default_factory=list)
     cta_ids: list[str] = field(default_factory=list)
+    cta_texts: list[HookCta] = field(default_factory=list)
     captions: list[HookCaption] = field(default_factory=list)
     fiction_signal: str = ""
     notes: str = ""
@@ -75,6 +84,15 @@ class HookProfile:
             "overlay_hook_ids": self.overlay_hook_ids,
             "overlay_texts": self.overlay_texts,
             "cta_ids": self.cta_ids,
+            "cta_texts": [
+                {
+                    "id": entry.id,
+                    "text": entry.text,
+                    "intent": entry.intent,
+                    "slots": entry.slots,
+                }
+                for entry in self.cta_texts
+            ],
             "captions": [
                 {
                     "id": caption.id,
@@ -152,6 +170,29 @@ def load_profile(path: Path) -> HookProfile:
     if isinstance(cta_ids, str):
         cta_ids = [cta_ids]
 
+    inline_ctas: list[HookCta] = []
+    for index, entry in enumerate(loaded.get("ctas") or loaded.get("cta_texts") or []):
+        if isinstance(entry, str):
+            inline_ctas.append(HookCta(
+                text=entry.strip(),
+                id=f"{profile_id}-cta-{index + 1}",
+            ))
+            continue
+        if not isinstance(entry, dict):
+            raise HookProfileError(f"{path} ctas[{index}] must be a string or mapping")
+        text = str(entry.get("text", "")).strip()
+        if not text:
+            raise HookProfileError(f"{path} ctas[{index}] has empty text")
+        slots = entry.get("slots") or []
+        if isinstance(slots, str):
+            slots = [slots]
+        inline_ctas.append(HookCta(
+            text=text,
+            intent=str(entry.get("intent", "") or ""),
+            slots=[str(slot) for slot in slots],
+            id=str(entry.get("id") or f"{profile_id}-cta-{index + 1}"),
+        ))
+
     return HookProfile(
         id=profile_id,
         path=path,
@@ -161,6 +202,7 @@ def load_profile(path: Path) -> HookProfile:
         overlay_hook_ids=[str(value).strip() for value in hook_ids if str(value).strip()],
         overlay_texts=[str(value).strip() for value in texts if str(value).strip()],
         cta_ids=[str(value).strip() for value in cta_ids if str(value).strip()],
+        cta_texts=inline_ctas,
         captions=captions,
         fiction_signal=str(loaded.get("fiction_signal", "") or ""),
         notes=str(loaded.get("notes", "") or ""),
