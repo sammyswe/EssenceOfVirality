@@ -38,6 +38,11 @@ The job's `role: hook` asset is preferred. The stem of its filename or its
 Rename clips when they land (`hook-01-decks-spotify-green.mp4`) and keep the
 stem stable forever so analytics attribute results to the right profile.
 
+The first Higgsfield batch lives in Dropbox at
+`/spotify-mix-videos/hooks/library/` under these stems (`hook-01-…` through
+`hook-10-…`). Originals are archived in `hooks/imported/`. Profiles for that
+batch start as `draft` until you approve them.
+
 ## Captions
 
 Profile captions win over the global bank when a profile matched. They still
