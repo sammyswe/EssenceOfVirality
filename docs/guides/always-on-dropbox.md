@@ -1,62 +1,48 @@
 # Keeping the Dropbox pipeline "online"
 
-This repository does **not** run a 24/7 daemon inside Cursor. A cloud agent is a
-session: it starts when you (or an automation) start it, does work, and stops.
-Dropbox is the always-available **mailbox**; the agent is the worker that checks
-the mailbox.
+Dropbox is the always-available **mailbox**. A Cursor **cloud agent** is the
+worker that checks it. Agents do not stay running forever — something must
+**wake** one when you upload.
 
-## What you already have (near-online)
+You do **not** need to sit in the agent chat. Create a Cursor Automation once;
+after that, Dropbox (or a timer) is enough.
 
-1. Drop mixes (and optional hook clips) into `/spotify-mix-videos/incoming/`.
-2. Open Cursor (phone is fine) and start a cloud agent on this repo with one
-   line: `Process Dropbox uploads` (runs `./process-job dropbox pull --run`).
-3. Collect the finished video from `/spotify-mix-videos/renders/<video-id>/`
-   or the printed share links.
+Full wake setup: [`dropbox-wake-agent.md`](dropbox-wake-agent.md).
 
-Secrets (`DROPBOX_APP_KEY`, `DROPBOX_APP_SECRET`, `DROPBOX_REFRESH_TOKEN`) must
-be saved in Cloud Agent Secrets so every new run can authenticate. You do not
-need `DROPBOX_BASE_FOLDER` unless you want a non-default root.
+## What you want (unattended)
 
-This is the lowest-friction path and matches how the tools are built today.
-
-## Truly unattended options
-
-Pick one when quality is good enough that you want zero chat:
-
-### A — Scheduled Cursor automation (if your plan supports it)
-
-Create a Cursor Automation that starts this repo's cloud agent on a schedule
-(e.g. every hour) with a fixed prompt:
-
-> Run `./process-job dropbox pull --run`. If nothing was imported, say so and
-> stop. If jobs ran, list the Dropbox render links.
-
-Then you only use Dropbox; the automation is the worker. Confirm scheduling in
-the Cursor dashboard for your account — capabilities vary by plan.
-
-### B — Small always-on machine + cron
-
-On a VPS or always-on Mac mini you control:
-
-1. Clone the repo, install dependencies, put the same Dropbox env vars in a
-   local `.env` (never commit it).
-2. Cron every N minutes:
-
-```bash
-cd /path/to/EssenceOfVirality && set -a && source .env && set +a \
-  && ./process-job dropbox pull --run >> /var/log/mix-pipeline.log 2>&1
+```
+Phone → Dropbox /spotify-mix-videos/incoming/
+              │
+              ▼
+     Cursor Automation wakes a cloud agent
+              │
+              ▼
+     ./process-job dropbox pull --run
+              │
+              ▼
+     Dropbox /spotify-mix-videos/renders/<video-id>/
 ```
 
-Same mailbox, worker always polling. You still review/post manually unless you
-add a later posting integration (out of scope here).
+Two ways to wake the agent:
 
-### C — Stay on-demand
+| Path | Delay | Extra infra |
+|------|--------|-------------|
+| **A — Scheduled automation** | Up to the schedule interval (e.g. 15 min) | None |
+| **B — Dropbox webhook → relay → Cursor** | ~1 minute after upload | Cloudflare Worker |
 
-Keep using the phone agent. Two posts a day do not need a daemon; they need a
-reliable `pull --run` and Dropbox renders.
+Start with **A**. Move to **B** only if the wait bothers you.
 
-## Recommendation
+Secrets (`DROPBOX_APP_KEY`, `DROPBOX_APP_SECRET`, `DROPBOX_REFRESH_TOKEN`) must
+already be in Cloud Agent Secrets so every automation-spawned run can talk to
+Dropbox.
 
-Stay on **near-online (A/C)** until the render quality and hook profiles are
-stable. Add a scheduled automation or cron only when you are tired of opening
-Cursor to trigger the same command.
+## Near-online (manual wake)
+
+If you skip Automations for now: drop files in Dropbox, then start any cloud
+agent with `Process Dropbox uploads`. Same mailbox; you are the wake button.
+
+## What this still will not do
+
+- Post to TikTok (stays manual).
+- Run 24/7 inside one chat session — Automations start **new** runs when needed.
