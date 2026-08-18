@@ -27,13 +27,22 @@ Dropbox webhook  ──POST (no auth header)──►  tiny relay
                                     /spotify-mix-videos/renders/…
 ```
 
+## Branch (required until PR merges)
+
+`./process-job dropbox …` lives on
+`cursor/copy-bank-dropbox-cf50` (PR #15), **not** on `main` yet.
+
+Point every Dropbox-worker Automation at branch **`cursor/copy-bank-dropbox-cf50`**.
+After that PR merges, switch the Automation to `main`.
+
 ## Option A — Scheduled automation (simplest, no relay)
 
 Good enough for two posts a day. The agent polls Dropbox on a timer.
 
 1. Open [cursor.com/automations](https://cursor.com/automations) → New.
 2. Trigger: **Schedule** (e.g. every 15 minutes).
-3. Repository: this repo (`EssenceOfVirality`), on `main` (or your working branch).
+3. Repository: this repo (`EssenceOfVirality`), branch
+   **`cursor/copy-bank-dropbox-cf50`** (see above).
 4. Prompt (paste exactly):
 
 ```text
@@ -113,5 +122,22 @@ folder under `/spotify-mix-videos/renders/`.
 
 ## Recommendation
 
-Start with **Option A** (15‑minute schedule) tonight — zero extra infra. Move to
+Start with **Option A** (15‑minute schedule) — zero extra infra. Move to
 **Option B** when the delay bothers you.
+
+## Cloud-agent verification (2026-08-18)
+
+Checked from a cloud agent with your secrets loaded:
+
+| Check | Result |
+|-------|--------|
+| `DROPBOX_APP_KEY` / `SECRET` / `REFRESH_TOKEN` | Present |
+| `./process-job dropbox status` | Connected as Samuel Elliott’s |
+| `./process-job dropbox ensure` | Folder tree OK |
+| `/spotify-mix-videos/incoming` | Empty (ready for a test drop) |
+| Automation-sourced runs in agent list | None yet — confirm Automations target the PR branch above |
+
+**Smoke test:** drop any short video into `/spotify-mix-videos/incoming/`, then
+watch [cursor.com/agents](https://cursor.com/agents) for a new run (schedule:
+within one interval; webhook: ~1 minute). Renders land under
+`/spotify-mix-videos/renders/`.
