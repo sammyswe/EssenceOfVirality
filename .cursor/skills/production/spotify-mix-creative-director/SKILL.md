@@ -2,7 +2,7 @@
 name: spotify-mix-creative-director
 description: Choose the format family, hook and supporting-clip concepts for a Spotify mix video, and write Higgsfield prompts for footage the creator should generate. Use when planning a new edit, when a hook feels generic, or when deciding what AI clip to make before shooting anything.
 metadata:
-  version: 0.1.0
+  version: 0.1.1
   maturity: experimental
   confidence: medium
   evidence_basis: []
@@ -18,7 +18,8 @@ Stage 2. Decides what kind of video this is. Implementation:
 
 Interpret the tracks and the supplied assets, pick a format family, generate a
 hook that the video can actually deliver on, and — where useful — describe the
-supporting footage worth creating.
+supporting footage worth creating. New Higgsfield hooks go through
+`produce-scroll-stop-hook` so retained scroll-stop craft is applied.
 
 ## When to invoke
 
