@@ -428,8 +428,35 @@ def cmd_dropbox(args: argparse.Namespace) -> int:
             print(f"  account       {payload['account']}")
             print(f"  drop mixes in {payload['incoming']}")
             print(f"  renders go to {payload['renders']}")
+            if payload.get("education_incoming"):
+                print(f"  education in {payload['education_incoming']}")
+            if payload.get("hooks_library"):
+                print(f"  hook library {payload['hooks_library']}")
         print()
         return 0 if payload.get("reachable") else 1
+
+    if args.dropbox_command == "ensure":
+        folders = dropbox_sync.ensure_tree()
+        print()
+        for folder in folders:
+            print(f"  {folder}")
+        print()
+        return 0
+
+    if args.dropbox_command == "pull-education":
+        result = dropbox_sync.pull_education()
+        if args.json:
+            print(json.dumps(result.as_dict(), indent=2))
+            return 0
+        print()
+        for item in result.downloaded:
+            print(f"  downloaded {item['name']} -> {item['local_path']}")
+        for line in result.skipped:
+            print(f"  {_colour('skip', YELLOW)} {line}")
+        for line in result.messages:
+            print(f"  {DIM}- {line}{RESET}" if sys.stdout.isatty() else f"  - {line}")
+        print()
+        return 0
 
     if args.dropbox_command == "pull":
         result = dropbox_sync.pull()
@@ -616,6 +643,14 @@ def build_parser() -> argparse.ArgumentParser:
     dropbox_subs = dropbox_parser.add_subparsers(dest="dropbox_command", required=True)
     dropbox_status = dropbox_subs.add_parser("status", help="is the channel configured?")
     dropbox_status.add_argument("--json", action="store_true")
+    dropbox_subs.add_parser(
+        "ensure", help="create the full Dropbox folder tree (mixes, hooks, education)"
+    )
+    dropbox_edu = dropbox_subs.add_parser(
+        "pull-education",
+        help="download hook/retention tutorial videos from education/hooks-incoming",
+    )
+    dropbox_edu.add_argument("--json", action="store_true")
     dropbox_pull = dropbox_subs.add_parser(
         "pull", help="import new recordings from <base>/incoming into job folders"
     )

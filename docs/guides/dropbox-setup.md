@@ -75,21 +75,18 @@ paths. First `dropbox pull` creates the folders if they are missing.
    `/spotify-mix-videos/incoming/` — or a **subfolder** with the recording +
    the Higgsfield hook clip together (name the capture with `spotify` /
    `mix` / `screen-recording` in the filename so the agent picks it correctly).
-2. Tell the agent to process the Dropbox upload (`dropbox pull --run`).
-3. Open the printed link (or `/spotify-mix-videos/renders/<video-id>/`) and
-   save the final to your camera roll.
+2. Tell the agent to process it. It runs `./process-job dropbox pull --run`,
+   which imports each upload into a job folder, processes it, and uploads the
+   preview, final and thumbnail to `/spotify-mix-videos/renders/<video-id>/`
+   with shared links printed for each file.
+3. Open the link (or the folder in the Dropbox app) and save the final to the
+   camera roll for posting.
 
-Imported uploads move to `/spotify-mix-videos/imported/` inside Dropbox —
-never deleted — so nothing imports twice.
+For unattended / always-checking behaviour, see
+[`always-on-dropbox.md`](always-on-dropbox.md). For pasting hook/retention
+tutorial videos, see [`education-hooks.md`](education-hooks.md).
 
-## Hook bank folder (optional but recommended)
+## Hook bank folder
 
-For the ten Higgsfield hooks, create:
-
-`/spotify-mix-videos/hooks/incoming/`
-
-Drop the ten clips there. Tell the agent to pull and analyse them; it will
-rename to stable stems (`hook-01-…`) and draft hook profiles under
-`production/config/hook-profiles/` for your approval. (Until that folder
-convention is automated, you can also drop them in `incoming/` as a batch and
-say they are hooks-only.)
+`/spotify-mix-videos/hooks/library/` holds renamed Higgsfield hooks.
+`hooks/incoming/` is for new clips to analyse.

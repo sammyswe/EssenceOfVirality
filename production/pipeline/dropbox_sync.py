@@ -14,6 +14,11 @@ Folder contract, rooted at ``DROPBOX_BASE_FOLDER`` (default
 - ``imported/`` — where pulled uploads are moved, so nothing imports twice.
 - ``renders/<video-id>/`` — where ``push`` uploads the preview, final and
   thumbnail, each with a shared link the creator can open on the phone.
+- ``education/hooks-incoming/`` — TikTok / tutorial videos the creator
+  supplies about scroll-stop hooks and retention. Pulled for analysis only
+  (never committed to git); findings feed the produce-scroll-stop-hook skill.
+- ``education/hooks-imported/`` — education videos after pull, so nothing
+  is analysed twice.
 
 Credentials come from the environment only (never git — ``SECURITY.md``):
 
@@ -41,7 +46,7 @@ from pathlib import Path
 from typing import Any
 
 from .jobspec import SPOTIFY_HINTS, VIDEO_SUFFIXES, write_job_template
-from .paths import JOBS_APPROVED, JOBS_FAILED, JOBS_INCOMING, JOBS_PROCESSING, JOBS_REVIEW, rel
+from .paths import JOBS_APPROVED, JOBS_FAILED, JOBS_INCOMING, JOBS_PROCESSING, JOBS_REVIEW, REPO_ROOT, rel
 
 API_BASE = "https://api.dropboxapi.com"
 CONTENT_BASE = "https://content.dropboxapi.com"
@@ -342,6 +347,22 @@ class DropboxClient:
         return str((account.get("name") or {}).get("display_name", ""))
 
 
+@dataclass
+class EducationPull:
+    downloaded: list[dict[str, str]] = field(default_factory=list)
+    skipped: list[str] = field(default_factory=list)
+    messages: list[str] = field(default_factory=list)
+    local_dir: str = ""
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "downloaded": self.downloaded,
+            "skipped": self.skipped,
+            "messages": self.messages,
+            "local_dir": self.local_dir,
+        }
+
+
 def status() -> dict[str, Any]:
     """Whether the Dropbox channel is configured and reachable."""
     config = DropboxConfig.from_env()
@@ -362,6 +383,8 @@ def status() -> dict[str, Any]:
         "base_folder": config.base_folder,
         "incoming": f"{config.base_folder}/incoming",
         "renders": f"{config.base_folder}/renders",
+        "hooks_library": f"{config.base_folder}/hooks/library",
+        "education_incoming": f"{config.base_folder}/education/hooks-incoming",
     }
 
 
@@ -493,5 +516,93 @@ def push(video_id: str, files: list[tuple[str, Path]]) -> PushResult:
     result.messages.append(
         "links open in the Dropbox app or browser; the preview is the small "
         "one to check first"
+    )
+    return result
+
+
+def ensure_tree() -> list[str]:
+    """Create the full Dropbox folder contract if missing. Returns paths touched."""
+    client = _connect()
+    base = client.config.base_folder
+    folders = [
+        f"{base}/incoming",
+        f"{base}/imported",
+        f"{base}/renders",
+        f"{base}/hooks",
+        f"{base}/hooks/incoming",
+        f"{base}/hooks/imported",
+        f"{base}/hooks/library",
+        f"{base}/education",
+        f"{base}/education/hooks-incoming",
+        f"{base}/education/hooks-imported",
+    ]
+    for folder in folders:
+        client.ensure_folder(folder)
+    return folders
+
+
+def pull_education() -> EducationPull:
+    """Download creator-supplied hook/retention education videos for analysis.
+
+    Videos land in ``tmp/education/hooks/<slug>/`` locally (gitignored). Dropbox
+    originals move to ``education/hooks-imported/``. Nothing is committed — only
+    the later extraction notes and skill updates enter git.
+    """
+    client = _connect()
+    base = client.config.base_folder
+    incoming = f"{base}/education/hooks-incoming"
+    result = EducationPull()
+    local_root = REPO_ROOT / "tmp" / "education" / "hooks"
+    local_root.mkdir(parents=True, exist_ok=True)
+    result.local_dir = rel(local_root)
+
+    entries = client.list_folder(incoming)
+    if entries is None:
+        ensure_tree()
+        result.messages.append(
+            f"created education folders — drop tutorial/hook videos into "
+            f"{incoming} and pull-education again"
+        )
+        return result
+
+    client.ensure_folder(f"{base}/education/hooks-imported")
+    video_entries = [
+        entry for entry in entries
+        if str(entry.get(".tag")) == "file"
+        and Path(str(entry.get("name", ""))).suffix.lower() in VIDEO_SUFFIXES
+    ]
+    for entry in entries:
+        if entry not in video_entries and str(entry.get(".tag")) == "file":
+            result.skipped.append(f"{entry.get('name')}: not a video file")
+
+    if not video_entries:
+        result.messages.append(
+            f"{incoming} has no video files yet — paste TikTok screen recordings "
+            "or exports of hook/retention tutorials there"
+        )
+        return result
+
+    for entry in video_entries:
+        name = str(entry["name"])
+        source_path = str(entry.get("path_display") or entry.get("path_lower"))
+        slug = slug_job_id(name).removeprefix("job-") or "edu"
+        dest_dir = local_root / slug
+        if dest_dir.exists() and any(dest_dir.iterdir()):
+            result.skipped.append(f"{name}: already pulled to {rel(dest_dir)}")
+            client.move(source_path, f"{base}/education/hooks-imported/{name}")
+            continue
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        dest = dest_dir / name
+        client.download(source_path, dest)
+        client.move(source_path, f"{base}/education/hooks-imported/{name}")
+        result.downloaded.append({
+            "name": name,
+            "local_path": rel(dest),
+            "slug": slug,
+        })
+
+    result.messages.append(
+        f"downloaded {len(result.downloaded)} education video(s) under "
+        f"{result.local_dir} — analyse next; do not commit the mp4s"
     )
     return result
