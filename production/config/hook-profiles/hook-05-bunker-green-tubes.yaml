@@ -1,0 +1,28 @@
+id: hook-05-bunker-green-tubes
+status: testing
+asset_stems:
+  - hook-05-bunker-green-tubes
+description: >
+  Industrial concrete room with vertical Spotify-green LED tubes on the back wall; DJ at Pioneer decks, mixer screen showing a bright waveform. Geometric bunker / vault mood as the camera rushes into the display.
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids:
+  - hook-006
+  - hook-001
+cta_ids:
+  - cta-008
+  - cta-004
+  - cta-002
+captions:
+  - id: hook-05-cap-a
+    template: "reading the waveform in the bunker 🎛️ {pairing}"
+    status: testing
+  - id: hook-05-cap-b
+    template: "green tubes, clean blend — {pairing}"
+    status: testing
+  - id: hook-05-cap-c
+    template: "industrial room, careful hands. {pairing}"
+    status: testing
+notes: >
+  Drafted 2026-08-18 from Dropbox Higgsfield batch (hf_20260817_*).
+  Source clip is 1920x1080 landscape (~4.0s); the pipeline crops to 9:16 on
+  overlay. Approve after creator review, then set status: testing.

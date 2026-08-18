@@ -1,0 +1,277 @@
+version: "0.1.0"
+
+about: >
+  The copy testing bank: every hook, call to action, caption and pinned comment
+  the pipeline may use, each with a lifecycle status. The pipeline only draws
+  from entries whose status is "testing" or "proven"; "draft" entries are
+  proposals awaiting the creator's review (the grilling sessions) and "retired"
+  entries are kept for the record with the reason they were pulled. Statuses
+  change via `./process-job copy approve|promote|retire <id>` — the file is
+  rewritten by the tool, so commentary belongs in `notes` fields, not YAML
+  comments. On-screen text (hooks, CTAs) is rendered through drawtext, which
+  cannot draw colour emoji — keep those entries emoji-free. Captions and pinned
+  comments are posted as text on TikTok, so emoji are fine there and should
+  match the creator's reference density. Milestone promises ("playlist link at
+  N followers") are commitments: they stay draft until the creator states the
+  promise is real, and they are retired the moment it is fulfilled or dropped.
+  Grilling session 2026-08-18 locked the honesty and rotation rules below;
+  hook-specific copy lives in production/config/hook-profiles/ and overrides
+  the global rotation when a job's hook clip matches a profile.
+
+statuses:
+  draft: proposed, never rendered; awaiting creator review
+  testing: approved for rotation; performance still unknown
+  proven: repeatedly associated with strong posts (creator's judgement + analytics)
+  retired: pulled from rotation; notes say why
+
+# Growth-phase rotation (grilling Q1): comment/save-heavy, follow about 1 in 4.
+# Weights expand the CTA pool before the stable choice; higher = more often.
+cta_intent_weights:
+  comment_rate: 3
+  comment_debate: 3
+  save: 3
+  share: 2
+  follow: 1
+  follow_milestone: 1
+  comment_guess: 0
+  comment_request: 0
+
+hooks:
+  - id: hook-001
+    text: "spotify mixes should not sound this good"
+    kind: quality_claim
+    status: testing
+    notes: mirrored from hook-overlay template; live since the recipe shipped
+  - id: hook-002
+    text: "wait for the switch"
+    kind: anticipation
+    status: testing
+    notes: mirrored from hook-overlay template; also the fallback when no other hook qualifies
+  - id: hook-003
+    text: "POV your spotify playlist mixes itself"
+    kind: scenario
+    status: retired
+    notes: >
+      [testing->retired: grilling 2026-08-18] False claim — the creator carefully
+      makes these mixes; the playlist does not mix itself. Replaced by hook-014.
+  - id: hook-004
+    text: "{first_artist} into {second_artist}"
+    kind: artist_pairing
+    requires_fields: [first_artist, second_artist]
+    status: testing
+    notes: mirrored from hook-overlay template; needs both artists in job.yaml tracks
+  - id: hook-005
+    text: "this is why your queue needs a mix"
+    kind: quality_claim
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: hook-006
+    text: "no edits. just spotify."
+    kind: honesty_claim
+    status: testing
+    notes: >
+      True by construction — the pipeline never touches the mix audio. Leans on
+      the honesty of the format as the surprise. [draft->testing: grilling 2026-08-18]
+  - id: hook-007
+    text: "bet you can't hear where song one ends"
+    kind: challenge
+    status: draft
+    notes: >
+      Per-job only when the creator judges the blend seamless enough to defend
+      the bet — not in global rotation (grilling 2026-08-18).
+  - id: hook-008
+    text: "the mix feature does not miss"
+    kind: quality_claim
+    status: draft
+    notes: overlaps live hook-001; kept draft to avoid diluting quality-claim rotation.
+  - id: hook-009
+    text: "house fans, this one's for the pre-drinks"
+    kind: audience_call
+    status: testing
+    notes: >
+      Pre-drinks / speaker cluster approved grilling 2026-08-18.
+      [draft->testing: grilling 2026-08-18]
+  - id: hook-010
+    text: "your gym playlist is missing this"
+    kind: audience_call
+    status: draft
+    notes: stays draft until pre-drinks cluster has a baseline (grilling 2026-08-18).
+  - id: hook-011
+    text: "day {day_number} of blending songs on spotify"
+    kind: series
+    requires_fields: [day_number]
+    status: draft
+    notes: >
+      Day-N treadmill deferred until ~2 weeks consecutive posting proves the
+      cadence (grilling 2026-08-18).
+  - id: hook-012
+    text: "you're not ready for this switch"
+    kind: anticipation
+    status: testing
+    notes: >
+      Hype about own payoff allowed when the switch lands seconds later and is
+      real; invented third-party reactions remain out (grilling 2026-08-18).
+      [draft->testing: grilling 2026-08-18]
+  - id: hook-013
+    text: "DJs hate how easy this is"
+    kind: parody
+    status: retired
+    notes: >
+      [draft->retired: grilling 2026-08-18] Invented third-party reaction; retired
+      unused. Honesty rule: no fabricated third-party claims.
+  - id: hook-014
+    text: "POV you finally found a mix worth the speaker"
+    kind: scenario
+    status: draft
+    notes: >
+      Honest POV rewrite replacing retired hook-003. Draft until the creator
+      approves the exact wording (grilling 2026-08-18).
+
+ctas:
+  - id: cta-001
+    text: "share this with the number 1 house fan you know"
+    intent: share
+    slots: [post_payoff, closing]
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: cta-002
+    text: "save it for your playlist"
+    intent: save
+    slots: [post_payoff, closing]
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: cta-003
+    text: "want this mix on your speaker? follow for the playlist"
+    intent: follow
+    slots: [closing]
+    status: testing
+    notes: >
+      Soft follow ask; growth-phase weighting keeps follow intents rarer than
+      comment/save (grilling Q1).
+  - id: cta-004
+    text: "rate this transition"
+    intent: comment_rate
+    slots: [post_payoff, closing]
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: cta-005
+    text: "which song won?"
+    intent: comment_rate
+    slots: [post_payoff, closing]
+    status: testing
+    notes: mirrored from hook-overlay template
+  - id: cta-006
+    text: "send this to whoever controls the aux"
+    intent: share
+    slots: [post_payoff, closing]
+    status: testing
+    notes: >
+      Pre-drinks / aux cluster. [draft->testing: grilling 2026-08-18]
+  - id: cta-007
+    text: "save this for the pre-drinks"
+    intent: save
+    slots: [post_payoff, closing]
+    status: testing
+    notes: >
+      Pre-drinks / aux cluster. [draft->testing: grilling 2026-08-18]
+  - id: cta-008
+    text: "rate the switch out of 10"
+    intent: comment_rate
+    slots: [post_payoff]
+    status: testing
+    notes: >
+      Numeric comment ask. [draft->testing: grilling 2026-08-18]
+  - id: cta-009
+    text: "song one or song two - pick a side"
+    intent: comment_debate
+    slots: [post_payoff, closing]
+    status: testing
+    notes: >
+      Debate framing; both tracks get screen time in this format.
+      [draft->testing: grilling 2026-08-18]
+  - id: cta-010
+    text: "guess the second song before the switch"
+    intent: comment_guess
+    slots: [build]
+    status: retired
+    notes: >
+      [draft->retired: grilling 2026-08-18] Capture already shows both song
+      labels; guess CTAs require hidden info. Build slot stays for other asks.
+  - id: cta-011
+    text: "drop a pairing and I'll blend it next"
+    intent: comment_request
+    slots: [closing]
+    status: retired
+    notes: >
+      [draft->retired: grilling 2026-08-18] Creator rejected request-taking CTA;
+      prepared replies may still invite suggestions without the on-screen ask.
+  - id: cta-012
+    text: "follow for the next mix"
+    intent: follow
+    slots: [closing]
+    status: testing
+    notes: >
+      Rewritten from "follow - a new mix every day" — no cadence promise
+      (grilling 2026-08-18). [draft->testing after rewrite]
+  - id: cta-013
+    text: "playlist link at 1000 followers"
+    intent: follow_milestone
+    slots: [closing]
+    status: testing
+    notes: >
+      Live commitment at 1000 followers — retire when fulfilled or dropped.
+      [draft->testing: grilling 2026-08-18, creator accepted]
+
+captions:
+  - id: cap-001
+    template: "{pairing} — made in Spotify."
+    status: testing
+    notes: the pipeline's current default caption shape; live today.
+  - id: cap-002
+    template: "{pairing} 🎧 made in spotify, audio untouched"
+    status: draft
+    notes: redundant once cap-007 is in testing; kept as alternate honesty register.
+  - id: cap-003
+    template: "the mix feature does not miss 🔥 {pairing}"
+    status: testing
+    notes: >
+      Quality-hype caption for A/B against plain/honesty baselines.
+      [draft->testing: grilling 2026-08-18]
+  - id: cap-004
+    template: "this pairing should not work… {pairing} 🫠"
+    status: draft
+    notes: >
+      Per-job only when the pairing is genuinely unlikely — never blind rotation
+      (grilling 2026-08-18).
+  - id: cap-005
+    template: "POV: your queue blends itself. {pairing}"
+    status: retired
+    notes: >
+      [draft->retired: grilling 2026-08-18] False — the creator carefully creates
+      these mixes; the queue does not blend itself.
+  - id: cap-006
+    template: "day {day_number} of spotify blends. today: {pairing} 🎛️"
+    status: draft
+    notes: series caption; same treadmill deferral as hook-011.
+  - id: cap-007
+    template: "no edits to the audio. that's just spotify 🤝 {pairing}"
+    status: testing
+    notes: >
+      Process honesty as a rotation flavour, not the brand slogan.
+      [draft->testing: grilling 2026-08-18]
+
+pinned_comments:
+  - id: pin-001
+    template: "what should I blend next? 👀"
+    status: draft
+    notes: stayed draft; request CTA was retired (grilling 2026-08-18).
+  - id: pin-002
+    template: "the second song is in the caption — rate the switch"
+    status: draft
+    notes: still available; not yet ruled into rotation.
+  - id: pin-003
+    template: "if this hits 100 saves I'm making a part 2"
+    status: testing
+    notes: >
+      Live commitment at 100 saves — retire when fulfilled or dropped.
+      [draft->testing: grilling 2026-08-18, creator accepted]

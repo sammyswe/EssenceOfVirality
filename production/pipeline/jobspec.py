@@ -305,24 +305,33 @@ def load_job(job_dir: Path | str) -> JobSpec:
     )
 
 
-def write_job_template(job_dir: Path, job_id: str, spotify_filename: str) -> Path:
+def write_job_template(
+    job_dir: Path,
+    job_id: str,
+    spotify_filename: str,
+    *,
+    additional_assets: list[dict[str, str]] | None = None,
+    preferred_format: str = "auto",
+    notes: str = "",
+) -> Path:
     """Write a starter job.yaml into an existing job folder."""
     job_dir.mkdir(parents=True, exist_ok=True)
+    assets = list(additional_assets or [])
     payload = {
         "job_id": job_id,
         "spotify_recording": spotify_filename,
-        "additional_assets": [],
+        "additional_assets": assets,
         "tracks": {
             "first": {"title": "", "artist": ""},
             "second": {"title": "", "artist": ""},
         },
         "transition": {"seconds": None},
         "creative_direction": {
-            "preferred_format": "auto",
+            "preferred_format": preferred_format or "auto",
             "mood": "",
             "must_include": [],
             "avoid": [],
-            "notes": "",
+            "notes": notes or "",
         },
         "render": {
             "target_platform": "tiktok",

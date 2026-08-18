@@ -1,0 +1,36 @@
+# Hook profile template — copy this file, rename it, fill it in, then set
+# status: testing after the creator approves. Files whose names start with
+# "_" are ignored by the loader.
+#
+# id: hook-01-decks-spotify-green
+# status: draft
+# asset_stems:
+#   - hook-01-decks-spotify-green   # must match the renamed clip's filename stem or job asset label
+# description: >
+#   What is actually happening on screen in this clip, in enough detail that
+#   captions can refer to the scene honestly (who/where/action, Spotify cues,
+#   fiction signal). Written when the clip is analysed.
+# fiction_signal: visibly_stylised_or_impossible_scene
+# overlay_hook_ids:          # bank ids from copy-bank.yaml; empty = global rotation
+#   - hook-006
+#   - hook-009
+# overlay_texts: []          # optional inline texts if no bank id fits yet
+# cta_ids:                   # bank CTA ids allowed for this clip; empty = global
+#   - cta-006
+#   - cta-007
+#   - cta-008
+# captions:                  # exactly three; rotated across posts that reuse this hook
+#   - id: hook-01-cap-a
+#     template: "…"
+#     status: testing
+#   - id: hook-01-cap-b
+#     template: "…"
+#     status: testing
+#   - id: hook-01-cap-c
+#     template: "…"
+#     status: testing
+# notes: ""
+
+_about: >
+  This file is a template only. Real profiles are sibling YAML files without
+  a leading underscore, one per Higgsfield hook clip.

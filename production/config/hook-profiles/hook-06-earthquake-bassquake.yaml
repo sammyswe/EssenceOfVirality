@@ -1,0 +1,44 @@
+id: hook-06-earthquake-bassquake
+status: testing
+asset_stems:
+  - hook-06-earthquake-bassquake
+  - hook-06-club-crowd-spotlights
+description: >
+  Live booth: focused DJ at Pioneer decks with a crowd and white spotlights
+  behind him. The earthquake is in the foreground — a row of water glasses
+  on the booth edge vibrates so hard the liquid ripples and splashes as the
+  lights slam on and the camera pushes into the decks. Bassquake, not a
+  metaphor: you can see the water move. Fiction signal: stylised AI scene.
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids: []
+overlay_texts:
+  - "this bass just caused an earthquake"
+  - "watch the glasses — the room is shaking"
+  - "bassquake. stay for the switch"
+ctas:
+  - id: hook-06-cta-a
+    text: "rate the shake out of 10"
+    intent: comment_rate
+    slots: [post_payoff, closing]
+  - id: hook-06-cta-b
+    text: "send this to whoever needs their speaker to move"
+    intent: share
+    slots: [post_payoff, closing]
+  - id: hook-06-cta-c
+    text: "save this for when the room needs a bassquake"
+    intent: save
+    slots: [post_payoff, closing]
+captions:
+  - id: hook-06-cap-a
+    template: "bass so hard the glasses start an earthquake 🫨 {pairing}"
+    status: testing
+  - id: hook-06-cap-b
+    template: "spotlights slam on and the booth shakes — {pairing}"
+    status: testing
+  - id: hook-06-cap-c
+    template: "made in Spotify. the water disagrees 💧 {pairing}"
+    status: testing
+notes: >
+  Re-analysed 2026-08-18: earlier "club spotlights" label missed the
+  foreground bassquake (water glasses vibrating/splashing). Still draft
+  until creator approves the three overlay/CTA options.

@@ -93,6 +93,10 @@
     },
     "hook_text": { "type": "string" },
     "cta_text": { "type": "string" },
+    "hook_profile_id": {
+      "type": "string",
+      "description": "Id of the matched hook-profile when the job's Higgsfield clip has one; empty when the global copy bank rotates alone."
+    },
     "retention_hypothesis": {
       "type": "string",
       "description": "What the format is expected to do for viewer behaviour. A hypothesis, never a promise."

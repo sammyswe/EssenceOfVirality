@@ -1,0 +1,44 @@
+id: hook-07-antigravity-float
+status: testing
+asset_stems:
+  - hook-07-antigravity-float
+  - hook-07-lounge-blue-crowd
+description: >
+  Blue lounge booth: the same focused DJ keeps mixing while gravity fails
+  around him — setlist paper, headphones and a cup lift off the table, and
+  people in the crowd float toward the ceiling with legs dangling. He stays
+  planted; the room goes zero-G; camera push ends in a warp zoom into his
+  jacket. Obviously stylised AI fiction.
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids: []
+overlay_texts:
+  - "this mix just turned off gravity"
+  - "everyone's floating — wait for the switch"
+  - "zero gravity house. carefully blended"
+ctas:
+  - id: hook-07-cta-a
+    text: "rate how zero-G that felt"
+    intent: comment_rate
+    slots: [post_payoff, closing]
+  - id: hook-07-cta-b
+    text: "send this to whoever needs to float for a second"
+    intent: share
+    slots: [post_payoff, closing]
+  - id: hook-07-cta-c
+    text: "save this for the speaker that lifts the room"
+    intent: save
+    slots: [post_payoff, closing]
+captions:
+  - id: hook-07-cap-a
+    template: "gravity left the chat 🫧 {pairing}"
+    status: testing
+  - id: hook-07-cap-b
+    template: "crowd floating, DJ still locked in — {pairing}"
+    status: testing
+  - id: hook-07-cap-c
+    template: "zero-G house mix, made carefully in Spotify 🎧 {pairing}"
+    status: testing
+notes: >
+  Re-analysed 2026-08-18: earlier "lounge warp zoom" label undersold the
+  antigravity beat (floating crowd + objects). Still draft until creator
+  approves the three overlay/CTA options.

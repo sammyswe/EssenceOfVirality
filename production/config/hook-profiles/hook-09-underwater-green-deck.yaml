@@ -1,0 +1,28 @@
+id: hook-09-underwater-green-deck
+status: testing
+asset_stems:
+  - hook-09-underwater-green-deck
+description: >
+  DJ fully underwater in deep blue with light rays and swimming silver fish; a wide black booth with Pioneer decks whose logos and waveform screen glow bright Spotify-green. Serene deep-house surrealism as the camera pushes to his hands on the green display.
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids:
+  - hook-001
+  - hook-005
+cta_ids:
+  - cta-002
+  - cta-007
+  - cta-003
+captions:
+  - id: hook-09-cap-a
+    template: "deep house, literally 🐟 {pairing}"
+    status: testing
+  - id: hook-09-cap-b
+    template: "green waveforms at the bottom of the ocean. {pairing}"
+    status: testing
+  - id: hook-09-cap-c
+    template: "submerged in the blend — {pairing}"
+    status: testing
+notes: >
+  Drafted 2026-08-18 from Dropbox Higgsfield batch (hf_20260817_*).
+  Source clip is 1920x1080 landscape (~4.0s); the pipeline crops to 9:16 on
+  overlay. Approve after creator review, then set status: testing.

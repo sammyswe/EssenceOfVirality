@@ -15,6 +15,8 @@ import hashlib
 from dataclasses import dataclass
 from typing import Any
 
+from . import copybank
+from . import hookprofiles
 from . import lyrics as lyrics_module
 from . import preferences as prefs
 from . import textrender
@@ -57,6 +59,34 @@ def _stable_choice(options: list[str], seed: str) -> str:
     """Deterministic rotation so repeated jobs do not reuse the same wording."""
     digest = hashlib.sha256(seed.encode("utf-8")).digest()
     return options[digest[0] % len(options)]
+
+
+def _weighted_stable_choice(
+    entries: list[dict[str, Any]],
+    seed: str,
+    *,
+    text_key: str = "text",
+    intent_key: str = "intent",
+) -> str:
+    """Stable choice with intent weights from the copy bank (grilling Q1)."""
+    weights = copybank.intent_weights()
+    expanded: list[str] = []
+    for entry in entries:
+        text = str(entry.get(text_key, "")).strip()
+        if not text:
+            continue
+        intent = str(entry.get(intent_key, "") or "")
+        weight = weights.get(intent, 2)
+        if weight <= 0:
+            continue
+        expanded.extend([text] * weight)
+    if not expanded:
+        texts = [str(entry.get(text_key, "")).strip() for entry in entries]
+        texts = [text for text in texts if text]
+        if not texts:
+            raise CreativeError("no wording candidates left after weighting")
+        return _stable_choice(texts, seed)
+    return _stable_choice(expanded, seed)
 
 
 def choose_format(
@@ -147,6 +177,17 @@ def choose_format(
                 continue
             score += 0.3
             reasons.append("track metadata supports a genuine contrast claim")
+
+        # Creator recipe: when a hook clip is present, prefer the two-artifact
+        # hook-overlay path that applies retained scroll-stop craft.
+        if name == "hook-overlay" and asset_count >= 1:
+            has_hook_role = any(asset.role == "hook" for asset in usable)
+            if has_hook_role or asset_count >= 1:
+                score += 1.5 if has_hook_role else 0.9
+                reasons.append(
+                    "hook clip supplied — prefer the muted overlay recipe "
+                    "(scroll-stop open + full Spotify capture)"
+                )
 
         scored.append((score, name, template, reasons))
 
@@ -396,19 +437,34 @@ def _fill_template(text: str, job: JobSpec) -> str | None:
 
 
 def choose_hook(
-    job: JobSpec, report: InputReport, template: dict[str, Any]
+    job: JobSpec,
+    report: InputReport,
+    template: dict[str, Any],
+    profile: hookprofiles.HookProfile | None = None,
 ) -> tuple[str, str]:
     """Pick a hook whose claim the video can actually keep.
 
     Returns (text, rationale). Patterns requiring track fields or an asserted
-    truth are skipped unless the job supplies the evidence.
+    truth are skipped unless the job supplies the evidence. When a hook
+    profile matches the job's clip, only that profile's overlay wording is
+    considered.
     """
     override = (job.creative_direction.get("hook") or "").strip()
     if override:
         return override, "hook supplied in job.yaml"
 
-    candidates: list[tuple[str, str]] = []
-    for pattern in template.get("hook_patterns") or []:
+    patterns = _merged_patterns(template.get("hook_patterns"), "hooks")
+    if profile is not None:
+        narrowed = _profile_hook_patterns(profile, patterns)
+        if narrowed:
+            patterns = narrowed
+        else:
+            # Profile matched but its overlay ids/texts are empty or inactive —
+            # fall through to the global bank rather than inventing wording.
+            pass
+
+    candidates: list[tuple[str, str, str]] = []
+    for pattern in patterns:
         text = str(pattern.get("text", "")).strip()
         if not text:
             continue
@@ -429,7 +485,11 @@ def choose_hook(
             # The claim cannot be verified from the job, so it is not used.
             continue
 
-        candidates.append((text, str(pattern.get("kind", "unspecified"))))
+        candidates.append((
+            text,
+            str(pattern.get("kind", "unspecified")),
+            str(pattern.get("id", "") or ""),
+        ))
 
     if not candidates:
         return (
@@ -439,26 +499,123 @@ def choose_hook(
         )
 
     seed = f"{job.job_id}:{template.get('name')}:hook"
-    chosen_text = _stable_choice([text for text, _ in candidates], seed)
-    kind = next(kind for text, kind in candidates if text == chosen_text)
-    return chosen_text, f"selected {kind!r} hook from {len(candidates)} valid candidates"
+    chosen_text = _stable_choice([text for text, _, _ in candidates], seed)
+    kind, entry_id = next(
+        (kind, entry_id) for text, kind, entry_id in candidates if text == chosen_text
+    )
+    rationale = f"selected {kind!r} hook from {len(candidates)} valid candidates"
+    if entry_id:
+        rationale += f" (copy bank {entry_id})"
+    if profile is not None:
+        rationale += f" [hook profile {profile.id}]"
+    return chosen_text, rationale
 
 
-def choose_cta(job: JobSpec, template: dict[str, Any]) -> tuple[str, str]:
+def _profile_hook_patterns(
+    profile: hookprofiles.HookProfile, patterns: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Resolve a profile's overlay wording into pattern dicts."""
+    by_id = {
+        str(entry.get("id")): entry
+        for entry in patterns
+        if entry.get("id")
+    }
+    resolved: list[dict[str, Any]] = []
+    for hook_id in profile.overlay_hook_ids:
+        entry = by_id.get(hook_id)
+        if entry is None:
+            # Profile may reference a bank id that is still draft — skip it.
+            try:
+                _, bank_entry = copybank.find(hook_id)
+            except copybank.CopyBankError:
+                continue
+            if str(bank_entry.get("status")) not in copybank.ACTIVE_STATUSES:
+                continue
+            resolved.append(dict(bank_entry))
+            continue
+        resolved.append(entry)
+    for text in profile.overlay_texts:
+        resolved.append({"text": text, "kind": "profile", "id": profile.id})
+    return resolved
+
+
+def _merged_patterns(
+    template_patterns: list[dict[str, Any]] | None, section: str
+) -> list[dict[str, Any]]:
+    """Template patterns plus active copy-bank entries, deduplicated by text.
+
+    Template entries mirrored into the bank keep their bank id through the
+    dedupe, so attribution still works for wording that lives in both places.
+    """
+    patterns = [dict(entry) for entry in template_patterns or []]
+    by_text = {str(entry.get("text", "")).strip(): entry for entry in patterns}
+    for entry in copybank.active(section):
+        text = str(entry.get("text", "")).strip()
+        if not text:
+            continue
+        if text in by_text:
+            by_text[text].setdefault("id", entry.get("id"))
+        else:
+            entry = dict(entry)
+            patterns.append(entry)
+            by_text[text] = entry
+    return patterns
+
+
+def choose_cta(
+    job: JobSpec,
+    template: dict[str, Any],
+    profile: hookprofiles.HookProfile | None = None,
+) -> tuple[str, str, list[str]]:
+    """Pick the call to action. Returns (text, rationale, allowed_slots).
+
+    ``allowed_slots`` is the bank entry's slot affinity — empty means the CTA
+    works anywhere and the template's rotation decides alone. Intent weights
+    from the copy bank bias toward comment/save during the growth phase.
+    """
     override = (job.creative_direction.get("cta") or "").strip()
     if override:
-        return override, "call to action supplied in job.yaml"
-    patterns = template.get("cta_patterns") or []
+        return override, "call to action supplied in job.yaml", []
+    patterns = _merged_patterns(template.get("cta_patterns"), "ctas")
+    if profile is not None:
+        if profile.cta_texts:
+            patterns = [
+                {
+                    "id": entry.id,
+                    "text": entry.text,
+                    "intent": entry.intent,
+                    "slots": entry.slots,
+                }
+                for entry in profile.cta_texts
+                if entry.text
+            ]
+        elif profile.cta_ids:
+            allowed = set(profile.cta_ids)
+            narrowed = [
+                entry for entry in patterns
+                if str(entry.get("id", "")) in allowed
+            ]
+            if narrowed:
+                patterns = narrowed
     if not patterns:
-        return "rate this transition", "template defined no call to action; used the default"
-    texts = [str(entry.get("text", "")).strip() for entry in patterns if entry.get("text")]
+        return (
+            "rate this transition",
+            "template defined no call to action; used the default",
+            [],
+        )
     seed = f"{job.job_id}:{template.get('name')}:cta"
-    chosen = _stable_choice(texts, seed)
-    intent = next(
-        (str(entry.get("intent", "")) for entry in patterns if entry.get("text") == chosen),
-        "",
+    chosen = _weighted_stable_choice(patterns, seed)
+    entry = next(
+        (entry for entry in patterns if str(entry.get("text", "")).strip() == chosen),
+        {},
     )
-    return chosen, f"selected call to action with intent {intent!r}"
+    rationale = f"selected call to action with intent {str(entry.get('intent', ''))!r}"
+    if entry.get("id"):
+        rationale += f" (copy bank {entry['id']})"
+    if profile is not None:
+        rationale += f" [hook profile {profile.id}]"
+    slots = [str(slot) for slot in entry.get("slots") or []]
+    return chosen, rationale, slots
 
 
 def _build_text_cues(
@@ -471,6 +628,7 @@ def _build_text_cues(
     resolved: prefs.ResolvedPreferences,
     secondary: list[SecondaryClip] | None = None,
     revision: int = 1,
+    cta_slot_affinity: list[str] | None = None,
 ) -> tuple[list[TextCue], list[str]]:
     config = job.config
     styles = template.get("text_styles") or {}
@@ -605,10 +763,35 @@ def _build_text_cues(
         default=0.0,
     )
 
+    # Scroll-stop payoff re-hook: a short anticipation line after the AI overlay
+    # hands over, pointing at the untouched mix switch.
+    devices = {str(item) for item in (template.get("retention_devices") or [])}
+    if "anticipation_text_before_transition" in devices:
+        blend_start = timing.transition_window[0]
+        start = max(hook_overlay_end + 0.35, hook_overlay_end)
+        end = max(blend_start - 0.35, start)
+        anticipation = "wait for the switch"
+        if hook_text and "switch" in hook_text.lower():
+            anticipation = ""  # already promised in the open overlay
+        if anticipation and end - start >= 1.0:
+            add(
+                "secondary",
+                anticipation,
+                str(styles.get("hook", "bold_outline")),
+                start,
+                end,
+                "scroll-stop payoff re-hook: names the mix switch before it lands",
+            )
+
     if config["cta"]["enabled"] and cta_text:
         display = float(config["cta"]["display_seconds"])
         lead = float(config["cta"]["lead_seconds"])
         slots = [str(slot) for slot in template.get("cta_slots") or []]
+        # A CTA whose wording only makes sense in certain slots ("guess the
+        # second song" belongs before the transition) narrows the rotation.
+        affinity = [str(slot) for slot in cta_slot_affinity or []]
+        if affinity:
+            slots = [slot for slot in slots if slot in affinity] or affinity
 
         slot = "closing"
         slot_rationale = "appears after the payoff so it never competes with the transition"
@@ -922,16 +1105,32 @@ def build_plan(
         "width": placement.width, "height": placement.height,
     })
 
-    hook_text, hook_rationale = choose_hook(job, report, template)
-    cta_text, cta_rationale = choose_cta(job, template)
+    profile = hookprofiles.match_from_assets(report.assets)
+    hook_text, hook_rationale = choose_hook(job, report, template, profile)
+    cta_text, cta_rationale, cta_slot_affinity = choose_cta(job, template, profile)
 
     secondary, secondary_warnings = _plan_secondary(
         job, report, template, timing, resolved, protected
     )
     cues, text_warnings = _build_text_cues(
         job, template, timing, hook_text, cta_text, protected, resolved,
-        secondary=secondary, revision=revision,
+        secondary=secondary, revision=revision, cta_slot_affinity=cta_slot_affinity,
     )
+
+    from . import scrollstop
+
+    has_hook_clip = any(
+        clip.role == "hook" and clip.mode == "cutaway" for clip in secondary
+    )
+    fiction_signal = profile.fiction_signal if profile is not None else ""
+    scrollstop_apps = []
+    if choice.name == "hook-overlay" or has_hook_clip:
+        scrollstop_apps = scrollstop.apply_to_hook_overlay(
+            has_hook_clip=has_hook_clip,
+            hook_text=hook_text,
+            profile_id=profile.id if profile is not None else "",
+            fiction_signal=fiction_signal,
+        )
 
     emphasis_cfg = config["transition"]["emphasis"]
     emphasis_enabled = bool(emphasis_cfg.get("enabled", True))
@@ -996,6 +1195,7 @@ def build_plan(
         audio=audio,
         hook_text=hook_text,
         cta_text=cta_text,
+        hook_profile_id=profile.id if profile is not None else "",
         retention_hypothesis=str(template.get("retention_hypothesis", "")).strip(),
         research_refs=list(research_refs or []),
         preference_refs=resolved.refs(),
@@ -1008,6 +1208,19 @@ def build_plan(
         hook_rationale,
         cta_rationale,
     ]
+    if profile is not None:
+        plan.add_decision(
+            f"hook_profile={profile.id}",
+            f"matched asset stems {profile.asset_stems}; "
+            f"on-screen description drives this clip's copy trio",
+        )
+    for application in scrollstop_apps:
+        verb = "applied" if application.applied else "skipped"
+        plan.add_decision(
+            f"scrollstop {verb}: {application.id}",
+            application.reason,
+            stage="scrollstop",
+        )
     plan.add_decision(
         f"format_family={choice.family}",
         "; ".join(choice.reasons),

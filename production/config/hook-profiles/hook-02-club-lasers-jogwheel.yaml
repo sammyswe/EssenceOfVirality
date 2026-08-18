@@ -1,0 +1,28 @@
+id: hook-02-club-lasers-jogwheel
+status: testing
+asset_stems:
+  - hook-02-club-lasers-jogwheel
+description: >
+  Same DJ at Pioneer decks under diagonal green club lasers; the right jog wheel rings bright Spotify-green. Camera pushes to his hand on the platter, ending on the glowing wheel — hypnotic club energy.
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids:
+  - hook-012
+  - hook-002
+cta_ids:
+  - cta-006
+  - cta-001
+  - cta-008
+captions:
+  - id: hook-02-cap-a
+    template: "cueing under the green lasers 🟢 {pairing}"
+    status: testing
+  - id: hook-02-cap-b
+    template: "hand on the jog wheel — wait for it. {pairing}"
+    status: testing
+  - id: hook-02-cap-c
+    template: "club lighting, Spotify green, locked in. {pairing}"
+    status: testing
+notes: >
+  Drafted 2026-08-18 from Dropbox Higgsfield batch (hf_20260817_*).
+  Source clip is 1920x1080 landscape (~4.0s); the pipeline crops to 9:16 on
+  overlay. Approve after creator review, then set status: testing.

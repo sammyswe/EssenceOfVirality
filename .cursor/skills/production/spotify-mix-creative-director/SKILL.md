@@ -2,7 +2,7 @@
 name: spotify-mix-creative-director
 description: Choose the format family, hook and supporting-clip concepts for a Spotify mix video, and write Higgsfield prompts for footage the creator should generate. Use when planning a new edit, when a hook feels generic, or when deciding what AI clip to make before shooting anything.
 metadata:
-  version: 0.1.0
+  version: 0.1.1
   maturity: experimental
   confidence: medium
   evidence_basis: []
@@ -18,7 +18,8 @@ Stage 2. Decides what kind of video this is. Implementation:
 
 Interpret the tracks and the supplied assets, pick a format family, generate a
 hook that the video can actually deliver on, and — where useful — describe the
-supporting footage worth creating.
+supporting footage worth creating. New Higgsfield hooks go through
+`produce-scroll-stop-hook` so retained scroll-stop craft is applied.
 
 ## When to invoke
 
@@ -55,7 +56,9 @@ Optional: research note IDs for this job's artists, an explicit
 5. Where a supporting clip would help, describe it: the idea, what happens in
    the first second, what happens at the transition, duration, framing, whether
    it shares the screen, and a ready-to-paste Higgsfield prompt with its
-   negatives.
+   negatives. For a new Higgsfield hook, reach
+   `produce-scroll-stop-hook` so the brief applies retained scroll-stop craft
+   (or reports that education techniques are not loaded yet).
 6. Done when the format, hook, CTA and rationale are all recorded on the plan
    and every rejected family has a stated reason.
 
@@ -140,4 +143,5 @@ unsupported claim.
 
 ## Change history
 
+- 0.1.1 — reach `produce-scroll-stop-hook` when writing a new Higgsfield brief.
 - 0.1.0 — first version, written alongside `production/pipeline/creative.py`.

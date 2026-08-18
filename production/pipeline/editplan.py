@@ -159,6 +159,7 @@ class EditPlan:
 
     hook_text: str = ""
     cta_text: str = ""
+    hook_profile_id: str = ""
     retention_hypothesis: str = ""
     creative_rationale: list[str] = field(default_factory=list)
     decisions: list[dict[str, str]] = field(default_factory=list)
@@ -195,6 +196,7 @@ class EditPlan:
             "audio": self.audio.as_dict() if self.audio else None,
             "hook_text": self.hook_text,
             "cta_text": self.cta_text,
+            "hook_profile_id": self.hook_profile_id,
             "retention_hypothesis": self.retention_hypothesis,
             "creative_rationale": self.creative_rationale,
             "decisions": self.decisions,

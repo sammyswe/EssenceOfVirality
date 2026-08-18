@@ -1,0 +1,28 @@
+id: hook-03-crowd-green-fader
+status: testing
+asset_stems:
+  - hook-03-crowd-green-fader
+description: >
+  DJ facing camera with a soft green wash and a blurred crowd behind him; neon-green level meters on the mixer. Push-in ends on his fingers raising a channel fader — live underground anticipation.
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids:
+  - hook-009
+  - hook-012
+cta_ids:
+  - cta-007
+  - cta-006
+  - cta-009
+captions:
+  - id: hook-03-cap-a
+    template: "fader up for the room 🙌 {pairing}"
+    status: testing
+  - id: hook-03-cap-b
+    template: "crowd behind, blend ahead — {pairing}"
+    status: testing
+  - id: hook-03-cap-c
+    template: "feeling the room shift. {pairing}"
+    status: testing
+notes: >
+  Drafted 2026-08-18 from Dropbox Higgsfield batch (hf_20260817_*).
+  Source clip is 1920x1080 landscape (~4.0s); the pipeline crops to 9:16 on
+  overlay. Approve after creator review, then set status: testing.

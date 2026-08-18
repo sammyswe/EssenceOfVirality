@@ -19,10 +19,12 @@ _MEAN_CHAR_WIDTH_RATIO = 0.58
 _LINE_HEIGHT_RATIO = 1.22
 
 # drawtext treats these as syntax; they must be escaped in the text value.
+# Apostrophe cannot stay as \' inside a single-quoted option — that ends the
+# quoted string early and corrupts the filter graph. Break out of the quotes
+# instead (handled in escape_drawtext): you'\''re → text='you'\''re'
 _ESCAPES = {
     "\\": r"\\",
     ":": r"\:",
-    "'": r"\'",
     "%": r"\%",
 }
 
@@ -139,7 +141,10 @@ def fit_to_safe_area(
 def escape_drawtext(value: str) -> str:
     out = []
     for char in value:
-        out.append(_ESCAPES.get(char, char))
+        if char == "'":
+            out.append(r"'\''")
+        else:
+            out.append(_ESCAPES.get(char, char))
     return "".join(out)
 
 
