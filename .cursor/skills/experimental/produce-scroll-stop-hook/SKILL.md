@@ -5,10 +5,12 @@ description: >
   generating or revising an AI hook clip, when a hook feels generic, or when
   another skill needs a hook prompt that applies retained scroll-stop craft.
 metadata:
-  version: 0.1.0
+  version: 0.1.1
   maturity: experimental
   confidence: low
-  evidence_basis: []
+  evidence_basis:
+    - observational
+    - expert_opinion
   evidence_refs: []
   requires_human_approval: false
 ---
@@ -21,10 +23,12 @@ turns that demand into a Higgsfield brief the creator can generate.
 
 Techniques come from creator-supplied education videos (Dropbox
 `education/hooks-incoming/`), distilled into
-[references/techniques.md](references/techniques.md). Channel constraints live
-in [references/channel-fit.md](references/channel-fit.md). Until techniques are
-loaded, refuse to invent scroll-stop craft — ask for education videos or fall
-back to the live hook-profile / copy-bank wording only.
+[references/techniques.md](references/techniques.md) (batch notes:
+[references/education-batch-2026-08-18.md](references/education-batch-2026-08-18.md)).
+Channel constraints live in [references/channel-fit.md](references/channel-fit.md).
+If techniques.md has zero *active* rows, refuse to invent scroll-stop craft —
+ask for education videos or fall back to the live hook-profile / copy-bank
+wording only.
 
 Intended viewer effect (hypothesis, not guarantee): lower `early_skip_rate` by
 delivering an immediate, honest promise; protect `completion_rate` by making
