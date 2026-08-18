@@ -1,0 +1,28 @@
+id: hook-10-red-laser-grid
+status: draft
+asset_stems:
+  - hook-10-red-laser-grid
+description: >
+  Alone in a stark grey metallic room crossed by a dense red laser grid; DJ at a silver hexagonal booth. Camera pushes then cuts to fingers under a scanning red beam — sci-fi precision, red/grey (no Spotify green).
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids:
+  - hook-006
+  - hook-012
+cta_ids:
+  - cta-008
+  - cta-004
+  - cta-013
+captions:
+  - id: hook-10-cap-a
+    template: "through the laser grid 🔴 {pairing}"
+    status: testing
+  - id: hook-10-cap-b
+    template: "precision hands, careful mix — {pairing}"
+    status: testing
+  - id: hook-10-cap-c
+    template: "sci-fi booth, real Spotify blend. {pairing}"
+    status: testing
+notes: >
+  Drafted 2026-08-18 from Dropbox Higgsfield batch (hf_20260817_*).
+  Source clip is 1920x1080 landscape (~4.0s); the pipeline crops to 9:16 on
+  overlay. Approve after creator review, then set status: testing.

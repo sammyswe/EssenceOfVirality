@@ -1,0 +1,28 @@
+id: hook-06-club-crowd-spotlights
+status: draft
+asset_stems:
+  - hook-06-club-crowd-spotlights
+description: >
+  Live booth shot: DJ at Pioneer decks with glasses lined on the booth edge, white spotlights blasting from behind, and a real crowd in the background. Cool white/blue stage lighting, serious club craft energy.
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids:
+  - hook-012
+  - hook-009
+cta_ids:
+  - cta-001
+  - cta-006
+  - cta-008
+captions:
+  - id: hook-06-cap-a
+    template: "booth lights up, hands on the blend 💡 {pairing}"
+    status: testing
+  - id: hook-06-cap-b
+    template: "crowd at your back — {pairing}"
+    status: testing
+  - id: hook-06-cap-c
+    template: "that focused club energy. {pairing}"
+    status: testing
+notes: >
+  Drafted 2026-08-18 from Dropbox Higgsfield batch (hf_20260817_*).
+  Source clip is 1920x1080 landscape (~4.0s); the pipeline crops to 9:16 on
+  overlay. Approve after creator review, then set status: testing.

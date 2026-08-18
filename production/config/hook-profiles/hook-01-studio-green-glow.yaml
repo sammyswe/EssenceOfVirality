@@ -1,0 +1,28 @@
+id: hook-01-studio-green-glow
+status: draft
+asset_stems:
+  - hook-01-studio-green-glow
+description: >
+  Close studio shot of a buzzcut DJ in a grey windbreaker at Pioneer decks; the mixer glows Spotify-green as the camera pushes in onto his hands dialling a knob. Dark plain backdrop, focused intimate energy — no crowd.
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids:
+  - hook-006
+  - hook-001
+cta_ids:
+  - cta-002
+  - cta-008
+  - cta-004
+captions:
+  - id: hook-01-cap-a
+    template: "dialling it in 🎧 {pairing}"
+    status: testing
+  - id: hook-01-cap-b
+    template: "studio focus before the switch — {pairing}"
+    status: testing
+  - id: hook-01-cap-c
+    template: "hands on the green glow. {pairing}"
+    status: testing
+notes: >
+  Drafted 2026-08-18 from Dropbox Higgsfield batch (hf_20260817_*).
+  Source clip is 1920x1080 landscape (~4.0s); the pipeline crops to 9:16 on
+  overlay. Approve after creator review, then set status: testing.

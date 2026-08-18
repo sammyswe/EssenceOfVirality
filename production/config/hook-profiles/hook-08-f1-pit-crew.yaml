@@ -1,0 +1,28 @@
+id: hook-08-f1-pit-crew
+status: draft
+asset_stems:
+  - hook-08-f1-pit-crew
+description: >
+  Surreal comedy: the same DJ at Pioneer decks while a full Ferrari F1 pit crew in red suits and helmets frantically 'services' the mixer with wheel guns, then peels away into a hand close-up. Outdoor festival haze — high-octane parody, obviously staged AI fiction.
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids:
+  - hook-012
+  - hook-001
+cta_ids:
+  - cta-008
+  - cta-009
+  - cta-001
+captions:
+  - id: hook-08-cap-a
+    template: "pit-stop precision on the crossfader 🏎️ {pairing}"
+    status: testing
+  - id: hook-08-cap-b
+    template: "this blend needed a crew. {pairing}"
+    status: testing
+  - id: hook-08-cap-c
+    template: "F1 energy, Spotify mix — {pairing}"
+    status: testing
+notes: >
+  Drafted 2026-08-18 from Dropbox Higgsfield batch (hf_20260817_*).
+  Source clip is 1920x1080 landscape (~4.0s); the pipeline crops to 9:16 on
+  overlay. Approve after creator review, then set status: testing.

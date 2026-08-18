@@ -1,0 +1,28 @@
+id: hook-04-city-green-waveform
+status: draft
+asset_stems:
+  - hook-04-city-green-waveform
+description: >
+  Night rooftop / high-rise vibe with soft city bokeh behind the DJ; a glowing green waveform sits on the reflective table as he tweaks the mixer. Late-night urban chill.
+fiction_signal: visibly_stylised_or_impossible_scene
+overlay_hook_ids:
+  - hook-005
+  - hook-001
+cta_ids:
+  - cta-002
+  - cta-007
+  - cta-003
+captions:
+  - id: hook-04-cap-a
+    template: "city lights + green waveforms 🌃 {pairing}"
+    status: testing
+  - id: hook-04-cap-b
+    template: "midnight blend with the skyline. {pairing}"
+    status: testing
+  - id: hook-04-cap-c
+    template: "late-night house for the speaker. {pairing}"
+    status: testing
+notes: >
+  Drafted 2026-08-18 from Dropbox Higgsfield batch (hf_20260817_*).
+  Source clip is 1920x1080 landscape (~4.0s); the pipeline crops to 9:16 on
+  overlay. Approve after creator review, then set status: testing.
