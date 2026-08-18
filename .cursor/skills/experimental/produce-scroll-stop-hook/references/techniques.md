@@ -89,11 +89,10 @@ Only `status: active` techniques are applied by `produce-scroll-stop-hook`.
     Hypothesis: a specific subjective claim raises stay intent vs generic
     "fire mix" text by giving one concrete reason to listen.
   requirements:
-    - ≤ ~6 words preferred; drawtext-safe; honest for this pairing
+    - "<= ~6 words preferred; drawtext-safe; honest for this pairing"
   contraindications:
-    - Templates like "YOU ARE DOING THIS WRONG" / "NO ONE TOLD YOU"
-      applied as fake advice framing
-    - "I almost didn't post this" drama for a routine mix drop
+    - 'Templates like "YOU ARE DOING THIS WRONG" / "NO ONE TOLD YOU" applied as fake advice framing'
+    - '"I almost did not post this" drama for a routine mix drop'
   channel_fit: adapt
   evidence:
     - education-batch-2026-08-18.md#v0-kienobi

@@ -92,10 +92,12 @@ constraints:
 
 retention_hypothesis: >
   Playing the mix audio from the first frame under a stylised hook overlay is
-  expected to reduce early_skip_rate (the sound and the promise arrive together),
-  and word-timed lyric captions over an otherwise static capture are expected to
-  give the eye a beat-synchronised anchor, protecting completion_rate through the
-  transition.
+  expected to reduce early_skip_rate (the sound and the promise arrive together).
+  Retained scroll-stop craft (pattern interrupt, fast visual confirm to Spotify,
+  payoff re-hook toward the switch, subjective overlay line) is recorded on the
+  edit plan. Word-timed lyric captions over an otherwise static capture are
+  expected to give the eye a beat-synchronised anchor, protecting completion_rate
+  through the transition.
 
 evidence_refs:
   - claim-20260803-hyp-early-skip-promise

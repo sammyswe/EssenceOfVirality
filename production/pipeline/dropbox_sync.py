@@ -34,6 +34,7 @@ endpoints.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -399,11 +400,43 @@ def _connect() -> DropboxClient:
     return DropboxClient(config)
 
 
+def _stable_pick(names: list[str], seed: str) -> str:
+    digest = hashlib.sha256(seed.encode("utf-8")).hexdigest()
+    index = int(digest[:8], 16) % len(names)
+    return names[index]
+
+
+def _attach_library_hook(
+    client: DropboxClient, job_dir: Path, job_id: str
+) -> str | None:
+    """Download one rotating hook from Dropbox ``hooks/library`` into the job."""
+    base = client.config.base_folder
+    library = f"{base}/hooks/library"
+    listed = client.list_folder(library) or []
+    videos = [
+        item for item in listed
+        if str(item.get(".tag")) == "file"
+        and Path(str(item.get("name", ""))).suffix.lower() in VIDEO_SUFFIXES
+    ]
+    if not videos:
+        return None
+    names = sorted(str(item["name"]) for item in videos)
+    chosen_name = _stable_pick(names, f"{job_id}:library-hook")
+    chosen = next(item for item in videos if str(item["name"]) == chosen_name)
+    remote = str(chosen.get("path_display") or chosen.get("path_lower"))
+    client.download(remote, job_dir / chosen_name)
+    return chosen_name
+
+
 def pull() -> PullResult:
     """Import new recordings from ``<base>/incoming`` into job folders.
 
     The creator's originals are moved to ``<base>/imported/`` afterwards —
     within Dropbox, never deleted — so a second pull cannot double-import.
+
+    Production default: each job becomes a ``hook-overlay`` render. If the
+    upload is only a Spotify capture, a hook is attached from
+    ``hooks/library/``. Finished renders are pushed by ``dropbox pull --run``.
     """
     client = _connect()
     base = client.config.base_folder
@@ -412,7 +445,12 @@ def pull() -> PullResult:
 
     entries = client.list_folder(incoming)
     if entries is None:
-        for folder in (incoming, f"{base}/imported", f"{base}/renders"):
+        for folder in (
+            incoming,
+            f"{base}/imported",
+            f"{base}/renders",
+            f"{base}/hooks/library",
+        ):
             client.ensure_folder(folder)
         result.messages.append(
             f"created the folder structure under {base} — drop a recording "
@@ -421,6 +459,7 @@ def pull() -> PullResult:
         return result
 
     client.ensure_folder(f"{base}/imported")
+    client.ensure_folder(f"{base}/hooks/library")
 
     for entry in entries:
         tag = str(entry.get(".tag", ""))
@@ -458,6 +497,7 @@ def pull() -> PullResult:
         job_dir = JOBS_INCOMING / job_id
         job_dir.mkdir(parents=True, exist_ok=True)
         assets: list[str] = []
+        notes = "Dropbox import — hook-overlay production recipe"
         try:
             for item in files:
                 item_name = str(item["name"])
@@ -465,13 +505,41 @@ def pull() -> PullResult:
                 client.download(item_path, job_dir / item_name)
                 if item is not recording:
                     assets.append(item_name)
+
+            if not assets:
+                attached = _attach_library_hook(client, job_dir, job_id)
+                if attached:
+                    assets.append(attached)
+                    notes += f"; auto-attached library hook {attached}"
+                    result.messages.append(
+                        f"{job_id}: attached library hook {attached} "
+                        "(upload a hook beside the mix to override)"
+                    )
+                else:
+                    result.messages.append(
+                        f"{job_id}: no hook in the upload and hooks/library is "
+                        "empty — job will fail format selection until a hook "
+                        "clip is added"
+                    )
         except DropboxError:
             # A half-downloaded job folder would be picked up by `newest`;
             # remove it so the failed pull leaves no trace.
             shutil.rmtree(job_dir, ignore_errors=True)
             raise
 
-        write_job_template(job_dir, job_id, str(recording["name"]))
+        additional = [
+            {"path": asset_name, "role": "hook", "label": Path(asset_name).stem}
+            for asset_name in assets
+        ]
+        preferred = "hook-overlay" if assets else "auto"
+        write_job_template(
+            job_dir,
+            job_id,
+            str(recording["name"]),
+            additional_assets=additional,
+            preferred_format=preferred,
+            notes=notes,
+        )
         client.move(source_path, f"{base}/imported/{name}")
 
         result.created.append(PulledJob(

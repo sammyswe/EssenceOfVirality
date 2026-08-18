@@ -178,6 +178,17 @@ def choose_format(
             score += 0.3
             reasons.append("track metadata supports a genuine contrast claim")
 
+        # Creator recipe: when a hook clip is present, prefer the two-artifact
+        # hook-overlay path that applies retained scroll-stop craft.
+        if name == "hook-overlay" and asset_count >= 1:
+            has_hook_role = any(asset.role == "hook" for asset in usable)
+            if has_hook_role or asset_count >= 1:
+                score += 1.5 if has_hook_role else 0.9
+                reasons.append(
+                    "hook clip supplied — prefer the muted overlay recipe "
+                    "(scroll-stop open + full Spotify capture)"
+                )
+
         scored.append((score, name, template, reasons))
 
     if not scored:
@@ -752,6 +763,26 @@ def _build_text_cues(
         default=0.0,
     )
 
+    # Scroll-stop payoff re-hook: a short anticipation line after the AI overlay
+    # hands over, pointing at the untouched mix switch.
+    devices = {str(item) for item in (template.get("retention_devices") or [])}
+    if "anticipation_text_before_transition" in devices:
+        blend_start = timing.transition_window[0]
+        start = max(hook_overlay_end + 0.35, hook_overlay_end)
+        end = max(blend_start - 0.35, start)
+        anticipation = "wait for the switch"
+        if hook_text and "switch" in hook_text.lower():
+            anticipation = ""  # already promised in the open overlay
+        if anticipation and end - start >= 1.0:
+            add(
+                "secondary",
+                anticipation,
+                str(styles.get("hook", "bold_outline")),
+                start,
+                end,
+                "scroll-stop payoff re-hook: names the mix switch before it lands",
+            )
+
     if config["cta"]["enabled"] and cta_text:
         display = float(config["cta"]["display_seconds"])
         lead = float(config["cta"]["lead_seconds"])
@@ -1086,6 +1117,21 @@ def build_plan(
         secondary=secondary, revision=revision, cta_slot_affinity=cta_slot_affinity,
     )
 
+    from . import scrollstop
+
+    has_hook_clip = any(
+        clip.role == "hook" and clip.mode == "cutaway" for clip in secondary
+    )
+    fiction_signal = profile.fiction_signal if profile is not None else ""
+    scrollstop_apps = []
+    if choice.name == "hook-overlay" or has_hook_clip:
+        scrollstop_apps = scrollstop.apply_to_hook_overlay(
+            has_hook_clip=has_hook_clip,
+            hook_text=hook_text,
+            profile_id=profile.id if profile is not None else "",
+            fiction_signal=fiction_signal,
+        )
+
     emphasis_cfg = config["transition"]["emphasis"]
     emphasis_enabled = bool(emphasis_cfg.get("enabled", True))
     if "zoom_emphasis" in resolved.banned_devices:
@@ -1167,6 +1213,13 @@ def build_plan(
             f"hook_profile={profile.id}",
             f"matched asset stems {profile.asset_stems}; "
             f"on-screen description drives this clip's copy trio",
+        )
+    for application in scrollstop_apps:
+        verb = "applied" if application.applied else "skipped"
+        plan.add_decision(
+            f"scrollstop {verb}: {application.id}",
+            application.reason,
+            stage="scrollstop",
         )
     plan.add_decision(
         f"format_family={choice.family}",

@@ -1,10 +1,12 @@
 # The hook-overlay recipe
 
-Revision date: 2026-08-17. The creator's structured recipe for producing a post
+Revision date: 2026-08-18. The creator's structured recipe for producing a post
 from exactly two supplied videos, with every editing decision owned by the
-pipeline. Format template: `production/templates/hook-overlay.yaml`. The goal is
-two posts a day with the creator's effort limited to: generate a hook, record a
-mix, verify lyrics and hook wording, post.
+pipeline. Format template: `production/templates/hook-overlay.yaml`. Scroll-stop
+craft lives in `.cursor/skills/experimental/produce-scroll-stop-hook/` and is
+applied by `production/pipeline/scrollstop.py` on every hook-overlay plan. The
+goal is two posts a day with the creator's effort limited to: generate a hook,
+record a mix, verify lyrics and hook wording, post.
 
 ## The two artifacts
 
@@ -120,6 +122,43 @@ bank (`production/config/copy-bank.yaml`, see
 [`copy-bank.md`](copy-bank.md)): approved entries merge into the rotation,
 drafts never render, and each render records which bank entry it used.
 
+## What the final video looks like
+
+Timeline (typical 25–45 s capture):
+
+1. **0–~4 s — scroll-stop open.** Full-frame muted Higgsfield hook (fiction
+   signal). Mix audio already playing underneath. Short subjective overlay
+   text (from the matched hook profile, else the copy bank). Retained
+   scroll-stop craft is recorded on the edit plan (pattern interrupt, depth
+   motion, visual confirm, payoff re-hook, subjective stakes, fiction prop).
+2. **~4 s — handover.** Overlay dissolves on a nearby beat; Spotify UI is
+   fully visible by ~4.6 s (labels, BPM, waveform legible).
+3. **Until the switch — Spotify capture, untrimmed.** Optional anticipation
+   line (“wait for the switch”) if the open did not already say it. Optional
+   karaoke lyrics only from a creator-verified `lyrics.yaml`. CTA may land in
+   build / post-payoff / closing (rotated).
+4. **Transition — untouched.** Mild zoom emphasis only; audio never altered
+   beyond loudness normalisation.
+5. **After —** rest of the capture + CTA if not already shown.
+
+Deliverables per job: preview MP4, final MP4, thumbnail, posting package
+(caption / hashtags / pinned comment). Dropbox `pull --run` uploads those to
+`/spotify-mix-videos/renders/<video-id>/`.
+
+## Dropbox production path
+
+```bash
+# Phone: drop the Spotify recording into /spotify-mix-videos/incoming/
+# (optional: put a hook clip in the same folder; otherwise a library hook
+#  is auto-attached from /spotify-mix-videos/hooks/library/)
+
+./process-job dropbox pull --run
+# imports → hook-overlay plan (scroll-stop techniques applied) → render →
+# pushes preview/final/thumbnail to /spotify-mix-videos/renders/<id>/
+```
+
+Automation agents use the same command. Posting stays manual.
+
 ## What the creator still owns
 
 1. Generating hook clips (a reusable bank; rotate them as experiments).
@@ -131,17 +170,38 @@ drafts never render, and each render records which bank entry it used.
 Everything else — stitch, fade, beat snap, caption grouping, styling,
 placement, CTA slotting, quality gates — is the pipeline's job.
 
+## Ready for the first Spotify mix?
+
+Yes — for a first Dropbox production run — when you have:
+
+1. A 9:16 Spotify screen recording (labels + waveform visible, ~25–60 s) in
+   `/spotify-mix-videos/incoming/` (or a folder with the mix + an optional hook).
+2. At least one clip in `/spotify-mix-videos/hooks/library/` (ten are already
+   there). Profiles for those clips are on `testing`, so profile overlay / CTA /
+   caption trios drive the post.
+3. Cloud Agent Secrets for Dropbox (already verified).
+4. An Automation (or a manual `./process-job dropbox pull --run`) on branch
+   `cursor/copy-bank-dropbox-cf50` until this PR merges.
+
+Still optional / better after the first post: verified `lyrics.yaml` karaoke,
+and retiring any profile overlay wording you dislike.
+
+Not ready yet for: emoji-dense Remotion captions (interim FFmpeg drawtext),
+TikTok auto-posting, or virality guarantees.
+
 ## Daily runbook (two posts)
 
 ```bash
-# per post
+# Dropbox (preferred)
+#   drop capture (+ optional hook) into /spotify-mix-videos/incoming/
+./process-job dropbox pull --run
+
+# Or local
 ./process-job new job-XXX --recording <capture> --asset <hook-from-bank>
-#   agent drafts lyrics.yaml, sets preferred_format: hook-overlay
-#   creator verifies lyrics (verified: true), confirms hook wording
+#   set preferred_format: hook-overlay; optional lyrics.yaml verified: true
 ./process-job jobs/incoming/job-XXX
-./process-job deliver <video-id>    # in a cloud agent: stages preview + final
-#   creator posts manually; later records analytics
+./process-job dropbox push <video-id>
 ```
 
-Revisions stay plain-language: `./process-job revise job-XXX "the captions are
-too small and the CTA should come before the drop"`.
+Revisions stay plain language:
+`./process-job revise job-XXX "the captions are too small and the CTA should come before the drop"`.
