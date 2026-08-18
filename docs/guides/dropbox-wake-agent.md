@@ -134,10 +134,13 @@ Checked from a cloud agent with your secrets loaded:
 | `DROPBOX_APP_KEY` / `SECRET` / `REFRESH_TOKEN` | Present |
 | `./process-job dropbox status` | Connected as Samuel Elliott’s |
 | `./process-job dropbox ensure` | Folder tree OK |
+| `./process-job status` | ffmpeg available; formats include `hook-overlay` |
 | `/spotify-mix-videos/incoming` | Empty (ready for a test drop) |
-| Automation-sourced runs in agent list | None yet — confirm Automations target the PR branch above |
+| Automations branch | Creator set to `cursor/copy-bank-dropbox-cf50` |
 
-**Smoke test:** drop any short video into `/spotify-mix-videos/incoming/`, then
-watch [cursor.com/agents](https://cursor.com/agents) for a new run (schedule:
-within one interval; webhook: ~1 minute). Renders land under
-`/spotify-mix-videos/renders/`.
+**Smoke test (your next step):** drop any short video into
+`/spotify-mix-videos/incoming/`, then watch
+[cursor.com/agents](https://cursor.com/agents) for a new run (schedule: within
+one interval; webhook: ~1 minute). Renders land under
+`/spotify-mix-videos/renders/`. If the agent says incoming was empty, the
+wake worked but Dropbox had not synced yet — wait and re-check.

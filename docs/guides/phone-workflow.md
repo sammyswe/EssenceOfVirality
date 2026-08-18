@@ -76,12 +76,14 @@ the phone. Once configured, the whole exchange is two folders:
    subfolder if both belong to one job) into `<base>/incoming/` from the
    Dropbox app. The base folder is `/spotify-mix-videos` unless
    `DROPBOX_BASE_FOLDER` says otherwise.
-2. Tell the agent to process it. It runs `./process-job dropbox pull --run`,
-   which imports each upload into a job folder, processes it, and uploads the
-   preview, final and thumbnail to `<base>/renders/<video-id>/` with shared
-   links printed for each file.
-3. **Download**: open the link (or the folder in the Dropbox app) and save
-   the final to the camera roll for posting.
+2. **Wake** (pick one):
+   - **Unattended:** a Cursor Automation (schedule or Dropbox webhook) starts
+     a cloud agent that runs `./process-job dropbox pull --run`. Setup:
+     [`dropbox-wake-agent.md`](dropbox-wake-agent.md). You do not open Cursor.
+   - **Manual:** open any cloud agent and say “Process Dropbox uploads.”
+3. **Download**: open the shared link (or the folder in the Dropbox app) and
+   save the final to the camera roll for posting. Renders land in
+   `<base>/renders/<video-id>/`.
 
 Imported uploads are moved to `<base>/imported/` inside Dropbox — never
 deleted — so a second pull cannot import the same mix twice. A loose video
